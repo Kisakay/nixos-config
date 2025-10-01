@@ -287,6 +287,23 @@
     pkg-config
     gcc
     nmap
+
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.caffeine
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.desktop-cube
+    gnomeExtensions.force-quit
+    gnomeExtensions.ip-finder
+    gnomeExtensions.just-perfection
+    gnomeExtensions.runcat
+    gnomeExtensions.appindicator
+    gnomeExtensions.customize-clock-on-lock-screen
+    gnomeExtensions.emoji-copy
+    gnomeExtensions.user-themes
+    gnomeExtensions.vscode-workspaces-gnome
+    gnomeExtensions.media-controls
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
