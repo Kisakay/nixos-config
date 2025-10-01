@@ -24,7 +24,7 @@
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      mesa.drivers
+      mesa
       vulkan-loader
       vulkan-validation-layers
       vulkan-tools
@@ -303,7 +303,11 @@
     gnomeExtensions.user-themes
     gnomeExtensions.vscode-workspaces-gnome
     gnomeExtensions.media-controls
-
+    gnomeExtensions.dash-to-panel
+    gnomeExtensions.desktop-clock
+    gnomeExtensions.window-desaturation
+    gnomeExtensions.media-controls
+    gnomeExtensions.add-to-desktop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
