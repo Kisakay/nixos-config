@@ -11,4 +11,4 @@ the golang watcher is daemonized with pm2
 
 ## result:
 
-![alt text](result_vlc_rpc.png)
+![alt text](../assets/vlc/result_vlc_rpc.png)
