@@ -237,7 +237,8 @@
     ffmpeg
     comic-relief
     direnv
-    nixfmt
+    nixfmt-classic
+    nixfmt-rfc-style
     kdePackages.kolourpaint
     easyeffects
     libxcrypt-legacy
