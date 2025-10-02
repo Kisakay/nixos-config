@@ -4,6 +4,7 @@ import * as os from "node:os";
 import * as readline from "node:readline";
 import * as process from "node:process";
 import * as crypto from "node:crypto";
+import * as child from "node:child_process";
 
 // ANSI color codes for terminal output
 const Color = { Black: "\x1b[30m", Red: "\x1b[31m", Green: "\x1b[32m", Yellow: "\x1b[33m", Blue: "\x1b[34m", Magenta: "\x1b[35m", Cyan: "\x1b[36m", White: "\x1b[37m", BGBlack: "\x1b[40m", BGRed: "\x1b[41m", BGGreen: "\x1b[42m", BGYellow: "\x1b[43m", BGBlue: "\x1b[44m", BGMagenta: "\x1b[45m", BGCyan: "\x1b[46m", BGWhite: "\x1b[47m", Dim: "\x1b[2m", Italic: "\x1b[3m", Underscore: "\x1b[4m", Reverse: "\x1b[7m", Hidden: "\x1b[8m", Strikethrough: "\x1b[9m", Gray: "\x1b[90m", Bold: "\x1b[1m", Reset: "\x1b[0m" };
@@ -139,8 +140,7 @@ function switchProfile(profileName: string): Promise<void> {
 
 function runOpera(): void {
     // run atomicly opera
-    const { exec } = require('child_process');
-    exec('flatpak run com.opera.Opera & disown', (error: any, stdout: string, stderr: string) => {
+    child.exec('flatpak run com.opera.Opera & disown', (error: any, stdout: string, stderr: string) => {
         if (error) {
             process.stdout.write(Color.Red + `Error launching Opera: ${error.message}` + Color.Reset + EndLine);
             return;
