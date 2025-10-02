@@ -40,7 +40,7 @@ async function getBatteryLevel() {
     try {
         device = new HID(vendorId, productId);
     } catch (error) {
-        console.error("Failed to open device:", error);
+        process.stdout.write('Failed to open device:' + (error as Error).message)
         return { battery: null, productId, product };
     }
 
