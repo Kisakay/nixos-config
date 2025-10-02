@@ -308,6 +308,9 @@
     gnomeExtensions.window-desaturation
     gnomeExtensions.media-controls
     gnomeExtensions.add-to-desktop
+
+    kdePackages.filelight
+    onlyoffice-desktopeditors
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
