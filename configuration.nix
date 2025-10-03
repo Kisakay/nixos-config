@@ -195,7 +195,8 @@
     wine
     git
     github-desktop
-    vscode
+    # vscode
+    vscodium
     steam
     prismlauncher
     bottles
