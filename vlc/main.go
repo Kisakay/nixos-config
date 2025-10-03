@@ -218,14 +218,16 @@ func (r *RPCManager) Update(state *State) error {
 		}
 	}
 
+	largeImageText := fmt.Sprintf("On %s", state.Album)
+
 	activity := drpc.Activity{
 		Details: details,
 		State:   state.Artist,
 		Assets: &drpc.Assets{
 			LargeImage: largeImage,
-			LargeText:  "VLC media player",
-			SmallImage: "vlc",
-			SmallText:  state.Status,
+			LargeText:  largeImageText,
+			SmallImage: defaultImage,
+			SmallText:  "VLC media player",
 		},
 	}
 
