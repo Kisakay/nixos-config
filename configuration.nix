@@ -314,6 +314,9 @@
     kdePackages.filelight
     onlyoffice-desktopeditors
     google-chrome
+
+    # I WANT COMIC SANS MS
+    corefonts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
