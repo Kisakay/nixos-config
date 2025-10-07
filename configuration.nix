@@ -314,11 +314,15 @@
     kdePackages.filelight
     onlyoffice-desktopeditors
     google-chrome
-
-    # I WANT COMIC SANS MS
-    corefonts
   ];
 
+  fonts.packages = with pkgs;
+    [
+      # I WANT COMIC SANS MS
+      corefonts
+      # AND JETBRAIN MONOS PLS
+      jetbrains-mono
+    ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
