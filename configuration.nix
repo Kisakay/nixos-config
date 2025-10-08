@@ -91,8 +91,11 @@
     variant = "alt-intl";
   };
 
+  # Use same config for linux console
+  i18n.consoleUseXkbConfig = true;
+
   # Configure console keymap
-  console.keyMap = "dvorak";
+  # console.keyMap = "dvorak";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -187,6 +190,7 @@
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ./davinci-resolve-paid.nix { })
     (import /etc/nixos/pkgs/paladrill { inherit pkgs; })
+    (import /etc/nixos/zen_browser { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
@@ -314,15 +318,15 @@
     kdePackages.filelight
     onlyoffice-desktopeditors
     google-chrome
+    acpi
   ];
 
-  fonts.packages = with pkgs;
-    [
-      # I WANT COMIC SANS MS
-      corefonts
-      # AND JETBRAIN MONOS PLS
-      jetbrains-mono
-    ];
+  fonts.packages = with pkgs; [
+    # I WANT COMIC SANS MS
+    corefonts
+    # AND JETBRAIN MONOS PLS
+    jetbrains-mono
+  ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

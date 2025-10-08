@@ -10,3 +10,4 @@ export PATH=$PATH:/home/kisakay/.spicetify
 
 alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'disabled'"
 alias revien="gsettings reset org.gnome.desktop.peripherals.touchpad send-events"
+alias bat="acpi"
