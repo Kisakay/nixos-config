@@ -325,6 +325,9 @@
     google-chrome
     acpi
     discordo
+    screen
+    tmux
+    neovim
   ];
 
   fonts.packages = with pkgs; [
