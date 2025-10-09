@@ -201,6 +201,7 @@
     vlc
     obs-studio
     htop
+    btop
     wine
     git
     github-desktop
