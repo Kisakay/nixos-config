@@ -94,6 +94,12 @@
   # Use same config for linux console
   i18n.consoleUseXkbConfig = true;
 
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+  };
+
   # Configure console keymap
   # console.keyMap = "dvorak";
 
@@ -190,7 +196,6 @@
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ./davinci-resolve-paid.nix { })
     (import /etc/nixos/pkgs/paladrill { inherit pkgs; })
-    (import /etc/nixos/zen_browser { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
@@ -319,6 +324,7 @@
     onlyoffice-desktopeditors
     google-chrome
     acpi
+    discordo
   ];
 
   fonts.packages = with pkgs; [
