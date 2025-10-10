@@ -92,7 +92,7 @@
   };
 
   # Use same config for linux console
-  i18n.consoleUseXkbConfig = true;
+  console.useXkbConfig = true;
 
   console = {
     earlySetup = true;
@@ -394,22 +394,32 @@
     };
   };
 
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_16; # Choisir la version
-    initialScript = pkgs.writeText "init.sql" ''
-      CREATE DATABASE mydb;
-      CREATE USER myuser WITH PASSWORD 'mypassword';
-      GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
-    '';
-  };
+  services = {
+    # FLATPAK
+    flatpak.enable = true;
 
-  services.ollama = {
-    enable = true;
-    # Optional: preload models, see https://ollama.com/library
-    loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" ];
+    # MULLVAD VPN
+    mullvad-vpn.enable = true;
+
+    # OLLAMA
+    ollama = {
+      enable = true;
+      # Optional: preload models, see https://ollama.com/library
+      loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" ];
+    };
+
+    # POSTGRESQL
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql_16; # Choisir la version
+      initialScript = pkgs.writeText "init.sql" ''
+        CREATE DATABASE mydb;
+        CREATE USER myuser WITH PASSWORD 'mypassword';
+        GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+      '';
+    };
+
   };
-  services = { flatpak.enable = true; };
 
   services.samba = {
     enable = true;
