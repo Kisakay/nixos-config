@@ -1,13 +1,13 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  appimage = ./PalaDrill-setup-2.2.0.AppImage;
+  appimage = ./PalaDrill-setup-2.3.0.AppImage;
   icon = ./LoadingSeal.png;
 in
 
 pkgs.appimageTools.wrapType2 {
   pname = "paladrill";
-  version = "2.1.0";
+  version = "2.3.0";
   src = appimage;
 
   extraInstallCommands = ''
