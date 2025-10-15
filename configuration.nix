@@ -212,7 +212,6 @@
     windterm
     dbeaver-bin
     vesktop
-    mullvad-vpn
     docker
     entr
     element-desktop
@@ -395,9 +394,6 @@
   services = {
     # FLATPAK
     flatpak.enable = true;
-
-    # MULLVAD VPN
-    mullvad-vpn.enable = true;
 
     # OLLAMA
     ollama = {
