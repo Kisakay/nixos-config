@@ -82,8 +82,8 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -194,8 +194,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    (pkgs.callPackage ./davinci-resolve-paid.nix { })
-    (import /etc/nixos/pkgs/paladrill { inherit pkgs; })
+    (import ./pkgs/paladrill { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
@@ -224,7 +223,7 @@
     thunderbird
     spotify
     virt-manager
-    libsForQt5.kdenlive
+    kdePackages.kdenlive
     melt
     gnome-extension-manager
     gnome-tweaks
@@ -240,7 +239,6 @@
     zsh
     anydesk
     dolphin-emu
-    libretro.citra
     fastfetch
     flatpak
     yt-dlp
