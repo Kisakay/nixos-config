@@ -378,17 +378,20 @@
     description = "PM2 process manager";
     after = [ "network.target" ];
     wantedBy = [ "default.target" ];
+
     serviceConfig = {
       Type = "forking";
+      PIDFile = "/home/kisakay/.pm2/pm2.pid";
       ExecStart =
-        "/home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 resurrect";
+        "${pkgs.bash}/bin/bash -c 'cd /home/kisakay && /home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 resurrect'";
       ExecReload =
         "/home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 reload all";
       ExecStop =
         "/home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 kill";
       Restart = "on-failure";
+
       Environment = [
-        "PATH=/home/kisakay/.bun/bin:${builtins.getEnv "PATH"}"
+        "PATH=/home/kisakay/.bun/bin:${pkgs.nodejs}/bin:/run/current-system/sw/bin"
         "PM2_HOME=/home/kisakay/.pm2"
       ];
     };
