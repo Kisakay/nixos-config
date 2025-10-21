@@ -329,6 +329,8 @@
     screen
     tmux
     neovim
+    rpi-imager
+    sqlitebrowser
   ];
 
   fonts.packages = with pkgs; [
