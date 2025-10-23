@@ -240,7 +240,6 @@
     nodejs
     zsh
     anydesk
-    dolphin-emu
     fastfetch
     flatpak
     yt-dlp
