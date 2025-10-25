@@ -330,6 +330,8 @@
     neovim
     rpi-imager
     sqlitebrowser
+    pulseaudio
+    pulseaudioFull
   ];
 
   fonts.packages = with pkgs; [
