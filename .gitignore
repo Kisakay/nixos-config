@@ -4,3 +4,4 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+pkgs/equibop/Equibop-3.0.9.AppImage
