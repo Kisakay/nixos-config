@@ -215,7 +215,7 @@
     bottles
     windterm
     dbeaver-bin
-    vesktop
+    # vesktop
     docker
     entr
     element-desktop
