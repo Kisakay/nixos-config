@@ -215,7 +215,7 @@
     bottles
     windterm
     dbeaver-bin
-    # vesktop
+    vesktop
     docker
     entr
     element-desktop
@@ -242,6 +242,7 @@
     zsh
     anydesk
     fastfetch
+    onefetch
     flatpak
     yt-dlp
     go
