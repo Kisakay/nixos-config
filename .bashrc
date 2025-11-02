@@ -4,10 +4,14 @@ alias m2f="sudo nixos-rebuild switch"
 alias whatsmyip="curl ifconfig.me; echo"
 export PATH="/home/kisakay/.bun/bin:$PATH"
 
-fastfetch
-
 export PATH=$PATH:/home/kisakay/.spicetify
 
 alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'disabled'"
 alias revien="gsettings reset org.gnome.desktop.peripherals.touchpad send-events"
 alias bat="acpi"
+
+if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
+    onefetch
+else
+    fastfetch
+fi
