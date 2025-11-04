@@ -330,7 +330,7 @@
     screen
     tmux
     neovim
-    rpi-imager
+    # rpi-imager
     sqlitebrowser
     pulseaudio
     pulseaudioFull
