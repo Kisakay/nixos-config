@@ -341,6 +341,23 @@
     corefonts
     # AND JETBRAIN MONOS PLS
     jetbrains-mono
+
+    # thanks claude
+    # Polices pour un support Unicode complet
+    noto-fonts
+    noto-fonts-cjk-sans # Caractères chinois, japonais, coréens
+    noto-fonts-emoji-blob-bin # Emojis
+    noto-fonts-lgc-plus # Symboles supplémentaires
+    liberation_ttf
+    fira-code
+    dejavu_fonts
+    font-awesome # Icônes
+
+    # Symboles mathématiques et techniques
+    unifont
+
+    # Polices spécialisées (optionnel)
+    libertine
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
