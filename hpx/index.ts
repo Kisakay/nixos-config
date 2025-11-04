@@ -134,7 +134,7 @@ async function main() {
     } else if (productId) {
         process.stdout.write(`🎧 ${product} - ?%\n`)
     } else {
-        process.stdout.write(`?\n`);
+        process.stdout.write(`.\n`);
     }
     process.exit(0);
 }
