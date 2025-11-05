@@ -132,7 +132,7 @@
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -141,8 +141,17 @@
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = [ "kisakay" ];
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
+
+  virtualisation = {
+    spiceUSBRedirection = { enable = true; };
+
+    libvirtd = {
+      enable = true;
+      onBoot = "start";
+      onShutdown = "shutdown";
+    };
+  };
+  services.spice-webdavd.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
