@@ -107,7 +107,10 @@
   # console.keyMap = "dvorak";
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.cups-brother-mfcl2750dw ];
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
