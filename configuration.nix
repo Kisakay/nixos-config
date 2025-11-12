@@ -144,9 +144,9 @@
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = [ "kisakay" ];
+  virtualisation.spiceUSBRedirection.enable = true;
 
   virtualisation = {
-    spiceUSBRedirection = { enable = true; };
 
     libvirtd = {
       enable = true;
