@@ -346,7 +346,10 @@
     sqlitebrowser
     pulseaudio
     pulseaudioFull
+    winboat
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [ "jitsi-meet-1.0.8792" ];
 
   fonts.packages = with pkgs; [
     # I WANT COMIC SANS MS
