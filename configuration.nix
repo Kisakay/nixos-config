@@ -346,10 +346,79 @@
     sqlitebrowser
     pulseaudio
     pulseaudioFull
-    winboat
+
+    gnumake
+    openssl
+    pkg-config
+
+    gcc
+    clang
+    cmake
+    gnumake
+    meson
+    ninja
+    pkg-config
+    autoconf
+    automake
+    libtool
+
+    # Bibliothèques de développement
+    openssl
+    openssl.dev
+    curl
+    curl.dev
+    zlib
+    zlib.dev
+    libxml2
+    libxml2.dev
+
+    # Bibliothèques réseau
+    libssh
+    libssh2
+    nghttp2
+    c-ares
+
+    # Bibliothèques système
+    glibc
+    glibc.dev
+    stdenv.cc.libc
+
+    # Outils de débogage
+    gdb
+    valgrind
+    strace
+    ltrace
   ];
 
-  nixpkgs.config.permittedInsecurePackages = [ "jitsi-meet-1.0.8792" ];
+    environment.variables = {
+    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
+    LIBRARY_PATH = "${pkgs.openssl.out}/lib:${pkgs.curl.out}/lib";
+    C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
+  };
+
+  # Configuration pour les shells de développement
+  programs.bash.shellInit = ''
+    export CFLAGS="-I${pkgs.openssl.dev}/include -I${pkgs.curl.dev}/include"
+    export LDFLAGS="-L${pkgs.openssl.out}/lib -L${pkgs.curl.out}/lib"
+  '';
+
+  programs.zsh = {
+    enable = true;
+    shellInit = ''
+      export CFLAGS="-I${pkgs.openssl.dev}/include -I${pkgs.curl.dev}/include"
+      export LDFLAGS="-L${pkgs.openssl.out}/lib -L${pkgs.curl.out}/lib"
+    '';
+  };
+
+  # Activer ccache pour accélérer les compilations
+  programs.ccache.enable = true;
+
+  # Documentation de développement
+  documentation.dev.enable = true;
+  documentation.man.enable = true;
+
+  # Services utiles pour le développement
+  services.lorri.enable = true;  # Pour direnv et nix-shell
 
   fonts.packages = with pkgs; [
     # I WANT COMIC SANS MS
