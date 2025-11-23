@@ -388,6 +388,9 @@
     valgrind
     strace
     ltrace
+
+    # CAMERA WITH USB OVER MY OPPO RENO 13 PRO
+    libusb1
   ];
 
     environment.variables = {
