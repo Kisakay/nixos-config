@@ -394,6 +394,10 @@
 
     # chromium
     chromium
+
+    # pour maddie cte folle
+    nasm 
+    gpp
   ];
 
     environment.variables = {
