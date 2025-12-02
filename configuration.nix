@@ -396,12 +396,18 @@
     chromium
 
     # pour maddie cte folle
-    nasm 
+    nasm
     gpp
+
+    # crypto mes couilles
+    # exodus
+
+    teamviewer
   ];
 
-    environment.variables = {
-    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
+  environment.variables = {
+    PKG_CONFIG_PATH =
+      "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
     LIBRARY_PATH = "${pkgs.openssl.out}/lib:${pkgs.curl.out}/lib";
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
   };
@@ -428,7 +434,8 @@
   documentation.man.enable = true;
 
   # Services utiles pour le développement
-  services.lorri.enable = true;  # Pour direnv et nix-shell
+  services.lorri.enable = true; # Pour direnv et nix-shell
+  services.teamviewer.enable = true;
 
   fonts.packages = with pkgs; [
     # I WANT COMIC SANS MS
