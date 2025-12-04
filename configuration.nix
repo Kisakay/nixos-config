@@ -294,7 +294,7 @@
     ollama
     nss
     ntfs3g
-    jetbrains.idea-community
+    # jetbrains.idea-community
     maven
     sqlite # lib32-sqlite → Nix doesn’t split 32/64-bit; use `pkgsi686Linux.sqlite` if needed
     openssl # lib32-openssl → similarly, use `pkgsi686Linux.openssl` for 32-bit
