@@ -403,6 +403,7 @@
     # exodus
 
     teamviewer
+    dig
   ];
 
   environment.variables = {
