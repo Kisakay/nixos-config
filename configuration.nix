@@ -401,8 +401,6 @@
 
     # crypto mes couilles
     # exodus
-
-    teamviewer
     dig
   ];
 
@@ -436,7 +434,6 @@
 
   # Services utiles pour le développement
   services.lorri.enable = true; # Pour direnv et nix-shell
-  services.teamviewer.enable = true;
 
   fonts.packages = with pkgs; [
     # I WANT COMIC SANS MS
