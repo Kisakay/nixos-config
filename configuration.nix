@@ -216,7 +216,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     (import ./pkgs/paladrill { inherit pkgs; })
-    equibop
+    # equibop
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
