@@ -294,7 +294,7 @@
     # Add other dependencies you might need
     python3Packages.setuptools
     python3Packages.wheel
-
+    distrobox
     networkmanagerapplet
     distrobox
     session-desktop
