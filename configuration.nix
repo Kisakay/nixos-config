@@ -253,7 +253,7 @@
     thunderbird
     spotify
     virt-manager
-    kdePackages.kdenlive
+    # kdePackages.kdenlive
     melt
     gnome-extension-manager
     gnome-tweaks
