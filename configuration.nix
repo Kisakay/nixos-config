@@ -348,7 +348,9 @@
     gnomeExtensions.window-desaturation
     gnomeExtensions.media-controls
     gnomeExtensions.add-to-desktop
-
+    fprintd
+    libfprint
+    usbutils
     kdePackages.filelight
     onlyoffice-desktopeditors
     google-chrome
