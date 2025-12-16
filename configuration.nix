@@ -419,6 +419,9 @@
     # crypto mes couilles
     # exodus
     dig
+
+    abaddon
+    pm2
   ];
 
   environment.variables = {
@@ -512,26 +515,15 @@
     };
   };
 
-  systemd.user.services.pm2 = {
-    description = "PM2 process manager";
-    after = [ "network.target" ];
-    wantedBy = [ "default.target" ];
-
+  systemd.services.pm2 = {
+    enable = true;
+    description = "pm2";
+    unitConfig = { Type = "simple"; };
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      Type = "forking";
-      PIDFile = "/home/kisakay/.pm2/pm2.pid";
-      ExecStart =
-        "${pkgs.bash}/bin/bash -c 'cd /home/kisakay && /home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 resurrect'";
-      ExecReload =
-        "/home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 reload all";
-      ExecStop =
-        "/home/kisakay/.bun/install/global/node_modules/pm2/bin/pm2 kill";
-      Restart = "on-failure";
-
-      Environment = [
-        "PATH=/home/kisakay/.bun/bin:${pkgs.nodejs}/bin:/run/current-system/sw/bin"
-        "PM2_HOME=/home/kisakay/.pm2"
-      ];
+      ExecStart = "${pkgs.nodePackages_latest.pm2}/bin/pm2 resurrect";
+      ExecReload = "${pkgs.nodePackages_latest.pm2}/bin/pm2 reload all";
+      ExecStop = "${pkgs.nodePackages_latest.pm2}/bin/pm2 kill";
     };
   };
 
