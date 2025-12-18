@@ -421,6 +421,7 @@
     dig
 
     abaddon
+    ripcord
     pm2
   ];
 
@@ -517,13 +518,24 @@
 
   systemd.services.pm2 = {
     enable = true;
-    description = "pm2";
-    unitConfig = { Type = "simple"; };
+    description = "PM2 process manager";
     wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+
     serviceConfig = {
-      ExecStart = "${pkgs.nodePackages_latest.pm2}/bin/pm2 resurrect";
-      ExecReload = "${pkgs.nodePackages_latest.pm2}/bin/pm2 reload all";
+      Type = "forking";
+      User = "kisakay";
+      Environment = [ "HOME=/home/kisakay" "PM2_HOME=/home/kisakay/.pm2" ];
+
+      ExecStart =
+        "${pkgs.bash}/bin/bash -c '${pkgs.nodePackages_latest.pm2}/bin/pm2 resurrect && sleep 1'";
       ExecStop = "${pkgs.nodePackages_latest.pm2}/bin/pm2 kill";
+
+      RemainAfterExit = "yes";
+
+      Restart = "on-failure";
+      RestartSec = "10s";
+      WorkingDirectory = "/home/kisakay";
     };
   };
 
