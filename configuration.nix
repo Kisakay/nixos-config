@@ -614,7 +614,7 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 8000];
   networking.firewall.allowedUDPPorts = [ 53 ];
 }
 
