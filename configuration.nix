@@ -423,6 +423,8 @@
     abaddon
     ripcord
     pm2
+
+    unrar
   ];
 
   environment.variables = {
