@@ -64,6 +64,7 @@
   '';
 
   services.fprintd.enable = true;
+  #   services.fprintd.tod.enable = true
   services.fwupd.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
@@ -354,7 +355,6 @@
     onlyoffice-desktopeditors
     google-chrome
     acpi
-    discordo
     screen
     tmux
     neovim
@@ -418,9 +418,7 @@
     # crypto mes couilles
     # exodus
     dig
-
-    abaddon
-    ripcord
+    squashfsTools
     pm2
 
     unrar
