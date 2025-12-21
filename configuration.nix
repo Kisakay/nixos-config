@@ -68,7 +68,6 @@
   services.gnome.gnome-keyring.enable = true;
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
 
   services.udev.extraRules = ''
     # HyperX Cloud II Wireless (HP Vendor 0x03f0, Product 0x018b)
@@ -565,6 +564,14 @@
 
   };
 
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    inputMethod = {
+      enabled = "ibus";
+      ibus.engines = with pkgs.ibus-engines; [ ];
+    };
+  };
+
   services.samba = {
     enable = true;
     openFirewall = true;
@@ -614,7 +621,7 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8000];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 }
 
