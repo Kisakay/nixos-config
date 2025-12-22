@@ -422,6 +422,7 @@
     pm2
 
     unrar
+    mullvad-vpn
   ];
 
   environment.variables = {
