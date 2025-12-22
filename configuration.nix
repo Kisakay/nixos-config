@@ -422,6 +422,9 @@
     pm2
 
     unrar
+
+    # tpm 2.0 for virt-manager 
+    swtpm
   ];
 
   environment.variables = {
