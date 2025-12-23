@@ -425,6 +425,8 @@
 
     # tpm 2.0 for virt-manager 
     swtpm
+
+    lm_sensors
   ];
 
   environment.variables = {
