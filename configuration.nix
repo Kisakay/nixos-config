@@ -628,4 +628,3 @@
   networking.firewall.allowedTCPPorts = [ 22 80 443 8000 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 }
-
