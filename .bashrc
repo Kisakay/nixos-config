@@ -1,4 +1,5 @@
 alias bun="steam-run ~/.bun/bin/bun"
+alias bunx="steam-run ~/.bun/bin/bunx"
 alias fdp="sudo codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #sudo nano /etc/nixos/configuration.nix"
 alias m2f="sudo nixos-rebuild switch"
 alias whatsmyip="curl ifconfig.me; echo"
