@@ -426,6 +426,7 @@
     # tpm 2.0 for virt-manager 
     swtpm
 
+    deezer-enhanced
     lm_sensors
   ];
 
