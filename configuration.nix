@@ -428,6 +428,8 @@
 
     deezer-enhanced
     lm_sensors
+
+    audacity
   ];
 
   environment.variables = {
@@ -542,6 +544,12 @@
       RestartSec = "10s";
       WorkingDirectory = "/home/kisakay";
     };
+  };
+
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
   };
 
   services = {
