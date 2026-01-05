@@ -438,6 +438,7 @@
     tree
     p7zip
     smartmontools
+    ripgrep
   ];
 
   environment.variables = {
