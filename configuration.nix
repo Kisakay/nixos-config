@@ -430,6 +430,14 @@
     lm_sensors
 
     audacity
+
+    pavucontrol
+    qpwgraph
+    audacious
+    equibop
+    tree
+    p7zip
+    smartmontools
   ];
 
   environment.variables = {
