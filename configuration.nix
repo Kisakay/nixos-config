@@ -439,6 +439,7 @@
     p7zip
     smartmontools
     ripgrep
+    eclipses.eclipse-java
   ];
 
   environment.variables = {
