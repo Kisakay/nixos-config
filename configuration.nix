@@ -562,12 +562,6 @@
     HandleLidSwitch = "ignore";
   };
 
-  services.logind = {
-    lidSwitch = "ignore";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "ignore";
-  };
-
   services = {
     # FLATPAK
     flatpak.enable = true;
