@@ -440,6 +440,7 @@
     smartmontools
     ripgrep
     eclipses.eclipse-java
+    xlsx2csv
   ];
 
   environment.variables = {
