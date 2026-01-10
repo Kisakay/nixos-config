@@ -230,6 +230,17 @@
       ];
     })
 
+    (pkgs.audacious.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ])
+        ++ [ pkgs.makeWrapper ];
+      postFixup = (old.postFixup or "") + ''
+        wrapProgram $out/bin/audacious \
+          --prefix AUDACIOUS_PLUGIN_PATH : "${
+            pkgs.callPackage ./audacious-discord-rpc.nix { }
+          }/lib/audacious"
+      '';
+    }))
+
     htop
     btop
     wine
@@ -433,7 +444,7 @@
 
     pavucontrol
     qpwgraph
-    audacious
+
     equibop
     tree
     p7zip
@@ -658,6 +669,6 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 3871 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 }
