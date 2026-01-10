@@ -230,16 +230,7 @@
       ];
     })
 
-    (pkgs.audacious.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ])
-        ++ [ pkgs.makeWrapper ];
-      postFixup = (old.postFixup or "") + ''
-        wrapProgram $out/bin/audacious \
-          --prefix AUDACIOUS_PLUGIN_PATH : "${
-            pkgs.callPackage ./audacious-discord-rpc.nix { }
-          }/lib/audacious"
-      '';
-    }))
+    audacious
 
     htop
     btop
