@@ -43,7 +43,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "anais-laptop"; # Define your hostname.
+  networking.hostName = "computer"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -253,7 +253,6 @@
     signal-desktop
     mumble
     thunderbird
-    spotify
     virt-manager
     # kdePackages.kdenlive
     melt
@@ -443,6 +442,9 @@
     ripgrep
     eclipses.eclipse-java
     xlsx2csv
+    cmatrix
+    deluge-gtk
+    mullvad-vpn
   ];
 
   environment.variables = {
@@ -468,6 +470,8 @@
 
   # Activer ccache pour accélérer les compilations
   programs.ccache.enable = true;
+
+  services.mullvad-vpn.enable = true;
 
   # Documentation de développement
   documentation.dev.enable = true;
