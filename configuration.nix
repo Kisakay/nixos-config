@@ -354,7 +354,6 @@
     usbutils
     kdePackages.filelight
     onlyoffice-desktopeditors
-    google-chrome
     acpi
     screen
     tmux
