@@ -1,3 +1,8 @@
+case $- in
+*i*) ;;
+*) return;;
+esac
+
 alias bun="steam-run ~/.bun/bin/bun"
 alias bunx="steam-run ~/.bun/bin/bunx"
 alias fdp="sudo codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #sudo nano /etc/nixos/configuration.nix"
