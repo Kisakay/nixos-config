@@ -514,7 +514,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh = {
-    enable = false;
+    enable = true;
     settings = {
       PasswordAuthentication = true; # recommandé
       PermitRootLogin = "no";
