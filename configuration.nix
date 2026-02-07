@@ -444,6 +444,11 @@
     cmatrix
     deluge-gtk
     mullvad-vpn
+
+    discordchatexporter-cli
+
+    # .NET related packages
+    icu
   ];
 
   environment.variables = {
