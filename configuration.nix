@@ -244,7 +244,6 @@
     bottles
     windterm
     dbeaver-bin
-    vesktop
     docker
     entr
     element-desktop
@@ -280,7 +279,6 @@
     nixfmt-classic
     nixfmt-rfc-style
     kdePackages.kolourpaint
-    easyeffects
     libxcrypt-legacy
     curl
     fuse
@@ -434,7 +432,6 @@
     pavucontrol
     qpwgraph
 
-    equibop
     tree
     p7zip
     smartmontools
