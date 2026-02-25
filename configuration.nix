@@ -446,6 +446,7 @@
 
     # .NET related packages
     icu
+    vesktop
   ];
 
   environment.variables = {
