@@ -301,7 +301,6 @@
     libreoffice-fresh # or libreoffice-still if you prefer
     hunspell
     hunspellDicts.fr-moderne # Modern French dictionary
-    emacs
     speedtest-cli
     geogebra
     gimp
