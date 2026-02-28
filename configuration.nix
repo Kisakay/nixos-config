@@ -68,6 +68,10 @@
   services.fwupd.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
+  # will fix gnome pam
+  security.pam.services.gdm.enableGnomeKeyring = true;
+  security.pam.services.login.enableGnomeKeyring = true;
+
   # Select internationalisation properties.
 
   services.udev.extraRules = ''
