@@ -409,9 +409,6 @@
     # CAMERA WITH USB OVER MY OPPO RENO 13 PRO
     libusb1
 
-    # chromium
-    chromium
-
     # pour maddie cte folle
     nasm
     gpp
@@ -451,6 +448,8 @@
     icu
     vesktop
     jdk21
+
+    chromium
   ];
 
   environment.variables = {
