@@ -13,7 +13,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "ip_tables" "iptable_nat" ];
+    kernelModules = [ "ip_tables" "iptable_nat" "wireguard" ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -36,6 +36,10 @@
       vulkan-tools
       mesa.opencl
       rocmPackages.clr.icd
+      # AJOUTER CES LIGNES :
+      libva
+      libva-utils
+      mesa.drivers # inclut radeonsi VA-API
     ];
   };
 
@@ -136,6 +140,8 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+
+    wireplumber.enable = true; # AJOUTER
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -450,6 +456,9 @@
     jdk21
 
     chromium
+
+    libva-utils
+    wireguard-tools
   ];
 
   environment.variables = {
@@ -457,6 +466,10 @@
       "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
     LIBRARY_PATH = "${pkgs.openssl.out}/lib:${pkgs.curl.out}/lib";
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
+    LIBVA_DRIVER_NAME = "radeonsi";
+    VDPAU_DRIVER = "radeonsi";
+    NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
   };
 
   # Configuration pour les shells de développement
@@ -670,5 +683,5 @@
   networking.firewall.allowPing = true;
 
   networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 3871 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 51820 ];
 }
