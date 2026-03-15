@@ -257,7 +257,7 @@
     docker
     entr
     element-desktop
-    telegram-desktop
+    # telegram-desktop
     lunar-client
     signal-desktop
     mumble
@@ -327,7 +327,7 @@
     spdlog
     freerdp
     postman
-    windsurf
+    # windsurf
     python313Packages.grammalecte
     vulkan-tools
     geogebra
@@ -335,6 +335,7 @@
     pkg-config
     gcc
     nmap
+    # spotify
 
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.caffeine
@@ -459,7 +460,15 @@
 
     libva-utils
     wireguard-tools
+
+    tor-browser
   ];
+
+  services.tor.settings = {
+    UseBridges = true;
+    ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
+    Bridge = "obfs4 IP:ORPort [fingerprint]";
+  };
 
   environment.variables = {
     PKG_CONFIG_PATH =
@@ -533,7 +542,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh = {
-    enable = true;
+    enable = false;
     settings = {
       PasswordAuthentication = true; # recommandé
       PermitRootLogin = "no";
