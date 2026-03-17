@@ -247,7 +247,7 @@
     wine
     git
     github-desktop
-    # vscode
+    vscode
     vscodium
     steam
     prismlauncher
@@ -462,6 +462,8 @@
     wireguard-tools
 
     tor-browser
+
+    equibop
   ];
 
   services.tor.settings = {
