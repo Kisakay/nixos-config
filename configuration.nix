@@ -225,8 +225,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    (import ./pkgs/paladrill { inherit pkgs; })
-    # equibop
+    # (import ./pkgs/paladrill { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
@@ -257,7 +256,7 @@
     docker
     entr
     element-desktop
-    # telegram-desktop
+    telegram-desktop
     lunar-client
     signal-desktop
     mumble
@@ -464,6 +463,9 @@
     tor-browser
 
     equibop
+
+    easyeffects
+    gnome-sound-recorder
   ];
 
   services.tor.settings = {
@@ -693,6 +695,6 @@
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 3871 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 3871 25565 ];
   networking.firewall.allowedUDPPorts = [ 53 51820 ];
 }
