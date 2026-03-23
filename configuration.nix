@@ -13,13 +13,15 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" ];
+    kernelModules =
+      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    options v4l2loopback devices=3 video_nr=0,1,2 card_label="DroidCam","OBS Cam","OBS Cam 2" exclusive_caps=1
   '';
+
   security.polkit.enable = true;
 
   programs.appimage = {
@@ -71,6 +73,9 @@
   services.udev.extraRules = ''
     # HyperX Cloud II Wireless (HP Vendor 0x03f0, Product 0x018b)
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03f0", ATTRS{idProduct}=="018b", MODE="0666"
+
+    # DroidCam V4L2
+    SUBSYSTEM=="video4linux", ATTR{name}=="DroidCam", MODE="0666", GROUP="video"
   '';
 
   i18n.extraLocaleSettings = {
@@ -141,7 +146,7 @@
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" ];
     packages = with pkgs;
       [
         #  thunderbird
