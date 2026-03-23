@@ -19,7 +19,7 @@
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
-    options v4l2loopback devices=3 video_nr=0,1,2 card_label="DroidCam","OBS Cam","OBS Cam 2" exclusive_caps=1
+    options v4l2loopback devices=3 video_nr=0,1 card_label="DroidCam","OBS Cam" exclusive_caps=1
   '';
 
   security.polkit.enable = true;
@@ -146,7 +146,8 @@
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" ];
+    extraGroups =
+      [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -244,6 +245,7 @@
     audacious
     droidcam
     android-tools
+    v4l-utils
 
     htop
     btop
