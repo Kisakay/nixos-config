@@ -13,7 +13,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "ip_tables" "iptable_nat" "wireguard" ];
+    kernelModules = [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -29,18 +29,8 @@
 
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; [
-      mesa
-      vulkan-loader
-      vulkan-validation-layers
-      vulkan-tools
-      mesa.opencl
-      rocmPackages.clr.icd
-      # AJOUTER CES LIGNES :
-      libva
-      libva-utils
-      mesa.drivers # inclut radeonsi VA-API
-    ];
+
+    extraPackages = with pkgs; [ mesa libva libva-utils ];
   };
 
   # Bootloader.
@@ -239,12 +229,16 @@
     ];
   };
 
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "radeonsi"; };
+
   environment.systemPackages = with pkgs; [
     # (import ./pkgs/paladrill { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
     audacious
+    droidcam
+    android-tools
 
     htop
     btop
