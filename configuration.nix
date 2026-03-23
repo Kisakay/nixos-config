@@ -224,21 +224,26 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-pipewire-audio-capture
+      obs-backgroundremoval
+      droidcam-obs
+
+      obs-shaderfilter
+      advanced-scene-switcher
+    ];
+  };
+
   environment.systemPackages = with pkgs; [
     # (import ./pkgs/paladrill { inherit pkgs; })
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
-    # plugin for obs
-    obs-studio
-    (pkgs.wrapOBS {
-      plugins = with pkgs.obs-studio-plugins; [
-        wlrobs
-        obs-backgroundremoval
-        obs-pipewire-audio-capture
-      ];
-    })
-
     audacious
 
     htop
