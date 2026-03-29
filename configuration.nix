@@ -458,7 +458,6 @@
 
     # .NET related packages
     icu
-    vesktop
     jdk21
 
     chromium
@@ -470,6 +469,7 @@
     # equibop
     scrcpy
 
+vesktop
     (discord.override {
       withOpenASAR = true; # can do this here too
       withVencord = true;
