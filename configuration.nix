@@ -252,7 +252,7 @@
     wine
     git
     github-desktop
-    vscode
+    # vscode
     vscodium
     steam
     prismlauncher
@@ -467,8 +467,10 @@
     wireguard-tools
 
     tor-browser
+    # equibop
+    scrcpy
 
-    equibop
+    discord
 
     easyeffects
     gnome-sound-recorder
