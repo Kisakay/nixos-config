@@ -470,7 +470,11 @@
     # equibop
     scrcpy
 
-    discord
+    (discord.override {
+      withOpenASAR = true; # can do this here too
+      withVencord = true;
+      withTTS = true;
+    })
 
     easyeffects
     gnome-sound-recorder
