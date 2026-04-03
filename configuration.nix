@@ -14,7 +14,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules =
-      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" ];
+      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" "button.lid_init_state=open" ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -139,6 +139,10 @@
     wireplumber.enable = true; # AJOUTER
   };
 
+  
+
+  hardware.openrazer.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -147,7 +151,7 @@
     isNormalUser = true;
     description = "Anaïs Saraiva";
     extraGroups =
-      [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" ];
+      [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" "openrazer" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -469,7 +473,7 @@
     # equibop
     scrcpy
 
-vesktop
+    vesktop
     (discord.override {
       withOpenASAR = true; # can do this here too
       withVencord = true;
@@ -478,6 +482,8 @@ vesktop
 
     easyeffects
     gnome-sound-recorder
+
+    openrazer-daemon
   ];
 
   services.tor.settings = {
