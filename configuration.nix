@@ -499,6 +499,8 @@
     fuse3
     sshfs
   ];
+  
+  programs.fuse.userAllowOther = true;
 
   services.tor.settings = {
     UseBridges = true;
