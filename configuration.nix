@@ -13,8 +13,14 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules =
-      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" "button.lid_init_state=open" ];
+    kernelModules = [
+      "ip_tables"
+      "iptable_nat"
+      "wireguard"
+      "snd-aloop"
+      "v4l2loopback"
+      "button.lid_init_state=open"
+    ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -139,8 +145,6 @@
     wireplumber.enable = true; # AJOUTER
   };
 
-  
-
   hardware.openrazer.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -150,8 +154,15 @@
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups =
-      [ "networkmanager" "wheel" "docker" "libvirtd" "video" "plugdev" "openrazer" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "libvirtd"
+      "video"
+      "plugdev"
+      "openrazer"
+    ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -551,6 +562,12 @@
 
     # Polices spécialisées (optionnel)
     libertine
+
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.iosevka
+    nerd-fonts.hack
+    nerd-fonts.symbols-only
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
