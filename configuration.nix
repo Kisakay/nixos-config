@@ -495,6 +495,9 @@
     gnome-sound-recorder
 
     openrazer-daemon
+
+    fuse3
+    sshfs
   ];
 
   services.tor.settings = {
