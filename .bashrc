@@ -31,3 +31,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export MESA_SHADER_CACHE_MAX_SIZE=10G
+export MESA_SHADER_CACHE_DIR=$HOME/.cache/mesa_shader_cache
+export __GL_SHADER_DISK_CACHE=1

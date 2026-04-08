@@ -9,7 +9,12 @@
     ./hardware-configuration.nix
   ];
 
-  environment.variables = { RUSTICL_ENABLE = "radeonsi"; };
+  environment.variables = {
+    RUSTICL_ENABLE = "radeonsi";
+    MESA_SHADER_CACHE_MAX_SIZE = "10G";
+    MESA_SHADER_CACHE_DIR = "/home/tonuser/.cache/mesa_shader_cache";
+    __GL_SHADER_DISK_CACHE = "1";
+  };
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -21,6 +26,7 @@
       "v4l2loopback"
       "button.lid_init_state=open"
     ];
+    kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -499,7 +505,7 @@
     fuse3
     sshfs
   ];
-  
+
   programs.fuse.userAllowOther = true;
 
   services.tor.settings = {
@@ -586,7 +592,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh = {
-    enable = false;
+    enable = true;
     settings = {
       PasswordAuthentication = true; # recommandé
       PermitRootLogin = "no";
