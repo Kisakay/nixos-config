@@ -35,7 +35,23 @@ in {
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=3 video_nr=0,1 card_label="DroidCam","OBS Cam" exclusive_caps=1
   '';
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  networking.nftables.enable = true;
 
+  networking.nftables.ruleset = ''
+    table ip nat {
+      chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+        tcp dport 3871 dnat to 192.168.122.32:3871
+      }
+
+      chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+        ip daddr 192.168.122.32 tcp dport 3871 masquerade
+      }
+    }
+  '';
+  
   security.polkit.enable = true;
 
   programs.appimage = {
@@ -525,7 +541,7 @@ in {
     xlsx2csv
     cmatrix
     deluge-gtk
-    mullvad-vpn
+    # mullvad-vpn
 
     discordchatexporter-cli
 
@@ -594,7 +610,7 @@ in {
   # Activer ccache pour accélérer les compilations
   programs.ccache.enable = true;
 
-  services.mullvad-vpn.enable = true;
+  # services.mullvad-vpn.enable = true;
 
   # Documentation de développement
   documentation.dev.enable = true;
@@ -650,12 +666,6 @@ in {
       PermitRootLogin = "no";
     };
   };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -743,53 +753,7 @@ in {
       ibus.engines = with pkgs.ibus-engines; [ ];
     };
   };
-
-  services.samba = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      global = {
-        "securityType" = "user";
-        "workgroup" = "WORKGROUP";
-        "server string" = "smbnix";
-        "netbios name" = "smbnix";
-        "security" = "user";
-        #"use sendfile" = "yes";
-        #"max protocol" = "smb2";
-        # note: localhost is the ipv6 localhost ::1
-        "hosts allow" = "192.168.0. 127.0.0.1 localhost";
-        "hosts deny" = "0.0.0.0/0";
-        "guest account" = "nobody";
-        "map to guest" = "bad user";
-      };
-      "public" = {
-        "path" = "/mnt/Shares/Public";
-        "browseable" = "yes";
-        "read only" = "no";
-        "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "username";
-        "force group" = "groupname";
-      };
-      "private" = {
-        "path" = "/mnt/Shares/Private";
-        "browseable" = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "username";
-        "force group" = "groupname";
-      };
-    };
-  };
-
-  services.samba-wsdd = {
-    enable = true;
-    openFirewall = true;
-  };
-
+  
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
