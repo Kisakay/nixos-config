@@ -61,8 +61,6 @@ in {
     plugins = with pkgs; [ networkmanager-openvpn ];
   };
 
-  environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".mode = "0755";
-
   systemd.services."wg-quick-wg0".wantedBy = [ "multi-user.target" ];
 
   networking.wg-quick.interfaces.wg0 = {
