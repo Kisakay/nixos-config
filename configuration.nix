@@ -64,6 +64,30 @@
     plugins = with pkgs; [ networkmanager-openvpn ];
   };
 
+  environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".text = ''
+    #!/usr/bin/env bash
+
+    INTERFACE="$1"
+    STATUS="$2"
+    WG_CONN="wg0"
+
+    case "$INTERFACE" in
+      lo|docker*|virbr*|vnet*|br-*|wg*)
+        exit 0
+        ;;
+    esac
+
+    case "$STATUS" in
+      up|dhcp4-change|dhcp6-change|connectivity-change)
+        if ! nmcli -t -f NAME connection show --active | grep -Fxq "$WG_CONN"; then
+          nmcli connection up "$WG_CONN" >/dev/null 2>&1 || true
+        fi
+        ;;
+    esac
+  '';
+
+  environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".mode = "0755";
+
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
