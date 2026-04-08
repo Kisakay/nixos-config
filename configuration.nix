@@ -4,7 +4,9 @@
 
 { config, pkgs, ... }:
 
-{
+let wgSecrets = import ./wireguard-secrets.nix;
+
+in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -87,6 +89,46 @@
   '';
 
   environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".mode = "0755";
+
+  systemd.services."wg-quick-wg0".wantedBy = [ "multi-user.target" ];
+
+  networking.wg-quick.interfaces.wg0 = {
+    address = [ "10.66.66.2/32" "fd42:42:42::2/128" ];
+    dns = [ "1.1.1.1" "1.0.0.1" ];
+    privateKey = wgSecrets.privateKey;
+
+    peers = [{
+      publicKey = wgSecrets.publicKey;
+      presharedKey = wgSecrets.presharedKey;
+      endpoint = wgSecrets.endpoint;
+      allowedIPs = [ "0.0.0.0/0" "::/0" ];
+      persistentKeepalive = 25;
+    }];
+
+    preUp = ''
+      ${pkgs.iproute2}/bin/ip route add ${wgSecrets.endpoint}/32 \
+        via 192.168.1.254 dev enp192s0 || true
+
+      ${pkgs.iptables}/bin/iptables -I OUTPUT \
+        ! -o wg0 \
+        -m addrtype ! --dst-type LOCAL \
+        ! -d 192.168.1.0/24 \
+        ! -d ${wgSecrets.endpoint}/32 \
+        -j REJECT || true
+    '';
+
+    postDown = ''
+      ${pkgs.iproute2}/bin/ip route del ${wgSecrets.endpoint}/32 \
+        via 192.168.1.254 dev enp192s0 || true
+
+      ${pkgs.iptables}/bin/iptables -D OUTPUT \
+        ! -o wg0 \
+        -m addrtype ! --dst-type LOCAL \
+        ! -d 192.168.1.0/24 \
+        ! -d ${wgSecrets.endpoint}/32 \
+        -j REJECT || true
+    '';
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -184,15 +226,8 @@
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-      "libvirtd"
-      "video"
-      "plugdev"
-      "openrazer"
-    ];
+    extraGroups =
+      [ "networkmanager" "wheel" "libvirtd" "video" "plugdev" "openrazer" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -218,12 +253,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  virtualisation.docker = {
-    enable = true;
-    # storageDriver = "btrfs";
-    # disk on ext4
-  };
 
   programs.nix-ld.enable = true;
 
@@ -304,7 +333,6 @@
     bottles
     windterm
     dbeaver-bin
-    docker
     entr
     element-desktop
     telegram-desktop
