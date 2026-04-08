@@ -18,19 +18,19 @@ alias 2vm="clear; ssh vm-local"
 export PATH="/home/kisakay/.bun/bin:$PATH"
 export PATH=$PATH:/home/kisakay/.spicetify
 
-if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
-    onefetch
-else
-    fastfetch
-fi
+# if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
+#    onefetch
+# else
+#    fastfetch
+# fi
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.config/nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export MESA_SHADER_CACHE_MAX_SIZE=10G
 export MESA_SHADER_CACHE_DIR=$HOME/.cache/mesa_shader_cache
