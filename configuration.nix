@@ -11,13 +11,6 @@ in {
     ./hardware-configuration.nix
   ];
 
-  environment.variables = {
-    RUSTICL_ENABLE = "radeonsi";
-    MESA_SHADER_CACHE_MAX_SIZE = "10G";
-    MESA_SHADER_CACHE_DIR = "/home/tonuser/.cache/mesa_shader_cache";
-    __GL_SHADER_DISK_CACHE = "1";
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [
@@ -37,20 +30,6 @@ in {
   '';
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.nftables.enable = true;
-
-  networking.nftables.ruleset = ''
-    table ip nat {
-      chain prerouting {
-        type nat hook prerouting priority dstnat; policy accept;
-        tcp dport 3871 dnat to 192.168.122.32:3871
-      }
-
-      chain postrouting {
-        type nat hook postrouting priority srcnat; policy accept;
-        ip daddr 192.168.122.32 tcp dport 3871 masquerade
-      }
-    }
-  '';
 
   security.polkit.enable = true;
 
@@ -81,28 +60,6 @@ in {
     enable = true;
     plugins = with pkgs; [ networkmanager-openvpn ];
   };
-
-  environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".text = ''
-    #!/usr/bin/env bash
-
-    INTERFACE="$1"
-    STATUS="$2"
-    WG_CONN="wg0"
-
-    case "$INTERFACE" in
-      lo|docker*|virbr*|vnet*|br-*|wg*)
-        exit 0
-        ;;
-    esac
-
-    case "$STATUS" in
-      up|dhcp4-change|dhcp6-change|connectivity-change)
-        if ! nmcli -t -f NAME connection show --active | grep -Fxq "$WG_CONN"; then
-          nmcli connection up "$WG_CONN" >/dev/null 2>&1 || true
-        fi
-        ;;
-    esac
-  '';
 
   environment.etc."NetworkManager/dispatcher.d/90-wg0-autoup".mode = "0755";
 
@@ -520,7 +477,6 @@ in {
     # tpm 2.0 for virt-manager 
     swtpm
 
-    deezer-enhanced
     lm_sensors
 
     audacity
@@ -562,14 +518,7 @@ in {
 
     easyeffects
     gnome-sound-recorder
-
-    openrazer-daemon
-
-    fuse3
-    sshfs
   ];
-
-  programs.fuse.userAllowOther = true;
 
   services.tor.settings = {
     UseBridges = true;
@@ -586,6 +535,10 @@ in {
     VDPAU_DRIVER = "radeonsi";
     NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    RUSTICL_ENABLE = "radeonsi";
+    MESA_SHADER_CACHE_MAX_SIZE = "10G";
+    MESA_SHADER_CACHE_DIR = "/home/tonuser/.cache/mesa_shader_cache";
+    __GL_SHADER_DISK_CACHE = "1";
   };
 
   # Configuration pour les shells de développement
