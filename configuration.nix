@@ -51,7 +51,7 @@ in {
       }
     }
   '';
-  
+
   security.polkit.enable = true;
 
   programs.appimage = {
@@ -122,27 +122,22 @@ in {
     }];
 
     preUp = ''
-      ${pkgs.iproute2}/bin/ip route add ${wgSecrets.endpoint}/32 \
+      ${pkgs.iproute2}/bin/ip route add ${wgSecrets.endpointIp}/32 \
         via 192.168.1.254 dev enp192s0 || true
 
-      ${pkgs.iptables}/bin/iptables -I OUTPUT \
-        ! -o wg0 \
-        -m addrtype ! --dst-type LOCAL \
-        ! -d 192.168.1.0/24 \
-        ! -d ${wgSecrets.endpoint}/32 \
-        -j REJECT || true
+      ${pkgs.nftables}/bin/nft add table ip killswitch
+      ${pkgs.nftables}/bin/nft add chain ip killswitch output { type filter hook output priority 0 \; policy drop \; }
+      ${pkgs.nftables}/bin/nft add rule ip killswitch output oif "wg0" accept
+      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr 192.168.1.0/24 accept
+      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr ${wgSecrets.endpointIp}/32 accept
+      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr 127.0.0.0/8 accept
     '';
 
     postDown = ''
-      ${pkgs.iproute2}/bin/ip route del ${wgSecrets.endpoint}/32 \
+      ${pkgs.iproute2}/bin/ip route del ${wgSecrets.endpointIp}/32 \
         via 192.168.1.254 dev enp192s0 || true
 
-      ${pkgs.iptables}/bin/iptables -D OUTPUT \
-        ! -o wg0 \
-        -m addrtype ! --dst-type LOCAL \
-        ! -d 192.168.1.0/24 \
-        ! -d ${wgSecrets.endpoint}/32 \
-        -j REJECT || true
+      ${pkgs.nftables}/bin/nft delete table ip killswitch || true
     '';
   };
 
@@ -753,7 +748,7 @@ in {
       ibus.engines = with pkgs.ibus-engines; [ ];
     };
   };
-  
+
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
