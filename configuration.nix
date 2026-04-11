@@ -67,7 +67,6 @@ in {
     address = [ "10.66.66.2/32" "fd42:42:42::2/128" ];
     dns = [ "1.1.1.1" "1.0.0.1" ];
     privateKey = wgSecrets.privateKey;
-
     peers = [{
       publicKey = wgSecrets.publicKey;
       presharedKey = wgSecrets.presharedKey;
@@ -76,23 +75,43 @@ in {
       persistentKeepalive = 25;
     }];
 
-    preUp = ''
-      ${pkgs.iproute2}/bin/ip route add ${wgSecrets.endpointIp}/32 \
-        via 192.168.1.254 dev enp192s0 || true
+    postUp = ''
+      MARK=$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)
 
-      ${pkgs.nftables}/bin/nft add table ip killswitch
-      ${pkgs.nftables}/bin/nft add chain ip killswitch output { type filter hook output priority 0 \; policy drop \; }
-      ${pkgs.nftables}/bin/nft add rule ip killswitch output oif "wg0" accept
-      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr 192.168.1.0/24 accept
-      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr ${wgSecrets.endpointIp}/32 accept
-      ${pkgs.nftables}/bin/nft add rule ip killswitch output ip daddr 127.0.0.0/8 accept
+      ${pkgs.nftables}/bin/nft -f - <<EOF
+      table inet killswitch {
+        chain output {
+          type filter hook output priority -1 ;
+          policy drop ;
+
+          oif "lo" accept
+          oif "wg0" accept
+          meta mark $MARK accept
+          udp dport { 67, 68 } accept
+          ip daddr 224.0.0.0/4 accept
+          ip daddr 255.255.255.255 accept
+          ip6 daddr ff00::/8 accept
+        }
+
+        chain input {
+          type filter hook input priority -1 ;
+          policy drop ;
+
+          iif "lo" accept
+          iif "wg0" accept
+          ct state { established, related } accept
+          meta mark $MARK accept
+          udp sport { 67, 68 } accept
+          ip saddr 224.0.0.0/4 accept
+          ip saddr 255.255.255.255 accept
+          ip6 saddr ff00::/8 accept
+        }
+      }
+      EOF
     '';
 
     postDown = ''
-      ${pkgs.iproute2}/bin/ip route del ${wgSecrets.endpointIp}/32 \
-        via 192.168.1.254 dev enp192s0 || true
-
-      ${pkgs.nftables}/bin/nft delete table ip killswitch || true
+      ${pkgs.nftables}/bin/nft delete table inet killswitch || true
     '';
   };
 
