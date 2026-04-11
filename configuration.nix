@@ -78,6 +78,20 @@ in {
     postUp = ''
       MARK=$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)
 
+      GW_IF=$(${pkgs.iproute2}/bin/ip route show table main default \
+        | ${pkgs.gawk}/bin/awk '/dev/{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' \
+        | grep -v wg0 | head -1)
+
+      LAN_ROUTES=""
+      if [ -n "$GW_IF" ]; then
+        LAN_ROUTES=$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
+          | grep -v '^default' \
+          | ${pkgs.gawk}/bin/awk '{print $1}' \
+          | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)
+      fi
+
+      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
+
       ${pkgs.nftables}/bin/nft -f - <<EOF
       table inet killswitch {
         chain output {
@@ -108,6 +122,13 @@ in {
         }
       }
       EOF
+
+      for route in $LAN_ROUTES; do
+        ${pkgs.nftables}/bin/nft add rule inet killswitch output \
+          ip daddr "$route" accept || true
+        ${pkgs.nftables}/bin/nft add rule inet killswitch input \
+          ip saddr "$route" accept || true
+      done
     '';
 
     postDown = ''
