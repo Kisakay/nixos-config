@@ -490,6 +490,7 @@ in {
     glibc
     glibc.dev
     stdenv.cc.libc
+    file
 
     # Outils de débogage
     gdb
