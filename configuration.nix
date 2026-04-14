@@ -61,7 +61,19 @@ in {
     plugins = with pkgs; [ networkmanager-openvpn ];
   };
 
-  systemd.services."wg-quick-wg0".wantedBy = [ "multi-user.target" ];
+  systemd.services.NetworkManager-wait-online.enable = true;
+
+  systemd.services."wg-quick-wg0" = {
+    wants = [ "network-online.target" "NetworkManager-wait-online.service" ];
+    after = [
+      "network-online.target"
+      "NetworkManager-wait-online.service"
+      "NetworkManager.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Restart = "on-failure";
+    serviceConfig.RestartSec = "5s";
+  };
 
   networking.wg-quick.interfaces.wg0 = {
     address = [ "10.66.66.2/32" "fd42:42:42::2/128" ];
@@ -76,31 +88,41 @@ in {
     }];
 
     postUp = ''
+      for i in $(seq 1 30); do
+        if ${pkgs.iproute2}/bin/ip route show table main default | ${pkgs.gnugrep}/bin/grep -q ' dev '; then
+          break
+        fi
+        sleep 1
+      done
+
       MARK=$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)
 
       GW_IF=$(${pkgs.iproute2}/bin/ip route show table main default \
         | ${pkgs.gawk}/bin/awk '/dev/{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' \
-        | grep -v wg0 | head -1)
+        | ${pkgs.gnugrep}/bin/grep -v '^wg0$' | head -1)
 
-      LAN_ROUTES=""
-      if [ -n "$GW_IF" ]; then
-        LAN_ROUTES=$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
-          | grep -v '^default' \
-          | ${pkgs.gawk}/bin/awk '{print $1}' \
-          | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)
+      if [ -z "$GW_IF" ]; then
+        echo "wg0 postUp: no default gateway interface found" >&2
+        exit 1
       fi
+
+      LAN_ROUTES=$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
+        | ${pkgs.gnugrep}/bin/grep -v '^default' \
+        | ${pkgs.gawk}/bin/awk '{print $1}' \
+        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)
 
       ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
 
       ${pkgs.nftables}/bin/nft -f - <<EOF
       table inet killswitch {
         chain output {
-          type filter hook output priority -1 ;
-          policy drop ;
+          type filter hook output priority -1;
+          policy drop;
 
           oif "lo" accept
           oif "wg0" accept
           meta mark $MARK accept
+          ct state established,related accept
           udp dport { 67, 68 } accept
           ip daddr 224.0.0.0/4 accept
           ip daddr 255.255.255.255 accept
@@ -108,12 +130,12 @@ in {
         }
 
         chain input {
-          type filter hook input priority -1 ;
-          policy drop ;
+          type filter hook input priority -1;
+          policy drop;
 
           iif "lo" accept
           iif "wg0" accept
-          ct state { established, related } accept
+          ct state established,related accept
           meta mark $MARK accept
           udp sport { 67, 68 } accept
           ip saddr 224.0.0.0/4 accept
@@ -124,13 +146,10 @@ in {
       EOF
 
       for route in $LAN_ROUTES; do
-        ${pkgs.nftables}/bin/nft add rule inet killswitch output \
-          ip daddr "$route" accept || true
-        ${pkgs.nftables}/bin/nft add rule inet killswitch input \
-          ip saddr "$route" accept || true
+        ${pkgs.nftables}/bin/nft add rule inet killswitch output ip daddr "$route" accept || true
+        ${pkgs.nftables}/bin/nft add rule inet killswitch input ip saddr "$route" accept || true
       done
     '';
-
     postDown = ''
       ${pkgs.nftables}/bin/nft delete table inet killswitch || true
     '';
