@@ -569,9 +569,7 @@ in {
 
     vesktop
     (discord.override {
-      withOpenASAR = true; # can do this here too
       withVencord = true;
-      withTTS = true;
     })
 
     easyeffects
