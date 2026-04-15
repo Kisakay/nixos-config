@@ -409,7 +409,7 @@ in {
     distrobox
     networkmanagerapplet
     distrobox
-    session-desktop
+    # session-desktop
     postgresql
     libreoffice-fresh # or libreoffice-still if you prefer
     hunspell
