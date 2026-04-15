@@ -13,13 +13,8 @@ in {
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [
-      "ip_tables"
-      "iptable_nat"
-      "wireguard"
-      "snd-aloop"
-      "v4l2loopback"
-    ];
+    kernelModules =
+      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" ];
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
@@ -70,12 +65,14 @@ in {
     ];
     wants = [ "NetworkManager.service" "NetworkManager-wait-online.service" ];
     wantedBy = [ "multi-user.target" ];
+    restartIfChanged = false;
 
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "10s";
-      StartLimitIntervalSec = 0;
     };
+
+    startLimitIntervalSec = 0;
   };
 
   networking.wg-quick.interfaces.wg0 = {
@@ -91,12 +88,16 @@ in {
       persistentKeepalive = 25;
     }];
 
-    postUp = ''
+    preUp = ''
       set -euo pipefail
 
-      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
-      ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
-      ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
+      STATE_DIR=/run/wg-wan
+      STATE_ENV="$STATE_DIR/env"
+      STATE_ROUTES="$STATE_DIR/lan_routes"
+
+      ${pkgs.coreutils}/bin/mkdir -p "$STATE_DIR"
+      : > "$STATE_ENV"
+      : > "$STATE_ROUTES"
 
       for i in $(seq 1 60); do
         if ${pkgs.networkmanager}/bin/nm-online -q; then
@@ -105,7 +106,7 @@ in {
         sleep 1
       done
 
-      ENDPOINT_HOST="$(${pkgs.coreutils}/bin/echo "${wgSecrets.endpoint}" | ${pkgs.gawk}/bin/awk -F: '{print $1}')"
+      ENDPOINT_HOST="$(${pkgs.coreutils}/bin/printf '%s\n' "${wgSecrets.endpoint}" | ${pkgs.gnused}/bin/sed 's/:[^:]*$//')"
 
       if ${pkgs.gnugrep}/bin/grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' <<< "$ENDPOINT_HOST"; then
         ENDPOINT_IP="$ENDPOINT_HOST"
@@ -121,38 +122,69 @@ in {
       fi
 
       if [ -z "$ENDPOINT_IP" ]; then
-        echo "wg0 postUp: impossible de résoudre l'endpoint WireGuard" >&2
+        echo "wg0 preUp: impossible de résoudre l'endpoint WireGuard" >&2
         exit 1
       fi
 
+      ROUTE_LINE=""
       GW_IF=""
       GW_IP=""
-      for i in $(seq 1 60); do
-        ROUTE_LINE="$(${pkgs.iproute2}/bin/ip route get "$ENDPOINT_IP" 2>/dev/null | head -1 || true)"
 
-        GW_IF="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' | head -1)"
-        GW_IP="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="via") print $(i+1)}' | head -1)"
+      for i in $(seq 1 30); do
+        ROUTE_LINE="$(${pkgs.iproute2}/bin/ip -4 route get "$ENDPOINT_IP" 2>/dev/null | ${pkgs.coreutils}/bin/head -1 || true)"
+        GW_IF="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' | ${pkgs.coreutils}/bin/head -1)"
+        GW_IP="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="via") print $(i+1)}' | ${pkgs.coreutils}/bin/head -1)"
 
-        if [ -n "$GW_IF" ] && [ "$GW_IF" != "wg0" ]; then
+        if [ -n "$GW_IF" ]; then
           break
         fi
-
-        GW_IF=""
-        GW_IP=""
         sleep 1
       done
 
       if [ -z "$GW_IF" ]; then
-        echo "wg0 postUp: aucune interface upstream valide trouvée pour joindre l'endpoint" >&2
+        echo "wg0 preUp: aucune interface upstream valide trouvée avant activation du tunnel" >&2
+        exit 1
+      fi
+
+      ${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
+        | ${pkgs.gnugrep}/bin/grep -v '^default' \
+        | ${pkgs.gawk}/bin/awk '{print $1}' \
+        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' \
+        > "$STATE_ROUTES" || true
+
+      {
+        echo "GW_IF=$GW_IF"
+        echo "GW_IP=$GW_IP"
+      } > "$STATE_ENV"
+
+      ${pkgs.coreutils}/bin/chmod 700 "$STATE_DIR"
+      ${pkgs.coreutils}/bin/chmod 600 "$STATE_ENV" "$STATE_ROUTES"
+    '';
+
+    postUp = ''
+      set -euo pipefail
+
+      STATE_DIR=/run/wg-wan
+      STATE_ENV="$STATE_DIR/env"
+      STATE_ROUTES="$STATE_DIR/lan_routes"
+
+      if [ ! -f "$STATE_ENV" ]; then
+        echo "wg0 postUp: fichier d'état absent: $STATE_ENV" >&2
+        exit 1
+      fi
+
+      . "$STATE_ENV"
+
+      if [ -z "$GW_IF" ]; then
+        echo "wg0 postUp: GW_IF absent dans $STATE_ENV" >&2
         exit 1
       fi
 
       MARK="$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)"
 
-      LAN_ROUTES="$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
-        | ${pkgs.gnugrep}/bin/grep -v '^default' \
-        | ${pkgs.gawk}/bin/awk '{print $1}' \
-        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)"
+      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
 
       ${pkgs.nftables}/bin/nft -f - <<EOF
       table inet killswitch {
@@ -186,10 +218,13 @@ in {
       }
       EOF
 
-      for route in $LAN_ROUTES; do
-        ${pkgs.nftables}/bin/nft add rule inet killswitch output ip daddr "$route" accept || true
-        ${pkgs.nftables}/bin/nft add rule inet killswitch input ip saddr "$route" accept || true
-      done
+      if [ -f "$STATE_ROUTES" ]; then
+        while IFS= read -r route; do
+          [ -z "$route" ] && continue
+          ${pkgs.nftables}/bin/nft add rule inet killswitch output ip daddr "$route" accept || true
+          ${pkgs.nftables}/bin/nft add rule inet killswitch input ip saddr "$route" accept || true
+        done < "$STATE_ROUTES"
+      fi
 
       if [ -n "$GW_IP" ]; then
         ${pkgs.iproute2}/bin/ip route add default via "$GW_IP" dev "$GW_IF" table 100 || true
@@ -209,6 +244,7 @@ in {
       ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
+      ${pkgs.coreutils}/bin/rm -rf /run/wg-wan
     '';
   };
 
