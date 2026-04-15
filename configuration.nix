@@ -597,9 +597,7 @@ in {
     scrcpy
 
     vesktop
-    (discord.override {
-      withVencord = true;
-    })
+    (discord.override { withVencord = true; })
 
     easyeffects
     gnome-sound-recorder
@@ -622,7 +620,7 @@ in {
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
-    MESA_SHADER_CACHE_DIR = "/home/tonuser/.cache/mesa_shader_cache";
+    MESA_SHADER_CACHE_DIR = "/home/kisakay/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
   };
 
