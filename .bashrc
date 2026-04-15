@@ -13,7 +13,7 @@ alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'dis
 alias revien="gsettings reset org.gnome.desktop.peripherals.touchpad send-events"
 alias bat="acpi"
 alias maj="sudo nix-channel --update"
-alias 2vm="clear; ssh vm-local"
+alias babe="sudo systemctl restart wg-quick-wg0"
 
 export PATH="/home/kisakay/.bun/bin:$PATH"
 export PATH=$PATH:/home/kisakay/.spicetify
