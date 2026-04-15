@@ -19,7 +19,6 @@ in {
       "wireguard"
       "snd-aloop"
       "v4l2loopback"
-      "button.lid_init_state=open"
     ];
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
@@ -64,21 +63,26 @@ in {
   systemd.services.NetworkManager-wait-online.enable = true;
 
   systemd.services."wg-quick-wg0" = {
-    wants = [ "network-online.target" "NetworkManager-wait-online.service" ];
     after = [
-      "network-online.target"
-      "NetworkManager-wait-online.service"
       "NetworkManager.service"
+      "NetworkManager-wait-online.service"
+      "network-online.target"
     ];
+    wants = [ "NetworkManager.service" "NetworkManager-wait-online.service" ];
     wantedBy = [ "multi-user.target" ];
-    serviceConfig.Restart = "on-failure";
-    serviceConfig.RestartSec = "5s";
+
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "10s";
+      StartLimitIntervalSec = 0;
+    };
   };
 
   networking.wg-quick.interfaces.wg0 = {
     address = [ "10.66.66.2/32" "fd42:42:42::2/128" ];
     dns = [ "1.1.1.1" "1.0.0.1" ];
     privateKey = wgSecrets.privateKey;
+
     peers = [{
       publicKey = wgSecrets.publicKey;
       presharedKey = wgSecrets.presharedKey;
@@ -88,34 +92,67 @@ in {
     }];
 
     postUp = ''
-      for i in $(seq 1 30); do
-        if ${pkgs.iproute2}/bin/ip route show table main default | ${pkgs.gnugrep}/bin/grep -q ' dev '; then
+      set -euo pipefail
+
+      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
+
+      for i in $(seq 1 60); do
+        if ${pkgs.networkmanager}/bin/nm-online -q; then
           break
         fi
         sleep 1
       done
 
-      MARK=$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)
+      ENDPOINT_HOST="$(${pkgs.coreutils}/bin/echo "${wgSecrets.endpoint}" | ${pkgs.gawk}/bin/awk -F: '{print $1}')"
 
-      GW_IF=$(${pkgs.iproute2}/bin/ip route show table main default \
-        | ${pkgs.gawk}/bin/awk '/dev/{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' \
-        | ${pkgs.gnugrep}/bin/grep -v '^wg0$' | head -1)
+      if ${pkgs.gnugrep}/bin/grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' <<< "$ENDPOINT_HOST"; then
+        ENDPOINT_IP="$ENDPOINT_HOST"
+      else
+        ENDPOINT_IP=""
+        for i in $(seq 1 30); do
+          ENDPOINT_IP="$(${pkgs.glibc}/bin/getent ahostsv4 "$ENDPOINT_HOST" | ${pkgs.gawk}/bin/awk 'NR==1 {print $1}')"
+          if [ -n "$ENDPOINT_IP" ]; then
+            break
+          fi
+          sleep 1
+        done
+      fi
 
-      if [ -z "$GW_IF" ]; then
-        echo "wg0 postUp: no default gateway interface found" >&2
+      if [ -z "$ENDPOINT_IP" ]; then
+        echo "wg0 postUp: impossible de résoudre l'endpoint WireGuard" >&2
         exit 1
       fi
 
-      GW_IP=$(${pkgs.iproute2}/bin/ip route show table main default dev "$GW_IF" \
-        | ${pkgs.gawk}/bin/awk '/via/{for(i=1;i<=NF;i++) if($i=="via") print $(i+1)}' \
-        | head -1)
+      GW_IF=""
+      GW_IP=""
+      for i in $(seq 1 60); do
+        ROUTE_LINE="$(${pkgs.iproute2}/bin/ip route get "$ENDPOINT_IP" 2>/dev/null | head -1 || true)"
 
-      LAN_ROUTES=$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
+        GW_IF="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}' | head -1)"
+        GW_IP="$(echo "$ROUTE_LINE" | ${pkgs.gawk}/bin/awk '{for(i=1;i<=NF;i++) if($i=="via") print $(i+1)}' | head -1)"
+
+        if [ -n "$GW_IF" ] && [ "$GW_IF" != "wg0" ]; then
+          break
+        fi
+
+        GW_IF=""
+        GW_IP=""
+        sleep 1
+      done
+
+      if [ -z "$GW_IF" ]; then
+        echo "wg0 postUp: aucune interface upstream valide trouvée pour joindre l'endpoint" >&2
+        exit 1
+      fi
+
+      MARK="$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)"
+
+      LAN_ROUTES="$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
         | ${pkgs.gnugrep}/bin/grep -v '^default' \
         | ${pkgs.gawk}/bin/awk '{print $1}' \
-        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)
-
-      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
+        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' || true)"
 
       ${pkgs.nftables}/bin/nft -f - <<EOF
       table inet killswitch {
@@ -154,31 +191,22 @@ in {
         ${pkgs.nftables}/bin/nft add rule inet killswitch input ip saddr "$route" accept || true
       done
 
-      # Table de routage alternative pour CS2 (via la vraie connexion)
       if [ -n "$GW_IP" ]; then
         ${pkgs.iproute2}/bin/ip route add default via "$GW_IP" dev "$GW_IF" table 100 || true
       else
         ${pkgs.iproute2}/bin/ip route add default dev "$GW_IF" table 100 || true
       fi
 
-      # Marquer le trafic CS2 et l'accepter (output)
-      ${pkgs.nftables}/bin/nft add rule inet killswitch output \
-        udp dport 27005-27030 meta mark set 0x64 accept || true
-      ${pkgs.nftables}/bin/nft add rule inet killswitch output \
-        tcp dport 27015-27030 meta mark set 0x64 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch output udp dport 27005-27030 meta mark set 0x64 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch output tcp dport 27015-27030 meta mark set 0x64 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch input udp sport 27005-27030 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch input tcp sport 27015-27030 accept || true
 
-      # Accepter les réponses CS2 en input
-      ${pkgs.nftables}/bin/nft add rule inet killswitch input \
-        udp sport 27005-27030 accept || true
-      ${pkgs.nftables}/bin/nft add rule inet killswitch input \
-        tcp sport 27015-27030 accept || true
-
-      # Les paquets marqués 0x64 utilisent la table 100 (vraie connexion)
       ${pkgs.iproute2}/bin/ip rule add fwmark 0x64 table 100 priority 50 || true
     '';
 
     postDown = ''
-      ${pkgs.nftables}/bin/nft delete table inet killswitch || true
+      ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
     '';
