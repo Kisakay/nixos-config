@@ -106,6 +106,10 @@ in {
         exit 1
       fi
 
+      GW_IP=$(${pkgs.iproute2}/bin/ip route show table main default dev "$GW_IF" \
+        | ${pkgs.gawk}/bin/awk '/via/{for(i=1;i<=NF;i++) if($i=="via") print $(i+1)}' \
+        | head -1)
+
       LAN_ROUTES=$(${pkgs.iproute2}/bin/ip route show table main dev "$GW_IF" \
         | ${pkgs.gnugrep}/bin/grep -v '^default' \
         | ${pkgs.gawk}/bin/awk '{print $1}' \
@@ -149,9 +153,34 @@ in {
         ${pkgs.nftables}/bin/nft add rule inet killswitch output ip daddr "$route" accept || true
         ${pkgs.nftables}/bin/nft add rule inet killswitch input ip saddr "$route" accept || true
       done
+
+      # Table de routage alternative pour CS2 (via la vraie connexion)
+      if [ -n "$GW_IP" ]; then
+        ${pkgs.iproute2}/bin/ip route add default via "$GW_IP" dev "$GW_IF" table 100 || true
+      else
+        ${pkgs.iproute2}/bin/ip route add default dev "$GW_IF" table 100 || true
+      fi
+
+      # Marquer le trafic CS2 et l'accepter (output)
+      ${pkgs.nftables}/bin/nft add rule inet killswitch output \
+        udp dport 27005-27030 meta mark set 0x64 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch output \
+        tcp dport 27015-27030 meta mark set 0x64 accept || true
+
+      # Accepter les réponses CS2 en input
+      ${pkgs.nftables}/bin/nft add rule inet killswitch input \
+        udp sport 27005-27030 accept || true
+      ${pkgs.nftables}/bin/nft add rule inet killswitch input \
+        tcp sport 27015-27030 accept || true
+
+      # Les paquets marqués 0x64 utilisent la table 100 (vraie connexion)
+      ${pkgs.iproute2}/bin/ip rule add fwmark 0x64 table 100 priority 50 || true
     '';
+
     postDown = ''
       ${pkgs.nftables}/bin/nft delete table inet killswitch || true
+      ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip route flush table 100 2>/dev/null || true
     '';
   };
 
