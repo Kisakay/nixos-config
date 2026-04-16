@@ -818,8 +818,8 @@ in {
       Environment = [ "HOME=/home/kisakay" "PM2_HOME=/home/kisakay/.pm2" ];
 
       ExecStart =
-        "${pkgs.bash}/bin/bash -c '${pkgs.nodePackages_latest.pm2}/bin/pm2 resurrect && sleep 1'";
-      ExecStop = "${pkgs.nodePackages_latest.pm2}/bin/pm2 kill";
+        "${pkgs.bash}/bin/bash -c '${pkgs.pm2}/bin/pm2 resurrect && sleep 1'";
+      ExecStop = "${pkgs.pm2}/bin/pm2 kill";
 
       RemainAfterExit = "yes";
 
