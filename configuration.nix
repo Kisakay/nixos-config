@@ -57,13 +57,23 @@ in {
 
   systemd.services.NetworkManager-wait-online.enable = true;
 
+  services.timesyncd.enable = true;
+
   systemd.services."wg-quick-wg0" = {
     after = [
       "NetworkManager.service"
       "NetworkManager-wait-online.service"
       "network-online.target"
+      "time-sync.target"
+      "systemd-timesyncd.service"
     ];
-    wants = [ "NetworkManager.service" "NetworkManager-wait-online.service" ];
+
+    wants = [
+      "NetworkManager.service"
+      "NetworkManager-wait-online.service"
+      "systemd-timesyncd.service"
+      "time-sync.target"
+    ];
     wantedBy = [ "multi-user.target" ];
     restartIfChanged = false;
 
