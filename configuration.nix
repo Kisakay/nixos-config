@@ -13,8 +13,14 @@ in {
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules =
-      [ "ip_tables" "iptable_nat" "wireguard" "snd-aloop" "v4l2loopback" ];
+    kernelModules = [
+      "ip_tables"
+      "iptable_nat"
+      "wireguard"
+      "snd-aloop"
+      "v4l2loopback"
+      "amdgpu"
+    ];
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
@@ -354,12 +360,22 @@ in {
   users.users.kisakay = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
-    extraGroups =
-      [ "networkmanager" "wheel" "libvirtd" "video" "plugdev" "openrazer" ];
-    packages = with pkgs;
-      [
-        #  thunderbird
-      ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+      "video"
+      "render"
+      "plugdev"
+      "openrazer"
+    ];
+  };
+
+  users.groups.ollama.members = [ "ollama" ];
+  users.users.ollama = {
+    isSystemUser = true;
+    group = "ollama";
+    extraGroups = [ "video" "render" ];
   };
 
   programs.virt-manager.enable = true;
@@ -520,7 +536,7 @@ in {
     speedtest-cli
     geogebra
     gimp
-    ollama
+    # ollama
     nss
     ntfs3g
     # jetbrains.idea-community
@@ -826,8 +842,13 @@ in {
     # OLLAMA
     ollama = {
       enable = true;
-      # Optional: preload models, see https://ollama.com/library
+      package = pkgs.ollama-vulkan;
       loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" ];
+
+      environmentVariables = {
+        OLLAMA_VULKAN = "1";
+        OLLAMA_DEBUG = "1";
+      };
     };
 
     # POSTGRESQL
