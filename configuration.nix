@@ -122,12 +122,12 @@ in
 
   networking.wg-quick.interfaces.wg0 = {
     address = [
-      "10.66.66.2/32"
-      "fd42:42:42::2/128"
+      wgSecrets.wg0AddressV4
+      wgSecrets.wg0AddressV6
     ];
     dns = [
-      "1.1.1.1"
-      "1.0.0.1"
+      wgSecrets.dns1
+      wgSecrets.dns2
     ];
     privateKey = wgSecrets.privateKey;
 
@@ -136,11 +136,8 @@ in
         publicKey = wgSecrets.publicKey;
         presharedKey = wgSecrets.presharedKey;
         endpoint = "${wgSecrets.serverIp}:${wgSecrets.serverPort}";
-        allowedIPs = [
-          "0.0.0.0/0"
-          "::/0"
-        ];
-        persistentKeepalive = 25;
+        allowedIPs = wgSecrets.allowedIPs;
+        persistentKeepalive = wgSecrets.persistentKeepalive;
       }
     ];
 
