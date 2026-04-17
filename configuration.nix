@@ -29,6 +29,60 @@ let
     ];
     startupWMClass = "GitHub Desktop";
   };
+
+  sshDesktopGenerator = pkgs.writeShellScriptBin "generate-ssh-desktop-entries" ''
+        set -euo pipefail
+
+        USER_HOME="/home/kisakay"
+        SSH_CONFIG="/home/kisakay/.ssh/config"
+        APPS_DIR="/home/kisakay/.local/share/applications"
+        ICON="org.gnome.Console"
+
+        mkdir -p "$APPS_DIR"
+
+        # Supprime les anciennes entrées générées
+        find "$APPS_DIR" -maxdepth 1 -type f -name 'ssh-host-*.desktop' -delete
+
+        # Si pas de config SSH, on sort proprement
+        if [ ! -f "$SSH_CONFIG" ]; then
+          exit 0
+        fi
+
+        # Extrait les hosts depuis ~/.ssh/config
+        awk '
+          BEGIN { IGNORECASE = 1 }
+          /^[[:space:]]*Host[[:space:]]+/ {
+            for (i = 2; i <= NF; i++) {
+              print $i
+            }
+          }
+        ' "$SSH_CONFIG" | while IFS= read -r host; do
+          # Ignore les wildcards/patterns et entrées vides
+          case "$host" in
+            ""|\*|\?*|*[*]*|*[*|!*]*)
+              continue
+              ;;
+          esac
+
+          # Nom safe pour le filename desktop
+          safe_name="$(printf '%s' "$host" | tr '/:@ ' '____' | tr -cd '[:alnum:]_.-')"
+
+          cat > "$APPS_DIR/ssh-host-$safe_name.desktop" <<EOF
+    [Desktop Entry]
+    Version=1.0
+    Type=Application
+    Name=SSH $host
+    Comment=Open SSH session to $host in GNOME Console
+    Exec=${pkgs.gnome-console}/bin/kgx --command="ssh $host"
+    Icon=$ICON
+    Terminal=false
+    Categories=Network;System;TerminalEmulator;
+    StartupNotify=true
+    EOF
+        done
+
+        ${pkgs.desktop-file-utils}/bin/update-desktop-database "$APPS_DIR" || true
+  '';
 in
 {
   imports = [
@@ -750,6 +804,8 @@ in
     claude-agent-acp
     claude-mergetool
     claude-code-router
+    # custom part
+    sshDesktopGenerator
   ];
 
   services.tor.settings = {
