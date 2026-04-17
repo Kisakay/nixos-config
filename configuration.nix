@@ -99,7 +99,7 @@ in {
     peers = [{
       publicKey = wgSecrets.publicKey;
       presharedKey = wgSecrets.presharedKey;
-      endpoint = wgSecrets.endpoint;
+      endpoint = "${wgSecrets.serverIp}:${wgSecrets.serverPort}";
       allowedIPs = [ "0.0.0.0/0" "::/0" ];
       persistentKeepalive = 25;
     }];
@@ -122,7 +122,7 @@ in {
         sleep 1
       done
 
-      ENDPOINT_HOST="$(${pkgs.coreutils}/bin/printf '%s\n' "${wgSecrets.endpoint}" | ${pkgs.gnused}/bin/sed 's/:[^:]*$//')"
+      ENDPOINT_HOST="$(${pkgs.coreutils}/bin/printf '%s\n' "${wgSecrets.serverIp}:${wgSecrets.serverPort}" | ${pkgs.gnused}/bin/sed 's/:[^:]*$//')"
 
       if ${pkgs.gnugrep}/bin/grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' <<< "$ENDPOINT_HOST"; then
         ENDPOINT_IP="$ENDPOINT_HOST"
