@@ -691,6 +691,8 @@ in {
 
     easyeffects
     gnome-sound-recorder
+    gitFull
+    git-lfs
   ];
 
   services.tor.settings = {
