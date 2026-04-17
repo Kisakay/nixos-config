@@ -806,6 +806,8 @@ in
     claude-code-router
     # custom part
     sshDesktopGenerator
+
+    rembg
   ];
 
   services.tor.settings = {
