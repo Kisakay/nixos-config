@@ -233,7 +233,14 @@ in
         exit 1
       fi
 
-      MARK="$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark)"
+      MARK="$(${pkgs.wireguard-tools}/bin/wg show wg0 fwmark 2>/dev/null || true)"
+
+      if [ -z "$MARK" ] || [ "$MARK" = "off" ]; then
+        MARK="0x64"
+        echo "wg0 postUp: fallback fwmark -> $MARK"
+      else
+        echo "wg0 postUp: detected fwmark -> $MARK"
+      fi
 
       ${pkgs.nftables}/bin/nft delete table inet killswitch 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip rule del fwmark 0x64 table 100 2>/dev/null || true
