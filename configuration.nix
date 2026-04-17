@@ -409,17 +409,17 @@ in {
     nspr
     nss
     dbus
-    xorg.libX11
-    xorg.libXcomposite
-    xorg.libXcursor
-    xorg.libXdamage
-    xorg.libXext
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libXtst
-    xorg.libXfixes
-    xorg.libxcb
-    xorg.libXrender
+    libx11
+    libxcomposite
+    libxcursor
+    libxdamage
+    libxext
+    libxi
+    libxrandr
+    libxtst
+    libxfixes
+    libxcb
+    libxrender
     alsa-lib
     atk
     # atk-bridge
@@ -429,7 +429,7 @@ in {
     expat
     libxkbcommon
     freetype
-    xorg.libXxf86vm
+    libxxf86vm
     libGL
     fontconfig
     liberation_ttf
@@ -508,8 +508,7 @@ in {
     ffmpeg
     comic-relief
     direnv
-    nixfmt-classic
-    nixfmt-rfc-style
+    nixfmt
     kdePackages.kolourpaint
     libxcrypt-legacy
     curl
