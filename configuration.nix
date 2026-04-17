@@ -743,6 +743,13 @@ in
     gnome-sound-recorder
     gitFull
     git-lfs
+
+    #Claude
+    claude-code
+    claude-monitor
+    claude-agent-acp
+    claude-mergetool
+    claude-code-router
   ];
 
   services.tor.settings = {
