@@ -15,7 +15,7 @@ alias bat="acpi"
 alias maj="sudo nix-channel --update"
 
 alias vpnon="sudo systemctl restart wg-quick-wg0"
-alias vpnoff='sudo systemctl stop wg-quick-wg0 && sudo nft delete table inet killswitch 2>/dev/null || true'
+alias vpnoff='sudo systemctl stop wg-quick-wg0'
 
 export PATH="/home/kisakay/.bun/bin:$PATH"
 export PATH=$PATH:/home/kisakay/.spicetify
