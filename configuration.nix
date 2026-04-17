@@ -4,10 +4,35 @@
 
 { config, pkgs, ... }:
 
-let wgSecrets = import ./wireguard-secrets.nix;
+let
+  wgSecrets = import ./wireguard-secrets.nix;
+  # workaround for github-desktop on unstable
+  ghd = pkgs.writeShellScriptBin "github-desktop" ''
+    exec env \
+      PATH="${pkgs.gitFull}/bin:${pkgs.gitFull}/libexec/git-core:$PATH" \
+      GIT_EXEC_PATH="${pkgs.gitFull}/libexec/git-core" \
+      GIT_CONFIG_NOSYSTEM=1 \
+      ${pkgs.github-desktop}/bin/github-desktop "$@"
+  '';
 
-in {
-  imports = [ # Include the results of the hardware scan.
+  githubDesktopDesktop = pkgs.makeDesktopItem {
+    name = "github-desktop";
+    desktopName = "GitHub Desktop";
+    genericName = "Git Client";
+    comment = "GitHub Desktop with fixed Git environment";
+    exec = "github-desktop %U";
+    icon = "github-desktop";
+    terminal = false;
+    categories = [
+      "Development"
+      "IDE"
+    ];
+    startupWMClass = "GitHub Desktop";
+  };
+in
+{
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
@@ -41,7 +66,11 @@ in {
   hardware.graphics = {
     enable = true;
 
-    extraPackages = with pkgs; [ mesa libva libva-utils ];
+    extraPackages = with pkgs; [
+      mesa
+      libva
+      libva-utils
+    ];
   };
 
   # Bootloader.
@@ -92,17 +121,28 @@ in {
   };
 
   networking.wg-quick.interfaces.wg0 = {
-    address = [ "10.66.66.2/32" "fd42:42:42::2/128" ];
-    dns = [ "1.1.1.1" "1.0.0.1" ];
+    address = [
+      "10.66.66.2/32"
+      "fd42:42:42::2/128"
+    ];
+    dns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
     privateKey = wgSecrets.privateKey;
 
-    peers = [{
-      publicKey = wgSecrets.publicKey;
-      presharedKey = wgSecrets.presharedKey;
-      endpoint = "${wgSecrets.serverIp}:${wgSecrets.serverPort}";
-      allowedIPs = [ "0.0.0.0/0" "::/0" ];
-      persistentKeepalive = 25;
-    }];
+    peers = [
+      {
+        publicKey = wgSecrets.publicKey;
+        presharedKey = wgSecrets.presharedKey;
+        endpoint = "${wgSecrets.serverIp}:${wgSecrets.serverPort}";
+        allowedIPs = [
+          "0.0.0.0/0"
+          "::/0"
+        ];
+        persistentKeepalive = 25;
+      }
+    ];
 
     preUp = ''
       set -euo pipefail
@@ -375,7 +415,10 @@ in {
   users.users.ollama = {
     isSystemUser = true;
     group = "ollama";
-    extraGroups = [ "video" "render" ];
+    extraGroups = [
+      "video"
+      "render"
+    ];
   };
 
   programs.virt-manager.enable = true;
@@ -453,7 +496,10 @@ in {
     ];
   };
 
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "radeonsi"; };
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "radeonsi";
+    GIT_EXEC_PATH = "${pkgs.gitFull}/libexec/git-core";
+  };
 
   environment.systemPackages = with pkgs; [
     # (import ./pkgs/paladrill { inherit pkgs; })
@@ -469,7 +515,10 @@ in {
     btop
     wine
     git
-    github-desktop
+
+    ghd
+    githubDesktopDesktop
+
     # vscode
     vscodium
     steam
@@ -650,7 +699,7 @@ in {
 
     unrar
 
-    # tpm 2.0 for virt-manager 
+    # tpm 2.0 for virt-manager
     swtpm
 
     lm_sensors
@@ -701,8 +750,7 @@ in {
   };
 
   environment.variables = {
-    PKG_CONFIG_PATH =
-      "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
+    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig:${pkgs.curl.dev}/lib/pkgconfig";
     LIBRARY_PATH = "${pkgs.openssl.out}/lib:${pkgs.curl.out}/lib";
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
     LIBVA_DRIVER_NAME = "radeonsi";
@@ -713,6 +761,10 @@ in {
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/kisakay/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
+    PATH = [
+      "${pkgs.gitFull}/bin"
+      "${pkgs.gitFull}/libexec/git-core"
+    ];
   };
 
   # Configuration pour les shells de développement
@@ -800,10 +852,8 @@ in {
   programs = {
     steam = {
       enable = true;
-      remotePlay.openFirewall =
-        true; # Open ports in the firewall for Steam Remoteplay
-      dedicatedServer.openFirewall =
-        true; # Open ports in the firewall for steam server
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remoteplay
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for steam server
     };
   };
 
@@ -816,10 +866,12 @@ in {
     serviceConfig = {
       Type = "forking";
       User = "kisakay";
-      Environment = [ "HOME=/home/kisakay" "PM2_HOME=/home/kisakay/.pm2" ];
+      Environment = [
+        "HOME=/home/kisakay"
+        "PM2_HOME=/home/kisakay/.pm2"
+      ];
 
-      ExecStart =
-        "${pkgs.bash}/bin/bash -c '${pkgs.pm2}/bin/pm2 resurrect && sleep 1'";
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.pm2}/bin/pm2 resurrect && sleep 1'";
       ExecStop = "${pkgs.pm2}/bin/pm2 kill";
 
       RemainAfterExit = "yes";
@@ -844,7 +896,10 @@ in {
     ollama = {
       enable = true;
       package = pkgs.ollama-vulkan;
-      loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b" ];
+      loadModels = [
+        "llama3.2:3b"
+        "deepseek-r1:1.5b"
+      ];
 
       environmentVariables = {
         OLLAMA_VULKAN = "1";
@@ -884,6 +939,18 @@ in {
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8000 3000 3001 3871 25565 ];
-  networking.firewall.allowedUDPPorts = [ 53 51820 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    80
+    443
+    8000
+    3000
+    3001
+    3871
+    25565
+  ];
+  networking.firewall.allowedUDPPorts = [
+    53
+    51820
+  ];
 }
