@@ -255,7 +255,6 @@ in
           oif "lo" accept
           oif "wg0" accept
           meta mark $MARK accept
-          ct state established,related accept
           udp dport { 67, 68 } accept
           ip daddr 224.0.0.0/4 accept
           ip daddr 255.255.255.255 accept
@@ -269,7 +268,6 @@ in
           iif "lo" accept
           iif "wg0" accept
           ct state established,related accept
-          meta mark $MARK accept
           udp sport { 67, 68 } accept
           ip saddr 224.0.0.0/4 accept
           ip saddr 255.255.255.255 accept
