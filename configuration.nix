@@ -90,7 +90,6 @@ in
   imports = [
     ./hardware-configuration.nix
     ./modules/wireguard/wg0.nix
-    /etc/nixos-local/wireguard/wg0-secrets.nix
   ];
 
   boot = {
@@ -789,7 +788,7 @@ in
     pelican.panel = {
       enable = true;
       app = {
-        url = "http://127.0.0.1:1337";
+        url = "http://127.0.0.1:10667";
         # echo "base64:$(openssl rand -base64 32)"
         keyFile = "/etc/nixos/app.key";
       };
@@ -805,7 +804,7 @@ in
       enable = true;
       openFirewall = false;
       uuid = "w0";
-      remote = "http://127.0.0.1:1337";
+      remote = "http://127.0.0.1:10667";
       tokenIdFile = "/etc/nixos/.password";
       tokenFile = "/etc/nixos/.password";
       api.ssl.enable = false;
