@@ -468,6 +468,7 @@ in
       "render"
       "plugdev"
       "openrazer"
+      "docker"
     ];
   };
 
@@ -957,6 +958,15 @@ in
     HandleLidSwitchDocked = "ignore";
     HandleLidSwitchExternalPower = "ignore";
     HandleLidSwitch = "ignore";
+  };
+
+  # docker part
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
   };
 
   services = {
