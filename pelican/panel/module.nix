@@ -20,12 +20,16 @@ let
       APP_INSTALLED = true;
 
       DB_CONNECTION = "mariadb";
-      DB_HOST = if cfg.database.createLocally then "localhost" else cfg.database.host;
+      DB_HOST = cfg.database.host;
       DB_PORT = cfg.database.port;
       DB_DATABASE = cfg.database.name;
       DB_USERNAME = cfg.database.user;
-      DB_PASSWORD = cfg.database.password;
-      DB_SOCKET = if cfg.database.createLocally then "/run/mysqld/mysqld.sock" else null;
+      DB_PASSWORD = if cfg.database.passwordFile != null then "@DB_PASSWORD@" else cfg.database.password;
+      DB_SOCKET =
+        if cfg.database.createLocally && cfg.database.host == "localhost" then
+          "/run/mysqld/mysqld.sock"
+        else
+          null;
 
       REDIS_SCHEME = if cfg.redis.createLocally then "unix" else "tcp";
       REDIS_PATH =
@@ -98,6 +102,7 @@ let
         cat ${lib.escapeShellArg cfg.extraEnvironmentFile} >> ${cfg.dataDir}/.env
       ''}
 
+      rm -f ${cfg.dataDir}/bootstrap/cache/*.php
       php ${panel-package}/artisan migrate --seed --force
       php ${panel-package}/artisan optimize:clear
     '';
@@ -481,6 +486,22 @@ in
         }
       ];
     };
+
+    systemd.services.mysql.postStart = lib.mkIf cfg.database.createLocally (
+      lib.mkAfter (
+        let
+          dbPass =
+            if cfg.database.passwordFile != null then
+              ''$(head -n1 ${lib.escapeShellArg cfg.database.passwordFile})''
+            else
+              lib.escapeShellArg cfg.database.password;
+        in
+        ''
+          ${config.services.mysql.package}/bin/mysql --skip-column-names --execute \
+            "ALTER USER '${cfg.database.user}'@'localhost' IDENTIFIED VIA unix_socket OR mysql_native_password USING PASSWORD('${dbPass}'); FLUSH PRIVILEGES;"
+        ''
+      )
+    );
 
     services.redis.servers."${cfg.redis.name}" = lib.mkIf cfg.redis.createLocally (
       {

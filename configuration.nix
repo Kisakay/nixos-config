@@ -788,14 +788,19 @@ in
     pelican.panel = {
       enable = true;
       app = {
-        url = "http://127.0.0.1:10667";
+        url = "http://127.0.0.1";
         # echo "base64:$(openssl rand -base64 32)"
         keyFile = "/etc/nixos/app.key";
       };
-      # you can use *.password = "password_here";
       database.passwordFile = "/etc/nixos/.password";
-      redis.passwordFile = "/etc/nixos/.password";
-      mail.passwordFile = "/etc/nixos/.password";
+      mail.mailer = "log";
+      # Upstream nix-pelican forces localhost + DB socket for local MariaDB.
+      # Override those env vars here so Pelican uses TCP and matches
+      # 'pelican-panel'@'127.0.0.1' instead of MariaDB's unix_socket auth.
+      extraEnvironment = {
+        DB_HOST = "127.0.0.1";
+        DB_SOCKET = "";
+      };
     };
 
     # PELICAN.DEV WINGD
@@ -804,7 +809,7 @@ in
       enable = true;
       openFirewall = false;
       uuid = "w0";
-      remote = "http://127.0.0.1:10667";
+      remote = "http://127.0.0.1";
       tokenIdFile = "/etc/nixos/.password";
       tokenFile = "/etc/nixos/.password";
       api.ssl.enable = false;

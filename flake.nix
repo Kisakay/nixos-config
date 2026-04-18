@@ -14,6 +14,10 @@
     nixosConfigurations."computer" = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
+        {
+          disabledModules = [ "${pelican}/pelican/panel/module.nix" ];
+          imports = [ ./pelican/panel/module.nix ];
+        }
         pelican.nixosModules.default
         { nixpkgs.overlays = [ pelican.overlays.default ]; }
         ./configuration.nix
