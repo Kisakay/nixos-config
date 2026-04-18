@@ -6,6 +6,10 @@
 
 let
   wgSecrets = import ./wireguard-secrets.nix;
+
+  # My Current Username
+  myUsername = "kisakay";
+
   # workaround for github-desktop on unstable
   ghd = pkgs.writeShellScriptBin "github-desktop" ''
     exec env \
@@ -33,9 +37,9 @@ let
   sshDesktopGenerator = pkgs.writeShellScriptBin "generate-ssh-desktop-entries" ''
         set -euo pipefail
 
-        USER_HOME="/home/kisakay"
-        SSH_CONFIG="/home/kisakay/.ssh/config"
-        APPS_DIR="/home/kisakay/.local/share/applications"
+        USER_HOME="/home/${myUsername}"
+        SSH_CONFIG="/home/${myUsername}/.ssh/config"
+        APPS_DIR="/home/${myUsername}/.local/share/applications"
         ICON="org.gnome.Console"
 
         mkdir -p "$APPS_DIR"
@@ -453,7 +457,7 @@ in
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.kisakay = {
+  users.users.${myUsername} = {
     isNormalUser = true;
     description = "Anaïs Saraiva";
     extraGroups = [
@@ -478,7 +482,7 @@ in
   };
 
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = [ "kisakay" ];
+  users.groups.libvirtd.members = [ myUsername ];
   virtualisation.spiceUSBRedirection.enable = true;
 
   virtualisation = {
@@ -826,7 +830,7 @@ in
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
-    MESA_SHADER_CACHE_DIR = "/home/kisakay/.cache/mesa_shader_cache";
+    MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
     PATH = [
       "${pkgs.gitFull}/bin"
@@ -932,10 +936,10 @@ in
 
     serviceConfig = {
       Type = "forking";
-      User = "kisakay";
+      User = myUsername;
       Environment = [
-        "HOME=/home/kisakay"
-        "PM2_HOME=/home/kisakay/.pm2"
+        "HOME=/home/${myUsername}"
+        "PM2_HOME=/home/${myUsername}/.pm2"
       ];
 
       ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.pm2}/bin/pm2 resurrect && sleep 1'";
@@ -945,7 +949,7 @@ in
 
       Restart = "on-failure";
       RestartSec = "10s";
-      WorkingDirectory = "/home/kisakay";
+      WorkingDirectory = "/home/${myUsername}";
     };
   };
 
