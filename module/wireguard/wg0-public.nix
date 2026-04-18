@@ -1,2 +1,0 @@
-      type = lib.types.str;
-    };
