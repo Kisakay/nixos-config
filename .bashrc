@@ -6,7 +6,7 @@ esac
 alias bun="steam-run ~/.bun/bin/bun"
 alias bunx="steam-run ~/.bun/bin/bunx"
 alias fdp="sudo codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #sudo nano /etc/nixos/configuration.nix"
-alias m2f="sudo nixos-rebuild switch"
+alias m2f="cd /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#computer"
 alias whatsmyip="curl ifconfig.me; echo"
 
 alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'disabled'"
