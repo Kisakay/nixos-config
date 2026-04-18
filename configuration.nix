@@ -1005,6 +1005,34 @@ in
       '';
     };
 
+    # PELICAN.DEV PANEL
+
+    pelican.panel = {
+      enable = true;
+      app = {
+        url = "http://127.0.0.1:1337";
+        # echo "base64:$(openssl rand -base64 32)"
+        keyFile = "/etc/nixos/app.key";
+      };
+      # you can use *.password = "password_here";
+      database.passwordFile = "/etc/nixos/.password";
+      redis.passwordFile = "/etc/nixos/.password";
+      mail.passwordFile = "/etc/nixos/.password";
+    };
+
+    # PELICAN.DEV WINGD
+
+    pelican.wings = {
+      enable = true;
+      openFirewall = false;
+      uuid = "w0";
+      remote = "http://127.0.0.1:1337";
+      tokenIdFile = "/etc/nixos/.password";
+      tokenFile = "/etc/nixos/.password";
+      api.ssl.enable = false;
+      api.ssl.certFile = "/path/to/cert";
+      api.ssl.keyFile = "/etc/nixos/app.key";
+    };
   };
 
   i18n = {
