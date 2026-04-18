@@ -1,24 +1,19 @@
-# flake.nix
 {
   inputs = {
     pelican.url = "github:Hythera/nix-pelican";
-    ...
   };
-  outputs = {
-    nixpkgs,
-    home-manager,
-    pelican,
-  }: let
-    system = "...";
+
+  outputs = { nixpkgs, home-manager, pelican, ... }: let
+    system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      nixosConfigurations."..." = nixpkgs.lib.nixosSystem {
-        system = "...";
-        modules = [
-          pelican.nixosModules.default # enable the NixOS moduel
-          { nixpkgs.overlays = [ pelican.overlays.default ]; }
-          ...
-        ];
-      };
-    }
+  in {
+    nixosConfigurations."computer" = nixpkgs.lib.nixosSystem {
+      inherit system;
+      modules = [
+        pelican.nixosModules.default
+        { nixpkgs.overlays = [ pelican.overlays.default ]; }
+        ./configuration.nix
+      ];
+    };
+  };
 }
