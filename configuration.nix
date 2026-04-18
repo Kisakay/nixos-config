@@ -805,13 +805,15 @@ in
     pelican.wings = {
       enable = true;
       openFirewall = false;
-      uuid = "w0";
+      uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
+      rootDir = "/var/lib/pelican";
       remote = "http://127.0.0.1";
-      tokenIdFile = "/etc/nixos/.password";
-      tokenFile = "/etc/nixos/.password";
+      tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
+      tokenFile = "/etc/nixos-local/pelican/wings-token";
+      api.port = 8080;
+      api.uploadLimit = 4096;
       api.ssl.enable = false;
-      api.ssl.certFile = "/path/to/cert";
-      api.ssl.keyFile = "/etc/nixos/app.key";
+      system.sftp.port = 2022;
     };
   };
 

@@ -390,6 +390,9 @@ in
       serviceConfig = cfgService // {
         Type = "oneshot";
         ExecStart = lib.getExe setupScript;
+        ReadOnlyPaths =
+          lib.optionals (cfg.tokenIdFile != null) [ cfg.tokenIdFile ]
+          ++ lib.optionals (cfg.tokenFile != null) [ cfg.tokenFile ];
         RemainAfterExit = true;
       };
     };
