@@ -792,15 +792,12 @@ in
         # echo "base64:$(openssl rand -base64 32)"
         keyFile = "/etc/nixos/app.key";
       };
+      database.host = "127.0.0.1";
+      database.port = 5432;
+      database.name = "pelican";
+      database.user = "pelican-panel";
       database.passwordFile = "/etc/nixos/.password";
       mail.mailer = "log";
-      # Upstream nix-pelican forces localhost + DB socket for local MariaDB.
-      # Override those env vars here so Pelican uses TCP and matches
-      # 'pelican-panel'@'127.0.0.1' instead of MariaDB's unix_socket auth.
-      extraEnvironment = {
-        DB_HOST = "127.0.0.1";
-        DB_SOCKET = "";
-      };
     };
 
     # PELICAN.DEV WINGD

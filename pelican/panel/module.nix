@@ -19,17 +19,12 @@ let
       APP_URL = cfg.app.url;
       APP_INSTALLED = true;
 
-      DB_CONNECTION = "mariadb";
+      DB_CONNECTION = "pgsql";
       DB_HOST = cfg.database.host;
       DB_PORT = cfg.database.port;
       DB_DATABASE = cfg.database.name;
       DB_USERNAME = cfg.database.user;
       DB_PASSWORD = if cfg.database.passwordFile != null then "@DB_PASSWORD@" else cfg.database.password;
-      DB_SOCKET =
-        if cfg.database.createLocally && cfg.database.host == "localhost" then
-          "/run/mysqld/mysqld.sock"
-        else
-          null;
 
       REDIS_SCHEME = if cfg.redis.createLocally then "unix" else "tcp";
       REDIS_PATH =
@@ -149,7 +144,8 @@ in
             gd
             intl
             mbstring
-            mysqli
+            pdo_pgsql
+            pgsql
             sqlite3
             zip
           ]);
@@ -160,12 +156,13 @@ in
             { enabled, all }:
             enabled
             ++ (with all; [
-             bcmath
+              bcmath
               curl
               gd
               intl
               mbstring
-              mysql
+              pdo_pgsql
+              pgsql
               sqlite3
               zip
             ]);
@@ -256,7 +253,7 @@ in
 
       port = lib.mkOption {
         type = lib.types.port;
-        default = 3306;
+        default = 5432;
         description = "The port of the database";
       };
 
@@ -475,30 +472,34 @@ in
 
     services.pelican.panel.group = lib.mkIf cfg.enableNginx (lib.mkDefault config.services.nginx.group);
 
-    services.mysql = lib.optionalAttrs cfg.database.createLocally {
+    services.postgresql = lib.optionalAttrs cfg.database.createLocally {
       enable = true;
-      package = pkgs.mariadb;
-      ensureDatabases = [ cfg.database.name ];
-      ensureUsers = [
-        {
-          name = cfg.database.user;
-          ensurePermissions."${cfg.database.name}.*" = "ALL PRIVILEGES";
-        }
-      ];
     };
 
-    systemd.services.mysql.postStart = lib.mkIf cfg.database.createLocally (
+    systemd.services.postgresql.postStart = lib.mkIf cfg.database.createLocally (
       lib.mkAfter (
         let
           dbPass =
             if cfg.database.passwordFile != null then
               ''$(head -n1 ${lib.escapeShellArg cfg.database.passwordFile})''
             else
-              lib.escapeShellArg cfg.database.password;
+              cfg.database.password;
+          psql = lib.getExe' config.services.postgresql.package "psql";
         in
         ''
-          ${config.services.mysql.package}/bin/mysql --skip-column-names --execute \
-            "ALTER USER '${cfg.database.user}'@'localhost' IDENTIFIED VIA unix_socket OR mysql_native_password USING PASSWORD('${dbPass}'); FLUSH PRIVILEGES;"
+          ${psql} -tAc "SELECT 1 FROM pg_roles WHERE rolname='${cfg.database.user}'" | grep -q 1 \
+            || ${psql} -tAc 'CREATE ROLE "${cfg.database.user}" LOGIN'
+
+          ${psql} -tAc "ALTER ROLE \"${cfg.database.user}\" WITH LOGIN PASSWORD '${dbPass}'"
+
+          ${psql} -tAc "SELECT 1 FROM pg_database WHERE datname='${cfg.database.name}'" | grep -q 1 \
+            || ${psql} -tAc 'CREATE DATABASE "${cfg.database.name}" OWNER "${cfg.database.user}" TEMPLATE template0'
+
+          ${psql} -tAc "GRANT ALL PRIVILEGES ON DATABASE \"${cfg.database.name}\" TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "GRANT ALL ON SCHEMA public TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER SCHEMA public OWNER TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO \"${cfg.database.user}\""
         ''
       )
     );
@@ -548,7 +549,7 @@ in
       description = "Pelican Panel setup";
       requiredBy = lib.optional cfg.enableNginx "phpfpm-pelican-panel.service";
       before = lib.optional cfg.enableNginx "phpfpm-pelican-panel.service";
-      after = [ "mysql.service" ];
+      after = lib.optionals cfg.database.createLocally [ "postgresql.service" ];
       restartTriggers = [ panel-package ];
 
       serviceConfig = cfgService // {
@@ -566,9 +567,9 @@ in
       description = "Pelican Queue Service";
       after = [
         "pelican-panel-setup.service"
-        "mysql.service"
         "redis-pelican-panel.service"
-      ];
+      ]
+      ++ lib.optionals cfg.database.createLocally [ "postgresql.service" ];
       wants = [ "pelican-panel-setup.service" ];
       wantedBy = [ "multi-user.target" ];
 
@@ -582,9 +583,9 @@ in
       description = "Pelican Panel cron job";
       after = [
         "pelican-panel-setup.service"
-        "mysql.service"
-        "redis-pelican.service"
-      ];
+        "redis-pelican-panel.service"
+      ]
+      ++ lib.optionals cfg.database.createLocally [ "postgresql.service" ];
       wants = [ "pelican-panel-setup.service" ];
 
       serviceConfig = cfgService // {
