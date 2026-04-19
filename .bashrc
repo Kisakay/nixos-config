@@ -13,6 +13,7 @@ alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'dis
 alias revien="gsettings reset org.gnome.desktop.peripherals.touchpad send-events"
 alias bat="acpi"
 alias maj="sudo nix-channel --update"
+alias monitoring="ping 1.1.1.1 -D | tee ping.log"
 
 alias vpnon="sudo systemctl restart wg-quick-wg0"
 alias vpnoff='sudo systemctl stop wg-quick-wg0'
