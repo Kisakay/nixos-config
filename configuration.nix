@@ -573,7 +573,7 @@ in
     scrcpy
 
     vesktop
-    (discord.override { withVencord = true; })
+    # (discord.override { withVencord = true; })
 
     easyeffects
     gnome-sound-recorder
