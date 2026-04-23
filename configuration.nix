@@ -590,6 +590,12 @@ in
     sshDesktopGenerator
 
     rembg
+
+    # rust lang
+    rustc
+    cargo
+    rustfmt
+    clippy
   ];
 
   services.tor.settings = {
