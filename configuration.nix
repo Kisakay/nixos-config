@@ -260,7 +260,7 @@ in
     ];
   };
 
-  # programs.dconf.enable = true;
+  programs.dconf.enable = true;
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = [ myUsername ];
