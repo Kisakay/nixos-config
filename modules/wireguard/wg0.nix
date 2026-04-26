@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.my.wireguard.wg0;
-in {
+in
+{
   options.my.wireguard.wg0 = {
     enable = lib.mkEnableOption "wg0 WireGuard profile";
 
@@ -47,12 +53,12 @@ in {
       default = 25;
     };
 
-    privateKeyFile = lib.mkOption {
-      type = lib.types.path;
+    privateKey = lib.mkOption {
+      type = lib.types.str;
     };
 
-    presharedKeyFile = lib.mkOption {
-      type = lib.types.path;
+    presharedKey = lib.mkOption {
+      type = lib.types.str;
     };
   };
 
@@ -95,12 +101,12 @@ in {
         cfg.dns2
       ];
 
-      privateKeyFile = toString cfg.privateKeyFile;
+      privateKey = cfg.privateKey;
 
       peers = [
         {
           publicKey = cfg.publicKey;
-          presharedKeyFile = toString cfg.presharedKeyFile;
+          presharedKey = cfg.presharedKey;
           endpoint = "${cfg.serverIp}:${toString cfg.serverPort}";
           allowedIPs = cfg.allowedIPs;
           persistentKeepalive = cfg.persistentKeepalive;

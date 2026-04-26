@@ -20,7 +20,7 @@
 
     persistentKeepalive = 25;
 
-    privateKeyFile = /etc/nixos-local/wireguard/privateKeyFile_wg0.key;
-    presharedKeyFile = /etc/nixos-local/wireguard/presharedKeyFile_wg0.key;
+    privateKey = "<private key here>";
+    presharedKey = "<pre shared key here>";
   };
 }

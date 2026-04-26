@@ -151,7 +151,7 @@ in
   services.timesyncd.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Europe/Paris";
+  time.timeZone = "Atlantic/Reykjavik";
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -259,6 +259,8 @@ in
       "render"
     ];
   };
+
+  # programs.dconf.enable = true;
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = [ myUsername ];
