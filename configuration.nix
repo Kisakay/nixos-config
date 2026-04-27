@@ -598,6 +598,9 @@ in
     cargo
     rustfmt
     clippy
+
+    # rtc
+    coturn
   ];
 
   services.tor.settings = {
