@@ -151,7 +151,7 @@ in
   services.timesyncd.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Atlantic/Reykjavik";
+  time.timeZone = "Europe/Paris";
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -579,8 +579,10 @@ in
     # equibop
     scrcpy
 
-    vesktop
-    # (discord.override { withVencord = true; })
+    (discord.override {
+      withVencord = true;
+      withOpenASAR = true;
+    })
 
     easyeffects
     # gnome-sound-recorder
@@ -608,7 +610,8 @@ in
     coturn
 
     rofi
-
+    zed-editor
+    
     xcape
     xorg.xmodmap
     playerctl
