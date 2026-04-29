@@ -637,8 +637,8 @@ in
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
     LIBVA_DRIVER_NAME = "radeonsi";
     VDPAU_DRIVER = "radeonsi";
-    NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    # NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron
+    # ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
