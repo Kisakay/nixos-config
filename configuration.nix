@@ -611,7 +611,7 @@ in
 
     rofi
     zed-editor
-    
+
     xcape
     xorg.xmodmap
     playerctl
@@ -619,6 +619,9 @@ in
     xfce.xfce4-clipman-plugin
     xfce.xfce4-cpugraph-plugin
     xfce.xfce4-sensors-plugin
+    xfce.xfce4-screensaver
+
+    android-studio-tools
   ];
 
   services.tor.settings = {
