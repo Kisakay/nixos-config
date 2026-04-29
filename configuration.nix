@@ -622,6 +622,7 @@ in
     xfce.xfce4-screensaver
 
     android-studio-tools
+    android-studio
   ];
 
   services.tor.settings = {
