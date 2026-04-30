@@ -623,8 +623,12 @@ in
 
     android-studio-tools
     android-studio
+
+    vnstat
   ];
 
+  services.vnstat.enable = true;
+  
   services.tor.settings = {
     UseBridges = true;
     ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
