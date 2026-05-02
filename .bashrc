@@ -3,6 +3,8 @@ case $- in
 *) return;;
 esac
 
+alias codium="steam-run /nix/store/hk1dp9i1sxysirck3h3dbll6gdf440qj-system-path/bin/codium"
+
 alias bun="steam-run ~/.bun/bin/bun"
 alias bunx="steam-run ~/.bun/bin/bunx"
 alias fdp="sudo codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #sudo nano /etc/nixos/configuration.nix"

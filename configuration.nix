@@ -183,12 +183,12 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  # services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.desktopManager.xfce.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  # services.displayManager.gdm.enable = true;
-  # services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -381,8 +381,8 @@ in
     virt-manager
     # kdePackages.kdenlive
     melt
-    # gnome-extension-manager
-    # gnome-tweaks
+    gnome-extension-manager
+    gnome-tweaks
     libgtop
     gobject-introspection
     filezilla
@@ -585,7 +585,7 @@ in
     })
 
     easyeffects
-    # gnome-sound-recorder
+    gnome-sound-recorder
     gitFull
     git-lfs
 
@@ -609,18 +609,19 @@ in
     # rtc
     coturn
 
-    rofi
+    # rofi
     zed-editor
 
-    xcape
-    xorg.xmodmap
-    playerctl
-    xfce.xfce4-pulseaudio-plugin
-    xfce.xfce4-clipman-plugin
-    xfce.xfce4-cpugraph-plugin
-    xfce.xfce4-sensors-plugin
-    xfce.xfce4-screensaver
-
+    # xcape
+    # xorg.xmodmap
+    # playerctl
+    # xfce.xfce4-pulseaudio-plugin
+    # xfce.xfce4-clipman-plugin
+    # xfce.xfce4-cpugraph-plugin
+    # xfce.xfce4-sensors-plugin
+    # xfce.xfce4-screensaver
+    # wmctrl
+    
     android-studio-tools
     android-studio
 
@@ -628,7 +629,7 @@ in
   ];
 
   services.vnstat.enable = true;
-  
+
   services.tor.settings = {
     UseBridges = true;
     ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
