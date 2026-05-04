@@ -637,6 +637,12 @@ in
 
   services.vnstat.enable = true;
 
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+  };
+
   services.tor.settings = {
     UseBridges = true;
     ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
