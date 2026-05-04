@@ -22,6 +22,7 @@ alias vpnoff='sudo systemctl stop wg-quick-wg0'
 
 export PATH="/home/kisakay/.bun/bin:$PATH"
 export PATH=$PATH:/home/kisakay/.spicetify
+alias flake_update="sudo nix flake lock --update-input qxchat-src /etc/nixos"
 
 # if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
 #    onefetch

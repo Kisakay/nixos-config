@@ -16,7 +16,6 @@ let
       GIT_CONFIG_NOSYSTEM=1 \
       ${pkgs.github-desktop}/bin/github-desktop "$@"
   '';
-  qxchatSrc = "/home/${myUsername}/Documents/Code/GitHub/lqxp-client";
 
   githubDesktopDesktop = pkgs.makeDesktopItem {
     name = "github-desktop";
@@ -91,7 +90,6 @@ in
   imports = [
     ./hardware-configuration.nix
     ./modules/wireguard/wg0.nix
-    (qxchatSrc + "/nix/module.nix")
   ];
 
   boot = {
@@ -626,14 +624,6 @@ in
 
     vnstat
   ];
-
-  nixpkgs.overlays = [
-    (final: prev: {
-      qxchat = prev.callPackage (qxchatSrc + "/nix/qxchat.nix") { };
-    })
-  ];
-
-  programs.qxchat.enable = true;
 
   services.vnstat.enable = true;
 

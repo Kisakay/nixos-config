@@ -80,11 +80,28 @@
         "type": "github"
       }
     },
+    "qxchat-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777889182,
+        "narHash": "sha256-z+AwamDjhSCtJXrstT/heyFMNpWNoj3edUguq6+jyys=",
+        "owner": "lqxp",
+        "repo": "app",
+        "rev": "3cf4df01f2db0308a50970b328728b828a98c0cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lqxp",
+        "repo": "app",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "nixos-local": "nixos-local",
         "nixpkgs": "nixpkgs",
-        "pelican": "pelican"
+        "pelican": "pelican",
+        "qxchat-src": "qxchat-src"
       }
     },
     "systems": {
