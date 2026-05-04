@@ -83,17 +83,20 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1777889182,
-        "narHash": "sha256-z+AwamDjhSCtJXrstT/heyFMNpWNoj3edUguq6+jyys=",
-        "owner": "lqxp",
-        "repo": "app",
-        "rev": "3cf4df01f2db0308a50970b328728b828a98c0cc",
-        "type": "github"
+        "lastModified": 1777892760,
+        "narHash": "sha256-SQDZ1eUuTtCbRpKTu/AMdd2i6y90KGN259FhNItEp3Q=",
+        "ref": "main",
+        "rev": "4c27cd2d644f90d46976e9c2410b256645d8f924",
+        "revCount": 103,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/lqxp/app.git"
       },
       "original": {
-        "owner": "lqxp",
-        "repo": "app",
-        "type": "github"
+        "ref": "main",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/lqxp/app.git"
       }
     },
     "root": {

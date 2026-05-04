@@ -8,7 +8,7 @@
     };
 
     qxchat-src = {
-      url = "github:lqxp/app";
+      url = "git+https://github.com/lqxp/app.git?ref=main&submodules=1";
       flake = false;
     };
   };
