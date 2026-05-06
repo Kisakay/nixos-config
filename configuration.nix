@@ -625,6 +625,8 @@ in
     vnstat
 
     equibop
+
+    gnome-boxes
   ];
 
   services.vnstat.enable = true;
