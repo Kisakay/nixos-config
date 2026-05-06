@@ -11,6 +11,11 @@
       url = "git+https://github.com/lqxp/app.git?ref=main&submodules=1";
       flake = false;
     };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +24,7 @@
       pelican,
       nixos-local,
       qxchat-src,
+      zen-browser,
       ...
     }:
     let
@@ -45,6 +51,13 @@
               })
             ];
             programs.qxchat.enable = true;
+          }
+
+          # Zen Browser setup
+          {
+            environment.systemPackages = [
+              zen-browser.packages.${system}.default
+            ];
           }
 
           ./configuration.nix

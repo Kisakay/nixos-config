@@ -83,11 +83,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1777892760,
-        "narHash": "sha256-SQDZ1eUuTtCbRpKTu/AMdd2i6y90KGN259FhNItEp3Q=",
+        "lastModified": 1777989370,
+        "narHash": "sha256-hZqpYW/BD7pnjH+4b+K5LRk1/JTNBbET8lZ71o6HUxA=",
         "ref": "main",
-        "rev": "4c27cd2d644f90d46976e9c2410b256645d8f924",
-        "revCount": 103,
+        "rev": "b83524ffdc56b375337c597d4a38d18af96a00d0",
+        "revCount": 133,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
@@ -104,7 +104,8 @@
         "nixos-local": "nixos-local",
         "nixpkgs": "nixpkgs",
         "pelican": "pelican",
-        "qxchat-src": "qxchat-src"
+        "qxchat-src": "qxchat-src",
+        "zen-browser": "zen-browser"
       }
     },
     "systems": {
@@ -119,6 +120,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777612697,
+        "narHash": "sha256-h+tXBNMDrsKbD1UnYw0IeSIT4RalHtIJ1GLOviib7/8=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "f9f70d14f9a57c7962c5cfe589461c1391044448",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

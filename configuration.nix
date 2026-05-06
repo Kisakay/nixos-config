@@ -623,6 +623,8 @@ in
     android-studio
 
     vnstat
+
+    equibop
   ];
 
   services.vnstat.enable = true;
