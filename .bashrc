@@ -11,8 +11,8 @@ alias fdp="sudo codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #
 alias m2f="cd /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#computer"
 alias whatsmyip="curl ifconfig.me; echo"
 
-alias tgl="xinput disable 'PIXA3854:00 093A:0274 Touchpad'"
-alias revien="xinput enable 'PIXA3854:00 093A:0274 Touchpad'"
+alias tgl="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'disabled'"
+alias revien="gsettings set org.gnome.desktop.peripherals.touchpad send-events 'enabled'"
 alias bat="acpi"
 alias maj="sudo nix-channel --update"
 alias monitoring="ping 1.1.1.1 -D | tee ping.log"
