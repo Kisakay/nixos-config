@@ -627,6 +627,8 @@ in
     equibop
 
     gnome-boxes
+
+    qtox
   ];
 
   services.vnstat.enable = true;
@@ -730,7 +732,7 @@ in
   services.openssh = {
     enable = true;
     settings = {
-      PasswordAuthentication = true; # recommandé
+      PasswordAuthentication = false; # recommandé
       PermitRootLogin = "no";
     };
   };
