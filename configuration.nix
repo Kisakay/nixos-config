@@ -89,7 +89,6 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/wireguard/wg0.nix
   ];
 
   boot = {
@@ -249,7 +248,6 @@ in
       "render"
       "plugdev"
       "openrazer"
-      "docker"
     ];
   };
 
@@ -415,7 +413,6 @@ in
     # Add other dependencies you might need
     python3Packages.setuptools
     python3Packages.wheel
-    distrobox
     networkmanagerapplet
     distrobox
     # session-desktop
@@ -784,15 +781,6 @@ in
     HandleLidSwitch = "ignore";
   };
 
-  # docker part
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
-
   services = {
     # FLATPAK
     flatpak.enable = true;
@@ -829,39 +817,6 @@ in
           GRANT ALL ON TABLES TO myuser;
       '';
     };
-
-    # PELICAN.DEV PANEL
-
-    pelican.panel = {
-      enable = true;
-      app = {
-        url = "http://127.0.0.1";
-        # echo "base64:$(openssl rand -base64 32)"
-        keyFile = "/etc/nixos/app.key";
-      };
-      database.host = "127.0.0.1";
-      database.port = 5432;
-      database.name = "pelican";
-      database.user = "pelican-panel";
-      database.passwordFile = "/etc/nixos/.password";
-      mail.mailer = "log";
-    };
-
-    # PELICAN.DEV WINGD
-
-    pelican.wings = {
-      enable = true;
-      openFirewall = false;
-      uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
-      rootDir = "/var/lib/pelican";
-      remote = "http://127.0.0.1";
-      tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
-      tokenFile = "/etc/nixos-local/pelican/wings-token";
-      api.port = 8080;
-      api.uploadLimit = 4096;
-      api.ssl.enable = false;
-      system.sftp.port = 2022;
-    };
   };
 
   i18n = {
@@ -871,6 +826,11 @@ in
       enable = true;
       ibus.engines = with pkgs.ibus-engines; [ ];
     };
+  };
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
   };
 
   networking.firewall.enable = true;

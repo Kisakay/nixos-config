@@ -1,6 +1,5 @@
 {
   inputs = {
-    pelican.url = "github:Hythera/nix-pelican";
 
     nixos-local = {
       url = "path:/etc/nixos-local";
@@ -21,7 +20,6 @@
   outputs =
     {
       nixpkgs,
-      pelican,
       nixos-local,
       qxchat-src,
       zen-browser,
@@ -34,13 +32,6 @@
       nixosConfigurations."computer" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          {
-            disabledModules = [ "${pelican}/pelican/panel/module.nix" ];
-            imports = [ ./pelican/panel/module.nix ];
-          }
-
-          pelican.nixosModules.default
-          { nixpkgs.overlays = [ pelican.overlays.default ]; }
 
           # QxChat (module + package overlay)
           {
@@ -61,7 +52,6 @@
           }
 
           ./configuration.nix
-          "${nixos-local}/wireguard/wg0-secrets.nix"
         ];
       };
     };

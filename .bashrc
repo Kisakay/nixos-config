@@ -17,9 +17,6 @@ alias bat="acpi"
 alias maj="sudo nix-channel --update"
 alias monitoring="ping 1.1.1.1 -D | tee ping.log"
 
-alias vpnon="sudo systemctl restart wg-quick-wg0"
-alias vpnoff='sudo systemctl stop wg-quick-wg0'
-
 export PATH="/home/kisakay/.bun/bin:$PATH"
 export PATH=$PATH:/home/kisakay/.spicetify
 alias flake_update="sudo nix flake lock --update-input qxchat-src /etc/nixos"
@@ -41,3 +38,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export MESA_SHADER_CACHE_MAX_SIZE=10G
 export MESA_SHADER_CACHE_DIR=$HOME/.cache/mesa_shader_cache
 export __GL_SHADER_DISK_CACHE=1
+export DBX_CONTAINER_MANAGER=podman
