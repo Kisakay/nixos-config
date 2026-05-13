@@ -3,8 +3,8 @@
     "nixos-local": {
       "flake": false,
       "locked": {
-        "lastModified": 1778655050,
-        "narHash": "sha256-exVNFJRZy2QkRxYaINIYaFcX+DFxx5f5hRL3jmS+Aa8=",
+        "lastModified": 1778656490,
+        "narHash": "sha256-gJpJiAc/RfpAUVw+AIe6tkmhg97fmA/g+t8CThLXihE=",
         "path": "/etc/nixos-local",
         "type": "path"
       },
