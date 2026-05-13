@@ -573,11 +573,6 @@ in
     # equibop
     scrcpy
 
-    (discord.override {
-      withVencord = true;
-      withOpenASAR = true;
-    })
-
     easyeffects
     gnome-sound-recorder
     gitFull
@@ -621,7 +616,6 @@ in
 
     vnstat
 
-    equibop
 
     gnome-boxes
 
