@@ -3,8 +3,8 @@
     "nixos-local": {
       "flake": false,
       "locked": {
-        "lastModified": 1777228870,
-        "narHash": "sha256-U+xpb587zIeMjFE8cElFWuMDoSTFGvISZ1nilKZDmJc=",
+        "lastModified": 1778655050,
+        "narHash": "sha256-exVNFJRZy2QkRxYaINIYaFcX+DFxx5f5hRL3jmS+Aa8=",
         "path": "/etc/nixos-local",
         "type": "path"
       },
@@ -30,11 +30,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1778112396,
-        "narHash": "sha256-X6n8AGmwPSPo1MrPEggUcu0IOVsxozJzO7O2j84CExA=",
+        "lastModified": 1778423240,
+        "narHash": "sha256-xrEEdx/vqVyIRAoZpA/D12hIlE9Qy2Aaaqx/NPUBofI=",
         "ref": "main",
-        "rev": "22f4d7a679bead8065f4a67715b0a2209f70ef93",
-        "revCount": 140,
+        "rev": "34f617b23f37dd6b4140fc6897ff1cf6c8c9236a",
+        "revCount": 149,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
