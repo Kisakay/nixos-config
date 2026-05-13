@@ -89,6 +89,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./modules/wireguard/wg0.nix
   ];
 
   boot = {
@@ -251,13 +252,15 @@ in
     ];
   };
 
-  users.groups.ollama.members = [ "ollama" ];
-  users.users.ollama = {
-    isSystemUser = true;
-    group = "ollama";
+  users.users.vesktopbox = {
+    isNormalUser = true;
+    description = "Distrobox hors VPN";
+
     extraGroups = [
+      "networkmanager"
       "video"
       "render"
+      "audio"
     ];
   };
 
@@ -423,7 +426,6 @@ in
     speedtest-cli
     geogebra
     gimp
-    # ollama
     nss
     ntfs3g
     # jetbrains.idea-community
@@ -616,7 +618,6 @@ in
 
     vnstat
 
-
     gnome-boxes
 
     qtox
@@ -778,21 +779,6 @@ in
   services = {
     # FLATPAK
     flatpak.enable = true;
-
-    # OLLAMA
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-vulkan;
-      loadModels = [
-        "llama3.2:3b"
-        "deepseek-r1:1.5b"
-      ];
-
-      environmentVariables = {
-        OLLAMA_VULKAN = "1";
-        OLLAMA_DEBUG = "1";
-      };
-    };
 
     # POSTGRESQL
     postgresql = {
