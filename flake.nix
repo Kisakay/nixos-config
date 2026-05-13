@@ -52,7 +52,6 @@
           }
 
           ./configuration.nix
-          "${nixos-local}/wg0-secrets.nix"
         ];
       };
     };

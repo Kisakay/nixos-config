@@ -89,7 +89,6 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/wireguard/wg0.nix
   ];
 
   boot = {
