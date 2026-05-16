@@ -31,60 +31,6 @@ let
     ];
     startupWMClass = "GitHub Desktop";
   };
-
-  sshDesktopGenerator = pkgs.writeShellScriptBin "generate-ssh-desktop-entries" ''
-        set -euo pipefail
-
-        USER_HOME="/home/${myUsername}"
-        SSH_CONFIG="/home/${myUsername}/.ssh/config"
-        APPS_DIR="/home/${myUsername}/.local/share/applications"
-        ICON="org.gnome.Console"
-
-        mkdir -p "$APPS_DIR"
-
-        # Supprime les anciennes entrées générées
-        find "$APPS_DIR" -maxdepth 1 -type f -name 'ssh-host-*.desktop' -delete
-
-        # Si pas de config SSH, on sort proprement
-        if [ ! -f "$SSH_CONFIG" ]; then
-          exit 0
-        fi
-
-        # Extrait les hosts depuis ~/.ssh/config
-        awk '
-          BEGIN { IGNORECASE = 1 }
-          /^[[:space:]]*Host[[:space:]]+/ {
-            for (i = 2; i <= NF; i++) {
-              print $i
-            }
-          }
-        ' "$SSH_CONFIG" | while IFS= read -r host; do
-          # Ignore les wildcards/patterns et entrées vides
-          case "$host" in
-            ""|\*|\?*|*[*]*|*[*|!*]*)
-              continue
-              ;;
-          esac
-
-          # Nom safe pour le filename desktop
-          safe_name="$(printf '%s' "$host" | tr '/:@ ' '____' | tr -cd '[:alnum:]_.-')"
-
-          cat > "$APPS_DIR/ssh-host-$safe_name.desktop" <<EOF
-    [Desktop Entry]
-    Version=1.0
-    Type=Application
-    Name=SSH $host
-    Comment=Open SSH session to $host in GNOME Console
-    Exec=${pkgs.gnome-console}/bin/kgx --command="ssh $host"
-    Icon=$ICON
-    Terminal=false
-    Categories=Network;System;TerminalEmulator;
-    StartupNotify=true
-    EOF
-        done
-
-        ${pkgs.desktop-file-utils}/bin/update-desktop-database "$APPS_DIR" || true
-  '';
 in
 {
   imports = [
@@ -109,7 +55,6 @@ in
     options v4l2loopback devices=3 video_nr=0,1 card_label="DroidCam","OBS Cam" exclusive_caps=1
   '';
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-  networking.nftables.enable = true;
 
   security.polkit.enable = true;
 
@@ -161,8 +106,15 @@ in
   services.fwupd.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
+  services.xserver.enable = true;
+
+  # Enable the X11 windowing system.
+
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
+  services.displayManager.defaultSession = "xfce";
+
   # will fix gnome pam
-  security.pam.services.gdm.enableGnomeKeyring = true;
   security.pam.services.login.enableGnomeKeyring = true;
 
   # Select internationalisation properties.
@@ -178,16 +130,6 @@ in
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # services.xserver.displayManager.lightdm.enable = true;
-  # services.xserver.desktopManager.xfce.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -218,9 +160,10 @@ in
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    alsa.enable = true;
+
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -378,8 +321,6 @@ in
     virt-manager
     # kdePackages.kdenlive
     melt
-    gnome-extension-manager
-    gnome-tweaks
     libgtop
     gobject-introspection
     filezilla
@@ -447,26 +388,6 @@ in
     nmap
     # spotify
 
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.caffeine
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.desktop-cube
-    gnomeExtensions.force-quit
-    gnomeExtensions.ip-finder
-    gnomeExtensions.just-perfection
-    gnomeExtensions.runcat
-    gnomeExtensions.appindicator
-    gnomeExtensions.customize-clock-on-lock-screen
-    gnomeExtensions.emoji-copy
-    gnomeExtensions.user-themes
-    gnomeExtensions.vscode-workspaces-gnome
-    gnomeExtensions.media-controls
-    gnomeExtensions.dash-to-panel
-    gnomeExtensions.desktop-clock
-    gnomeExtensions.window-desaturation
-    gnomeExtensions.media-controls
-    gnomeExtensions.add-to-desktop
     fprintd
     libfprint
     usbutils
@@ -575,7 +496,6 @@ in
     scrcpy
 
     easyeffects
-    gnome-sound-recorder
     gitFull
     git-lfs
 
@@ -586,8 +506,7 @@ in
     claude-mergetool
     claude-code-router
     # custom part
-    sshDesktopGenerator
-
+    system-config-printer
     rembg
 
     # rust lang
@@ -602,23 +521,28 @@ in
     # rofi
     zed-editor
 
-    # xcape
-    # xorg.xmodmap
-    # playerctl
-    # xfce.xfce4-pulseaudio-plugin
-    # xfce.xfce4-clipman-plugin
-    # xfce.xfce4-cpugraph-plugin
-    # xfce.xfce4-sensors-plugin
-    # xfce.xfce4-screensaver
-    # wmctrl
+    xcape
+    xorg.xmodmap
+    playerctl
+    xfce.xfce4-pulseaudio-plugin
+    xfce.xfce4-clipman-plugin
+    xfce.xfce4-cpugraph-plugin
+    xfce.xfce4-sensors-plugin
+    xfce.xfce4-screensaver
+    wmctrl
+
+    xfce.xfce4-whiskermenu-plugin # application menu
+    xfce.xfce4-xkb-plugin # keyboard layout indicator
+    xfce.xfce4-screensaver # (optional) screensaver control
+    #noto-font-emoji # emoji font
+    rofimoji # emoji picker via Rofi
+    emote # emoji GTK selector
+    rofi # application launcher
 
     android-studio-tools
     android-studio
 
     vnstat
-
-    gnome-boxes
-
     qtox
   ];
 
@@ -648,10 +572,6 @@ in
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
-    PATH = [
-      "${pkgs.gitFull}/bin"
-      "${pkgs.gitFull}/libexec/git-core"
-    ];
   };
 
   # Configuration pour les shells de développement
@@ -813,7 +733,7 @@ in
   };
 
   networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
+  networking.firewall.allowPing = false;
 
   networking.firewall.allowedTCPPorts = [
     22
