@@ -610,11 +610,14 @@ in
     rofimoji # emoji picker via Rofi
     emote # emoji GTK selector
     rofi # application launcher
+    xwininfo
+    glava
 
     twemoji-color-font
     libnotify
     i3status
     xdotool
+    stalonetray
 
     session-desktop
   ];
@@ -631,6 +634,10 @@ in
     ];
   };
 
+  services.xserver.excludePackages = with pkgs; [
+    xterm
+  ];
+  
   services.tor.settings = {
     UseBridges = true;
     ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
