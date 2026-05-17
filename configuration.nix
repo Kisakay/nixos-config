@@ -108,11 +108,20 @@ in
 
   services.xserver.enable = true;
 
-  # Enable the X11 windowing system.
+  services.displayManager = {
+    defaultSession = "xfce";
 
-  services.xserver.displayManager.lightdm.enable = true;
+    gdm = {
+      enable = true;
+
+      # GNOME en Wayland
+      wayland = true;
+    };
+  };
+
+  services.desktopManager.gnome.enable = true;
+
   services.xserver.desktopManager.xfce.enable = true;
-  services.displayManager.defaultSession = "xfce";
 
   # will fix gnome pam
   security.pam.services.login.enableGnomeKeyring = true;
@@ -521,6 +530,7 @@ in
     # rofi
     zed-editor
 
+    # XFCE
     xcape
     xorg.xmodmap
     playerctl
@@ -539,19 +549,52 @@ in
     emote # emoji GTK selector
     rofi # application launcher
 
+    # GNOME
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.caffeine
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.desktop-cube
+    gnomeExtensions.force-quit
+    gnomeExtensions.ip-finder
+    gnomeExtensions.just-perfection
+    gnomeExtensions.runcat
+    gnomeExtensions.appindicator
+    gnomeExtensions.customize-clock-on-lock-screen
+    gnomeExtensions.emoji-copy
+    gnomeExtensions.user-themes
+    gnomeExtensions.vscode-workspaces-gnome
+    gnomeExtensions.media-controls
+    gnomeExtensions.dash-to-panel
+    gnomeExtensions.desktop-clock
+    gnomeExtensions.window-desaturation
+    gnomeExtensions.media-controls
+    gnomeExtensions.add-to-desktop
+    gnome-extension-manager
+    gnome-tweaks
+    gnome-sound-recorder
+    gnome-boxes
+
+    # DEV
     android-studio-tools
     android-studio
 
     vnstat
     qtox
+
+    discord
   ];
 
   services.vnstat.enable = true;
+  services.gnome.core-utilities.enable = true;
 
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
   };
 
   services.tor.settings = {
