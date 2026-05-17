@@ -615,6 +615,8 @@ in
     libnotify
     i3status
     xdotool
+
+    session-desktop
   ];
 
   services.vnstat.enable = true;
