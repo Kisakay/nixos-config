@@ -613,6 +613,7 @@ in
     xwininfo
     glava
 
+    iwgtk
     twemoji-color-font
     libnotify
     i3status
@@ -637,7 +638,7 @@ in
   services.xserver.excludePackages = with pkgs; [
     xterm
   ];
-  
+
   services.tor.settings = {
     UseBridges = true;
     ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/lyrebird";
