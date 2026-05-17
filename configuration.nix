@@ -109,7 +109,7 @@ in
   services.xserver.enable = true;
 
   services.displayManager = {
-    defaultSession = "xfce";
+    defaultSession = "none+i3";
 
     gdm = {
       enable = true;
@@ -121,7 +121,16 @@ in
 
   services.desktopManager.gnome.enable = true;
 
-  services.xserver.desktopManager.xfce.enable = true;
+  # ---- I3 PART ----
+  services.xserver.windowManager.i3.enable = true;
+
+  services.xserver.windowManager.i3.extraPackages = with pkgs; [
+    dmenu
+    i3status
+    i3lock
+  ];
+
+  #   ---- END OF I3 PART ----
 
   # will fix gnome pam
   security.pam.services.login.enableGnomeKeyring = true;
@@ -530,25 +539,6 @@ in
     # rofi
     zed-editor
 
-    # XFCE
-    xcape
-    xorg.xmodmap
-    playerctl
-    xfce.xfce4-pulseaudio-plugin
-    xfce.xfce4-clipman-plugin
-    xfce.xfce4-cpugraph-plugin
-    xfce.xfce4-sensors-plugin
-    xfce.xfce4-screensaver
-    wmctrl
-
-    xfce.xfce4-whiskermenu-plugin # application menu
-    xfce.xfce4-xkb-plugin # keyboard layout indicator
-    xfce.xfce4-screensaver # (optional) screensaver control
-    #noto-font-emoji # emoji font
-    rofimoji # emoji picker via Rofi
-    emote # emoji GTK selector
-    rofi # application launcher
-
     # GNOME
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.caffeine
@@ -583,6 +573,48 @@ in
     qtox
 
     discord
+
+    # I3 PART
+    rofi
+    picom
+    dunst
+    feh
+    pavucontrol
+    xclip
+    wmctrl
+    rofi
+    picom
+    dunst
+    feh
+    plank
+    nitrogen
+    mpvpaper
+    xwinwrap
+    mpv
+    alacritty
+    flameshot
+    jetbrains-mono
+    nerd-fonts.jetbrains-mono
+    xdotool
+    copyq
+    rofimoji
+    pamixer
+    jq
+    xdpyinfo
+    clipman
+    xcape
+    xorg.xmodmap
+    playerctl
+    wmctrl
+    #noto-font-emoji # emoji font
+    rofimoji # emoji picker via Rofi
+    emote # emoji GTK selector
+    rofi # application launcher
+
+    twemoji-color-font
+    libnotify
+    i3status
+    xdotool
   ];
 
   services.vnstat.enable = true;
@@ -671,6 +703,8 @@ in
     nerd-fonts.iosevka
     nerd-fonts.hack
     nerd-fonts.symbols-only
+    noto-fonts-color-emoji
+
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
