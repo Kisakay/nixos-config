@@ -573,7 +573,8 @@ in
     qtox
 
     discord
-
+    vesktop
+    
     # I3 PART
     rofi
     picom
