@@ -574,7 +574,7 @@ in
 
     discord
     vesktop
-    
+
     # I3 PART
     rofi
     picom
@@ -618,10 +618,15 @@ in
     twemoji-color-font
     libnotify
     i3status
+    i3blocks
     xdotool
     stalonetray
 
+    # MESSENGER
     session-desktop
+
+    # Thermal Managment
+    radeontop
   ];
 
   services.vnstat.enable = true;
@@ -781,6 +786,8 @@ in
     HandleLidSwitchDocked = "ignore";
     HandleLidSwitchExternalPower = "ignore";
     HandleLidSwitch = "ignore";
+    HandlePowerKey = "ignore";
+    HandlePowerKeyLongPress = "ignore";
   };
 
   services = {
