@@ -8,29 +8,6 @@ let
   # My Current Username
   myUsername = "kisakay";
 
-  # workaround for github-desktop on unstable
-  ghd = pkgs.writeShellScriptBin "github-desktop" ''
-    exec env \
-      PATH="${pkgs.gitFull}/bin:${pkgs.gitFull}/libexec/git-core:$PATH" \
-      GIT_EXEC_PATH="${pkgs.gitFull}/libexec/git-core" \
-      GIT_CONFIG_NOSYSTEM=1 \
-      ${pkgs.github-desktop}/bin/github-desktop "$@"
-  '';
-
-  githubDesktopDesktop = pkgs.makeDesktopItem {
-    name = "github-desktop";
-    desktopName = "GitHub Desktop";
-    genericName = "Git Client";
-    comment = "GitHub Desktop with fixed Git environment";
-    exec = "github-desktop %U";
-    icon = "github-desktop";
-    terminal = false;
-    categories = [
-      "Development"
-      "IDE"
-    ];
-    startupWMClass = "GitHub Desktop";
-  };
 in
 {
   imports = [
@@ -38,7 +15,7 @@ in
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages;
     kernelModules = [
       "ip_tables"
       "iptable_nat"
@@ -46,6 +23,7 @@ in
       "snd-aloop"
       "v4l2loopback"
       "amdgpu"
+      "kernelModules"
     ];
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
@@ -308,8 +286,7 @@ in
     wine
     git
 
-    ghd
-    githubDesktopDesktop
+    github-desktop
 
     # vscode
     vscodium
@@ -608,6 +585,8 @@ in
       xdg-desktop-portal-gtk
     ];
   };
+
+  services.hardware.bolt.enable = true;
 
   services.xserver.excludePackages = with pkgs; [
     xterm
