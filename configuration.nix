@@ -114,6 +114,9 @@ in
   # ---- I3 PART ----
   services.xserver.windowManager.i3.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
+
   services.xserver.windowManager.i3.extraPackages = with pkgs; [
     dmenu
     i3status
@@ -212,10 +215,13 @@ in
   };
 
   programs.dconf.enable = true;
+  xdg.mime.enable = true;
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = [ myUsername ];
   virtualisation.spiceUSBRedirection.enable = true;
+
+  security.pam.services.ly.enableGnomeKeyring = true;
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
@@ -294,6 +300,7 @@ in
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "radeonsi";
     GIT_EXEC_PATH = "${pkgs.gitFull}/libexec/git-core";
+    XDG_CURRENT_DESKTOP = "i3";
   };
 
   environment.systemPackages = with pkgs; [
