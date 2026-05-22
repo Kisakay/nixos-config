@@ -7,30 +7,6 @@
 let
   # My Current Username
   myUsername = "kisakay";
-
-  # workaround for github-desktop on unstable
-  ghd = pkgs.writeShellScriptBin "github-desktop" ''
-    exec env \
-      PATH="${pkgs.gitFull}/bin:${pkgs.gitFull}/libexec/git-core:$PATH" \
-      GIT_EXEC_PATH="${pkgs.gitFull}/libexec/git-core" \
-      GIT_CONFIG_NOSYSTEM=1 \
-      ${pkgs.github-desktop}/bin/github-desktop "$@"
-  '';
-
-  githubDesktopDesktop = pkgs.makeDesktopItem {
-    name = "github-desktop";
-    desktopName = "GitHub Desktop";
-    genericName = "Git Client";
-    comment = "GitHub Desktop with fixed Git environment";
-    exec = "github-desktop %U";
-    icon = "github-desktop";
-    terminal = false;
-    categories = [
-      "Development"
-      "IDE"
-    ];
-    startupWMClass = "GitHub Desktop";
-  };
 in
 {
   imports = [
@@ -301,6 +277,7 @@ in
     LIBVA_DRIVER_NAME = "radeonsi";
     GIT_EXEC_PATH = "${pkgs.gitFull}/libexec/git-core";
     XDG_CURRENT_DESKTOP = "i3";
+    GIT_SSH_COMMAND = "ssh";
   };
 
   environment.systemPackages = with pkgs; [
@@ -316,8 +293,7 @@ in
     wine
     git
 
-    ghd
-    githubDesktopDesktop
+    github-desktop
 
     # vscode
     vscodium
@@ -604,6 +580,9 @@ in
     kdePackages.breeze
     bibata-cursors
     sl
+
+    git-credential-manager
+    nautilus
   ];
 
   services.vnstat.enable = true;
@@ -611,10 +590,11 @@ in
 
   xdg.portal = {
     enable = true;
-    xdgOpenUsePortal = true;
+    xdgOpenUsePortal = false;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
     ];
+    config.common.default = "*";
   };
 
   services.hardware.bolt.enable = true;

@@ -43,3 +43,4 @@ export MESA_SHADER_CACHE_DIR=$HOME/.cache/mesa_shader_cache
 export __GL_SHADER_DISK_CACHE=1
 export DBX_CONTAINER_MANAGER=podman
 export LIBVIRT_DEFAULT_URI=qemu:///system
+export PATH="$HOME/.local/bin:$PATH"
