@@ -230,6 +230,9 @@ in
   users.groups.libvirtd.members = [ myUsername ];
   virtualisation.spiceUSBRedirection.enable = true;
 
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
+
   virtualisation = {
 
     libvirtd = {
@@ -478,9 +481,6 @@ in
 
     unrar
 
-    # tpm 2.0 for virt-manager
-    swtpm
-
     lm_sensors
 
     audacity
@@ -627,10 +627,19 @@ in
 
     # Thermal Managment
     radeontop
+
+    # virt-manager related
+    dnsmasq
+    # tpm 2.0 for virt-manager
+    swtpm
+
+    kdePackages.breeze
+    bibata-cursors
   ];
 
   services.vnstat.enable = true;
   services.gnome.core-utilities.enable = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -663,6 +672,9 @@ in
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
+
+    XCURSOR_THEME = "Breeze";
+    XCURSOR_SIZE = "24";
   };
 
   # Configuration pour les shells de développement
@@ -844,4 +856,6 @@ in
     53
     51820
   ];
+
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 }
