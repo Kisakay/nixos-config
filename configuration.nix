@@ -90,8 +90,6 @@ in
     plugins = with pkgs; [ networkmanager-openvpn ];
   };
 
-  systemd.services.NetworkManager-wait-online.enable = true;
-
   services.timesyncd.enable = true;
 
   # Set your time zone.
@@ -104,23 +102,14 @@ in
   services.fprintd.enable = true;
   #   services.fprintd.tod.enable = true
   services.fwupd.enable = true;
-  services.gnome.gnome-keyring.enable = true;
 
   services.xserver.enable = true;
 
-  services.displayManager = {
-    defaultSession = "none+i3";
+  # Ly Greeter
+  services.displayManager.ly.enable = true;
 
-    gdm = {
-      enable = true;
-
-      # GNOME en Wayland
-      wayland = true;
-    };
-  };
-
-  services.desktopManager.gnome.enable = true;
-
+  # i3 WM
+  services.displayManager.defaultSession = "none+i3";
   # ---- I3 PART ----
   services.xserver.windowManager.i3.enable = true;
 
@@ -131,9 +120,6 @@ in
   ];
 
   #   ---- END OF I3 PART ----
-
-  # will fix gnome pam
-  security.pam.services.login.enableGnomeKeyring = true;
 
   # Select internationalisation properties.
 
@@ -329,7 +315,7 @@ in
     vscodium
     steam
     prismlauncher
-    bottles
+    # bottles
     windterm
     dbeaver-bin
     entr
@@ -539,32 +525,6 @@ in
     # rofi
     zed-editor
 
-    # GNOME
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.caffeine
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.desktop-cube
-    gnomeExtensions.force-quit
-    gnomeExtensions.ip-finder
-    gnomeExtensions.just-perfection
-    gnomeExtensions.runcat
-    gnomeExtensions.appindicator
-    gnomeExtensions.customize-clock-on-lock-screen
-    gnomeExtensions.emoji-copy
-    gnomeExtensions.user-themes
-    gnomeExtensions.vscode-workspaces-gnome
-    gnomeExtensions.media-controls
-    gnomeExtensions.dash-to-panel
-    gnomeExtensions.desktop-clock
-    gnomeExtensions.window-desaturation
-    gnomeExtensions.media-controls
-    gnomeExtensions.add-to-desktop
-    gnome-extension-manager
-    gnome-tweaks
-    gnome-sound-recorder
-    gnome-boxes
-
     # DEV
     android-studio-tools
     android-studio
@@ -604,7 +564,7 @@ in
     xdpyinfo
     clipman
     xcape
-    xorg.xmodmap
+    xmodmap
     playerctl
     wmctrl
     #noto-font-emoji # emoji font
@@ -635,17 +595,16 @@ in
 
     kdePackages.breeze
     bibata-cursors
+    sl
   ];
 
   services.vnstat.enable = true;
-  services.gnome.core-utilities.enable = true;
   virtualisation.libvirtd.qemu.swtpm.enable = true;
 
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
       xdg-desktop-portal-gtk
     ];
   };
