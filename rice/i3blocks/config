@@ -1,0 +1,27 @@
+separator=true
+separator_block_width=18
+markup=pango
+
+[now_playing]
+command=playerctl metadata --format '♫ {{artist}} - {{title}}' 2>/dev/null || echo '♫ nothing'
+interval=1
+
+[wireless]
+command=sh -c 'wifi=$(nmcli -t -f active,ssid,signal dev wifi | grep "^yes"); [ -n "$wifi" ] && echo "📶 $(echo "$wifi" | cut -d: -f3)% $(echo "$wifi" | cut -d: -f2)" || echo "📶 off"'
+interval=5
+
+[cpu_temp]
+command=sh -c 't=$(sensors | awk "/^local_f75303@4d:/ {gsub(/\+/, \"\", \$2); print \$2; exit}"); echo "🌡 $t"'
+interval=5
+
+[battery]
+command=sh -c 'bat=$(find /sys/class/power_supply -maxdepth 1 -type l | xargs -r -I{} sh -c '\''[ "$(cat "$1/type" 2>/dev/null)" = Battery ] && echo "$1"'\'' _ {} | head -n1); if [ -n "$bat" ] && [ -r "$bat/capacity" ]; then cap=$(cat "$bat/capacity" 2>/dev/null); status=$(cat "$bat/status" 2>/dev/null); if [ "$status" = Charging ]; then echo "⚡ ${cap}%"; else echo "🔋 ${cap}%"; fi; else echo "no battery"; fi'
+interval=10
+
+[volume]
+command=sh -c 'if pamixer --get-mute 2>/dev/null | grep -q true; then echo "🔇 muted"; else echo "🔊 $(pamixer --get-volume)%"; fi'
+interval=1
+
+[time]
+command=date "+%a %b %d %I:%M %p"
+interval=1

@@ -1,0 +1,130 @@
+set $mod Mod4
+exec --no-startup-id xsetroot -cursor_name left_ptr
+font pango:JetBrainsMono Nerd Font 10
+
+# ──────────────
+# Terminal / launcher
+# ──────────────
+set $term alacritty
+bindsym $mod+Return exec $term
+bindsym $mod+d exec sh -c 'command -v rofi >/dev/null && rofi -show drun'
+
+# (ton ancien bind $mod seul supprimé → conflit inutile)
+
+# ──────────────
+# Window control
+# ──────────────
+bindsym $mod+Shift+q kill
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+Right move right
+
+# ──────────────
+# Screens / workspaces
+# ──────────────
+set $main DP-8
+set $right DP-7
+set $laptop eDP-1
+
+exec --no-startup-id ~/.config/i3/scripts/screen-setup.sh
+exec --no-startup-id i3-msg 'workspace 1'
+
+workspace 1 output $main
+workspace 2 output $main
+workspace 3 output $main
+workspace 4 output $main
+workspace 5 output $main
+workspace 6 output $main
+workspace 7 output $right
+workspace 8 output $right
+workspace 9 output $right
+
+# ──────────────
+# Cyber hotkeys
+# ──────────────
+bindsym $mod+f fullscreen toggle
+bindsym $mod+l exec sh -c 'command -v i3lock >/dev/null && i3lock || command -v i3lock-color >/dev/null && i3lock-color || loginctl lock-session'
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+s exec\ --no-startup-id ~/.config/i3/scripts/screen-setup.sh
+
+# volume
+bindsym XF86AudioRaiseVolume exec pamixer -i 5
+bindsym XF86AudioLowerVolume exec pamixer -d 5
+bindsym XF86AudioMute exec pamixer -t
+bindsym $mod+Shift+e exec nautilus
+
+# ──────────────
+# Autostart
+# ──────────────
+
+exec --no-startup-id dunst
+exec --no-startup-id nm-applet
+
+# Shortcut
+bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh
+
+exec --no-startup-id copyq
+exec --no-startup-id playerctld
+exec --no-startup-id ~/.config/i3/scripts/now-playing.sh
+
+bindsym $mod+e exec rofimoji
+bindsym $mod+v exec copyq toggle
+
+# audio control
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+bar {
+    status_command i3blocks
+    position top
+    tray_output primary
+
+    colors {
+        background #1e1e2e
+        statusline #cdd6f4
+        separator  #585b70
+
+        focused_workspace  #89b4fa #89b4fa #1e1e2e
+        active_workspace   #74c7ec #74c7ec #1e1e2e
+        inactive_workspace #313244 #313244 #cdd6f4
+        urgent_workspace   #f38ba8 #f38ba8 #1e1e2e
+    }
+}
+#exec --no-startup-id xsetroot -solid "#cf2121ff"
+#xsetroot -solid "#333333"
+exec --no-startup-id clipman
+
+# workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+
+set $term alacritty
+bindsym $mod+t exec $term
+
+bindsym $mod+Control+q kill
+
+
+# Wallpaper
+exec_always --no-startup-id ~/.config/i3/scripts/wallpaper.sh
+bindsym $mod+Shift+w exec --no-startup-id ~/.config/i3/scripts/wallpaper.sh image

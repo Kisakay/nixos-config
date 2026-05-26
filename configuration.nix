@@ -293,8 +293,6 @@ in
     wine
     git
 
-    github-desktop
-
     # vscode
     vscodium
     steam
@@ -583,6 +581,9 @@ in
 
     git-credential-manager
     nautilus
+
+    desktop-file-utils
+    gnome-disk-utility
   ];
 
   services.vnstat.enable = true;
