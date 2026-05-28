@@ -514,8 +514,10 @@ in
     vnstat
     qtox
 
-    discord
-    vesktop
+    (discord.override {
+      withOpenASAR = true; # can do this here too
+      withVencord = true;
+    })
 
     # I3 PART
     rofi
