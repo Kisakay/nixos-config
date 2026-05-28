@@ -223,7 +223,7 @@ in
     remote = "http://127.0.0.1";
     tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
     tokenFile = "/etc/nixos-local/pelican/wings-token";
-    api.port = 8080;
+    api.port = 80;
     api.uploadLimit = 4096;
     api.ssl.enable = false;
     system.sftp.port = 2022;
