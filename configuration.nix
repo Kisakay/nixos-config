@@ -158,8 +158,6 @@ in
     wireplumber.enable = true; # AJOUTER
   };
 
-  hardware.openrazer.enable = true;
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -174,7 +172,6 @@ in
       "video"
       "render"
       "plugdev"
-      "openrazer"
       "docker"
     ];
   };
