@@ -1,5 +1,8 @@
 {
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    pelican.url = "github:Hythera/nix-pelican";
 
     nixos-local = {
       url = "path:/etc/nixos-local";
@@ -23,6 +26,7 @@
       nixos-local,
       qxchat-src,
       zen-browser,
+      pelican,
       ...
     }:
     let
@@ -32,8 +36,18 @@
       nixosConfigurations."computer" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          # Pelican: packages overlay only, no upstream modules
+          { nixpkgs.overlays = [ pelican.overlays.default ]; }
 
-          # QxChat (module + package overlay)
+          # Pelican: both modules from your local copies
+          {
+            imports = [
+              ./pelican/panel/module.nix
+              ./pelican/wings/module.nix
+            ];
+          }
+
+          # QxChat
           {
             imports = [ "${qxchat-src}/nix/module.nix" ];
             nixpkgs.overlays = [
@@ -44,7 +58,7 @@
             programs.qxchat.enable = true;
           }
 
-          # Zen Browser setup
+          # Zen Browser
           {
             environment.systemPackages = [
               zen-browser.packages.${system}.default

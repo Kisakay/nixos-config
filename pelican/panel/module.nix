@@ -1,0 +1,670 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.services.pelican.panel;
+
+  panel-package = cfg.package.override { dataDir = cfg.dataDir; };
+
+  env =
+    (lib.filterAttrs (n: v: v != null) {
+      APP_NAME = cfg.app.name;
+      APP_ENV = cfg.app.env;
+      APP_DEBUG = cfg.app.debug;
+      APP_KEY = if cfg.app.keyFile != null then "@APP_KEY@" else cfg.app.key;
+      APP_LOCALE = cfg.app.locale;
+      APP_URL = cfg.app.url;
+      APP_INSTALLED = true;
+
+      DB_CONNECTION = "pgsql";
+      DB_HOST = cfg.database.host;
+      DB_PORT = cfg.database.port;
+      DB_DATABASE = cfg.database.name;
+      DB_USERNAME = cfg.database.user;
+      DB_PASSWORD = if cfg.database.passwordFile != null then "@DB_PASSWORD@" else cfg.database.password;
+
+      REDIS_SCHEME = if cfg.redis.createLocally then "unix" else "tcp";
+      REDIS_PATH =
+        if cfg.redis.createLocally then
+          config.services.redis.servers.${cfg.redis.name}.unixSocket
+        else
+          null;
+      REDIS_HOST = if cfg.redis.createLocally then null else cfg.redis.host;
+      REDIS_PORT = if cfg.redis.createLocally then null else cfg.redis.port;
+      REDIS_USERNAME = null;
+      REDIS_PASSWORD = if cfg.redis.passwordFile != null then "@REDIS_PASSWORD@" else cfg.redis.password;
+
+      CACHE_STORE = cfg.cacheStore;
+      QUEUE_CONNECTION = cfg.queueConnection;
+      SESSION_DRIVER = cfg.sessionDriver;
+
+      MAIL_MAILER = cfg.mail.mailer;
+      MAIL_HOST = cfg.mail.host;
+      MAIL_PORT = cfg.mail.port;
+      MAIL_USERNAME = cfg.mail.username;
+      MAIL_PASSWORD = if cfg.mail.passwordFile != null then "@MAIL_PASSWORD@" else cfg.mail.password;
+      MAIL_ENCRYPTION = cfg.mail.encryption;
+      MAIL_FROM_ADDRESS = cfg.mail.fromAddress;
+      MAIL_FROM_NAME = cfg.mail.fromName;
+
+      TRUSTED_PROXIES = builtins.concatStringsSep "," cfg.trustedProxies;
+    })
+    // cfg.extraEnvironment;
+
+  setupScript = pkgs.writeShellApplication {
+    name = "pelican-panel-setup";
+    runtimeInputs = with pkgs; [
+      coreutils
+      replace-secret
+      cfg.phpPackage
+    ];
+    text = ''
+      install -Dm640 -o ${cfg.user} -g ${cfg.group} ${
+        pkgs.writeText "pelican.env" (
+          lib.generators.toKeyValue {
+            mkKeyValue = lib.generators.mkKeyValueDefault {
+              mkValueString =
+                v:
+                if builtins.isString v && lib.strings.hasInfix " " v then
+                  ''"${v}"''
+                else
+                  lib.generators.mkValueStringDefault { } v;
+            } "=";
+          } env
+        )
+      } ${cfg.dataDir}/.env
+
+      ${lib.optionalString (cfg.app.keyFile != null) ''
+        replace-secret '@APP_KEY@' ${lib.escapeShellArg cfg.app.keyFile} ${cfg.dataDir}/.env
+      ''}
+
+      ${lib.optionalString (cfg.database.passwordFile != null) ''
+        replace-secret '@DB_PASSWORD@' ${lib.escapeShellArg cfg.database.passwordFile} ${cfg.dataDir}/.env
+      ''}
+
+      ${lib.optionalString (cfg.redis.passwordFile != null) ''
+        replace-secret '@REDIS_PASSWORD@' ${lib.escapeShellArg cfg.redis.passwordFile} ${cfg.dataDir}/.env
+      ''}
+
+      ${lib.optionalString (cfg.mail.passwordFile != null) ''
+        replace-secret '@MAIL_PASSWORD@' ${lib.escapeShellArg cfg.mail.passwordFile} ${cfg.dataDir}/.env
+      ''}
+
+      ${lib.optionalString (cfg.extraEnvironmentFile != null) ''
+        cat ${lib.escapeShellArg cfg.extraEnvironmentFile} >> ${cfg.dataDir}/.env
+      ''}
+
+      rm -f ${cfg.dataDir}/bootstrap/cache/*.php
+      php ${panel-package}/artisan migrate --seed --force
+      php ${panel-package}/artisan optimize:clear
+    '';
+  };
+
+  pelicanCli = pkgs.writeShellApplication {
+    name = "pelican-cli";
+    runtimeInputs = [ cfg.phpPackage ];
+    text = ''
+      cd ${cfg.dataDir}
+      php ${panel-package}/artisan "$@"
+    '';
+  };
+
+  cfgService = {
+    User = cfg.user;
+    Group = cfg.group;
+    WorkingDirectory = panel-package;
+    StateDirectory = lib.removePrefix "/var/lib/" cfg.dataDir;
+    ReadWritePaths = [ cfg.dataDir ];
+  };
+in
+{
+  options.services.pelican.panel = {
+    enable = lib.mkEnableOption "Pelican Panel";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.pelican.panel;
+      defaultText = "pkgs.pelican.panel";
+      description = "Pelican Panel package to use";
+    };
+
+    phpPackage = lib.mkOption {
+      type = lib.types.package;
+      readOnly = true;
+      default = pkgs.php84.buildEnv {
+        extensions =
+          { enabled, all }:
+          enabled
+          ++ (with all; [
+            bcmath
+            curl
+            gd
+            intl
+            mbstring
+            pdo_pgsql
+            pgsql
+            sqlite3
+            zip
+          ]);
+      };
+      defaultText = lib.literalExpression ''
+        pkgs.php84.buildEnv {
+          extensions =
+            { enabled, all }:
+            enabled
+            ++ (with all; [
+              bcmath
+              curl
+              gd
+              intl
+              mbstring
+              pdo_pgsql
+              pgsql
+              sqlite3
+              zip
+            ]);
+        };
+      '';
+      description = "The PHP package to use";
+    };
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "pelican-panel";
+      description = "User to run the panel as";
+    };
+
+    group = lib.mkOption {
+      type = lib.types.str;
+      default = "pelican-panel";
+      description = "Group to run the panel as";
+    };
+
+    enableNginx = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable Nginx and PHP-FPM";
+    };
+
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib/pelican-panel";
+      description = "The root directory where all of the panel's data is stored";
+    };
+
+    app = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Pelican";
+        description = "The name of the panel";
+      };
+
+      env = lib.mkOption {
+        type = lib.types.str;
+        default = "production";
+        description = "The panel environment";
+      };
+
+      debug = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Whether to run the panel in debug mode";
+      };
+
+      key = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The panel encryption key";
+      };
+
+      keyFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to a file containing the panel encryption key";
+      };
+
+      locale = lib.mkOption {
+        type = lib.types.str;
+        default = "en";
+        description = "The locale for the panel";
+      };
+
+      url = lib.mkOption {
+        type = lib.types.str;
+        description = "The URL of the panel";
+      };
+    };
+
+    database = {
+      createLocally = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Whether to create the database locally";
+      };
+
+      host = lib.mkOption {
+        type = lib.types.str;
+        default = "127.0.0.1";
+        description = "The host of the database";
+      };
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 5432;
+        description = "The port of the database";
+      };
+
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "panel";
+        description = "The name of the database";
+      };
+
+      user = lib.mkOption {
+        type = lib.types.str;
+        default = "pelican-panel";
+        description = "The user for the database";
+      };
+
+      password = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The password for the database";
+      };
+
+      passwordFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to a file containing the database password";
+      };
+    };
+
+    redis = {
+      createLocally = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Whether to create the Redis instance locally";
+      };
+
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "pelican-panel";
+        description = "The name of the Redis server to create";
+      };
+
+      host = lib.mkOption {
+        type = lib.types.str;
+        default = "127.0.0.1";
+        description = "The host of the Redis server";
+      };
+
+      password = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The password for the Redis server";
+      };
+
+      passwordFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to a file containing the Redis password";
+      };
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 6379;
+        description = "The port of the Redis server";
+      };
+    };
+
+    security = {
+      disable_initial_admin_creation = lib.mkOption {
+        description = "Disable creation of admin user on first start of Pelican";
+        default = false;
+        type = lib.types.bool;
+      };
+
+      password = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The password for the admin account";
+      };
+
+      passwordFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to a file containing the admin password";
+      };
+    };
+
+    cacheStore = lib.mkOption {
+      type = lib.types.str;
+      default = "redis";
+      description = "The store for the cache";
+    };
+
+    queueConnection = lib.mkOption {
+      type = lib.types.str;
+      default = "redis";
+      description = "The driver for the queue";
+    };
+
+    sessionDriver = lib.mkOption {
+      type = lib.types.str;
+      default = "redis";
+      description = "The driver for the session";
+    };
+
+    mail = {
+      mailer = lib.mkOption {
+        type = lib.types.str;
+        default = "smtp";
+        description = "The mailer to use";
+      };
+
+      host = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The host of the mail server";
+      };
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 25;
+        description = "The port of the mail server";
+      };
+
+      username = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The username for the mail server";
+      };
+
+      password = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The password for the mail server";
+      };
+
+      passwordFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to a file containing the mail password";
+      };
+
+      encryption = lib.mkOption {
+        type = lib.types.str;
+        default = "tls";
+        description = "The encryption for the mail server";
+      };
+
+      fromAddress = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The from address for the mail server";
+      };
+
+      fromName = lib.mkOption {
+        type = lib.types.str;
+        default = "Pelican Panel";
+        description = "The from name for the mail server";
+      };
+    };
+
+    trustedProxies = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "A list of trusted proxy IP addresses";
+    };
+
+    extraEnvironment = lib.mkOption {
+      type = lib.types.attrsOf lib.types.str;
+      default = { };
+      description = "Extra environment variables to be merged with the main environment variables";
+    };
+
+    extraEnvironmentFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Additional environment file to be merged with other environment variables";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.app.key == null || cfg.app.keyFile == null;
+        message = "cannot set both services.pelican.panel.app.key and services.pelican.panel.app.keyFile";
+      }
+      {
+        assertion = cfg.app.key != null || cfg.app.keyFile != null;
+        message = "must set either services.pelican.panel.app.key or services.pelican.panel.app.keyFile";
+      }
+      {
+        assertion = cfg.database.password == null || cfg.database.passwordFile == null;
+        message = "cannot set both services.pelican.panel.database.password and services.pelican.panel.database.passwordFile";
+      }
+      {
+        assertion = cfg.redis.password == null || cfg.redis.passwordFile == null;
+        message = "cannot set both services.pelican.panel.redis.password and services.pelican.panel.redis.passwordFile";
+      }
+      {
+        assertion = cfg.mail.password == null || cfg.mail.passwordFile == null;
+        message = "cannot set both services.pelican.panel.mail.password and services.pelican.panel.mail.passwordFile";
+      }
+    ];
+
+    users.users = lib.mkIf (cfg.user == "pelican-panel") {
+      ${cfg.user} = {
+        isSystemUser = true;
+        group = cfg.group;
+        home = cfg.dataDir;
+        extraGroups = lib.optionals cfg.redis.createLocally [ "redis" ];
+      };
+    };
+
+    users.groups = lib.mkIf (cfg.group == "pelican-panel") {
+      "${cfg.group}" = { };
+    };
+
+    services.pelican.panel.group = lib.mkIf cfg.enableNginx (lib.mkDefault config.services.nginx.group);
+
+    services.postgresql = lib.optionalAttrs cfg.database.createLocally {
+      enable = true;
+    };
+
+    systemd.services.postgresql.postStart = lib.mkIf cfg.database.createLocally (
+      lib.mkAfter (
+        let
+          dbPass =
+            if cfg.database.passwordFile != null then
+              "$(head -n1 ${lib.escapeShellArg cfg.database.passwordFile})"
+            else
+              cfg.database.password;
+          psql = lib.getExe' config.services.postgresql.package "psql";
+        in
+        ''
+          ${psql} -tAc "SELECT 1 FROM pg_roles WHERE rolname='${cfg.database.user}'" | grep -q 1 \
+            || ${psql} -tAc 'CREATE ROLE "${cfg.database.user}" LOGIN'
+
+          ${psql} -tAc "ALTER ROLE \"${cfg.database.user}\" WITH LOGIN PASSWORD '${dbPass}'"
+
+          ${psql} -tAc "SELECT 1 FROM pg_database WHERE datname='${cfg.database.name}'" | grep -q 1 \
+            || ${psql} -tAc 'CREATE DATABASE "${cfg.database.name}" OWNER "${cfg.database.user}" TEMPLATE template0'
+
+          ${psql} -tAc "GRANT ALL PRIVILEGES ON DATABASE \"${cfg.database.name}\" TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "GRANT ALL ON SCHEMA public TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER SCHEMA public OWNER TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO \"${cfg.database.user}\""
+          ${psql} -d "${cfg.database.name}" -tAc "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO \"${cfg.database.user}\""
+        ''
+      )
+    );
+
+    services.redis.servers."${cfg.redis.name}" = lib.mkIf cfg.redis.createLocally (
+      {
+        enable = true;
+        user = cfg.user;
+        group = cfg.group;
+      }
+      // lib.optionalAttrs (cfg.redis.password != null) { requirePass = cfg.redis.password; }
+      // lib.optionalAttrs (cfg.redis.passwordFile != null) { requirePassFile = cfg.redis.passwordFile; }
+    );
+
+    systemd.tmpfiles.settings."10-pelican-panel" =
+      lib.attrsets.genAttrs
+        [
+          "${cfg.dataDir}/bootstrap"
+          "${cfg.dataDir}/bootstrap/cache"
+          "${cfg.dataDir}/plugins"
+          "${cfg.dataDir}/storage"
+          "${cfg.dataDir}/storage/app"
+          "${cfg.dataDir}/storage/app/public"
+          "${cfg.dataDir}/storage/app/private"
+          "${cfg.dataDir}/storage/framework"
+          "${cfg.dataDir}/storage/framework/cache"
+          "${cfg.dataDir}/storage/framework/sessions"
+          "${cfg.dataDir}/storage/framework/views"
+          "${cfg.dataDir}/storage/logs"
+        ]
+        (n: {
+          d = {
+            user = cfg.user;
+            group = cfg.group;
+            mode = "0770";
+          };
+        })
+      // {
+        "${cfg.dataDir}".d = {
+          user = cfg.user;
+          group = cfg.group;
+          mode = "0750";
+        };
+      };
+
+    systemd.services.pelican-panel-setup = {
+      description = "Pelican Panel setup";
+      requiredBy = lib.optional cfg.enableNginx "phpfpm-pelican-panel.service";
+      before = lib.optional cfg.enableNginx "phpfpm-pelican-panel.service";
+      after = lib.optionals cfg.database.createLocally [ "postgresql.service" ];
+      restartTriggers = [ panel-package ];
+
+      serviceConfig = cfgService // {
+        Type = "oneshot";
+        ExecStart = lib.getExe setupScript;
+        ExecStartPost = [
+          "${cfg.phpPackage}/bin/php ${panel-package}/artisan cache:clear"
+          "${cfg.phpPackage}/bin/php ${panel-package}/artisan config:clear"
+        ];
+        RemainAfterExit = true;
+      };
+    };
+
+    systemd.services.pelican-queue = {
+      description = "Pelican Queue Service";
+      after = [
+        "pelican-panel-setup.service"
+        "redis-pelican-panel.service"
+      ]
+      ++ lib.optionals cfg.database.createLocally [ "postgresql.service" ];
+      wants = [ "pelican-panel-setup.service" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = cfgService // {
+        ExecStart = "${cfg.phpPackage}/bin/php ${panel-package}/artisan queue:work --tries=3";
+        Restart = "always";
+      };
+    };
+
+    systemd.services.pelican-panel-cron = {
+      description = "Pelican Panel cron job";
+      after = [
+        "pelican-panel-setup.service"
+        "redis-pelican-panel.service"
+      ]
+      ++ lib.optionals cfg.database.createLocally [ "postgresql.service" ];
+      wants = [ "pelican-panel-setup.service" ];
+
+      serviceConfig = cfgService // {
+        Type = "oneshot";
+        ExecStart = "${cfg.phpPackage}/bin/php ${panel-package}/artisan schedule:run";
+      };
+    };
+
+    systemd.timers.pelican-panel-cron = {
+      description = "Pelican Panel cron timer";
+      wantedBy = [ "timers.target" ];
+      restartTriggers = [ panel-package ];
+
+      timerConfig = {
+        OnCalendar = "minutely";
+        Persistent = true;
+      };
+    };
+
+    services.phpfpm.pools.pelican-panel = lib.mkIf cfg.enableNginx {
+      user = cfg.user;
+      group = cfg.group;
+      phpPackage = cfg.phpPackage;
+      settings = {
+        "listen.owner" = config.services.nginx.user;
+        "listen.group" = config.services.nginx.group;
+        "pm" = "dynamic";
+        "pm.max_children" = 5;
+        "pm.start_servers" = 2;
+        "pm.min_spare_servers" = 1;
+        "pm.max_spare_servers" = 3;
+      };
+    };
+
+    systemd.services."phpfpm-pelican-panel" = lib.mkIf cfg.enableNginx {
+      requires = [ "pelican-panel-setup.service" ];
+    };
+
+    services.nginx = lib.mkIf cfg.enableNginx {
+      enable = true;
+      recommendedTlsSettings = lib.mkDefault true;
+      recommendedOptimisation = lib.mkDefault true;
+      recommendedGzipSettings = lib.mkDefault true;
+      virtualHosts."${builtins.replaceStrings [ "https://" "http://" ] [ "" "" ] cfg.app.url}" = {
+        root = "${panel-package}/public";
+        extraConfig = ''
+          index index.php;
+          client_max_body_size 100m;
+          client_body_timeout 120s;
+          sendfile off;
+        '';
+        locations = {
+          "/" = {
+            tryFiles = "$uri $uri/ /index.php?$query_string";
+            index = "index.php";
+            extraConfig = ''
+              sendfile off;
+            '';
+          };
+          "~ \\.php$" = {
+            extraConfig = ''
+              fastcgi_split_path_info ^(.+\.php)(/.+)$;
+              fastcgi_pass unix:${config.services.phpfpm.pools.pelican-panel.socket};
+              fastcgi_index index.php;
+              fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+              fastcgi_param HTTP_PROXY "";
+              fastcgi_intercept_errors off;
+              fastcgi_buffer_size 16k;
+              fastcgi_buffers 4 16k;
+              fastcgi_connect_timeout 300;
+              fastcgi_send_timeout 300;
+              fastcgi_read_timeout 300;
+              include ${pkgs.nginx}/conf/fastcgi_params;
+            '';
+          };
+        };
+      };
+    };
+
+    environment.systemPackages = [ pelicanCli ];
+  };
+}

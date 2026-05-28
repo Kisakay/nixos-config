@@ -175,6 +175,7 @@ in
       "render"
       "plugdev"
       "openrazer"
+      "docker"
     ];
   };
 
@@ -201,6 +202,44 @@ in
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
+
+  # PELICAN.DEV PANEL
+  services.pelican.panel = {
+    enable = true;
+    app = {
+      url = "http://127.0.0.1";
+      keyFile = "/etc/nixos/app.key";
+    };
+    database.host = "127.0.0.1";
+    database.port = 5432;
+    database.name = "pelican";
+    database.user = "pelican-panel";
+    database.passwordFile = "/etc/nixos/.password";
+    mail.mailer = "log";
+  };
+
+  services.pelican.wings = {
+    enable = true;
+    openFirewall = false;
+    uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
+    rootDir = "/var/lib/pelican";
+    remote = "http://127.0.0.1";
+    tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
+    tokenFile = "/etc/nixos-local/pelican/wings-token";
+    api.port = 8080;
+    api.uploadLimit = 4096;
+    api.ssl.enable = false;
+    system.sftp.port = 2022;
+  };
+
+  # docker part
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
   virtualisation = {
 
@@ -784,11 +823,6 @@ in
       enable = true;
       ibus.engines = with pkgs.ibus-engines; [ ];
     };
-  };
-
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
   };
 
   networking.firewall.enable = true;
