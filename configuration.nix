@@ -200,52 +200,62 @@ in
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
 
-  # PELICAN.DEV PANEL
-  services.pelican.panel = {
-    enable = true;
-    app = {
-      url = "http://127.0.0.1";
-      keyFile = "/etc/nixos/app.key";
-    };
-    database.host = "127.0.0.1";
-    database.port = 5432;
-    database.name = "pelican";
-    database.user = "pelican-panel";
-    database.passwordFile = "/etc/nixos/.password";
-    mail.mailer = "log";
-  };
+  # # PELICAN.DEV PANEL
+  # services.pelican.panel = {
+  #   enable = true;
+  #   app = {
+  #     url = "http://127.0.0.1";
+  #     keyFile = "/etc/nixos/app.key";
+  #   };
+  #   database.host = "127.0.0.1";
+  #   database.port = 5432;
+  #   database.name = "pelican";
+  #   database.user = "pelican-panel";
+  #   database.passwordFile = "/etc/nixos/.password";
+  #   mail.mailer = "log";
+  # };
 
-  services.pelican.wings = {
+  # services.pelican.wings = {
+  #   enable = true;
+  #   openFirewall = false;
+  #   uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
+  #   rootDir = "/var/lib/pelican";
+  #   remote = "http://127.0.0.1";
+  #   tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
+  #   tokenFile = "/etc/nixos-local/pelican/wings-token";
+  #   api.port = 80;
+  #   api.uploadLimit = 4096;
+  #   api.ssl.enable = false;
+  #   system.sftp.port = 2022;
+  # };
+
+  virtualisation.podman = {
     enable = true;
-    openFirewall = false;
-    uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
-    rootDir = "/var/lib/pelican";
-    remote = "http://127.0.0.1";
-    tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
-    tokenFile = "/etc/nixos-local/pelican/wings-token";
-    api.port = 80;
-    api.uploadLimit = 4096;
-    api.ssl.enable = false;
-    system.sftp.port = 2022;
+    dockerCompat = true;
   };
 
   # docker part
   virtualisation.docker = {
-    enable = true;
+    enable = false;
     rootless = {
       enable = true;
       setSocketVariable = true;
     };
   };
 
-  virtualisation = {
+  virtualisation.libvirtd = {
+    enable = true;
+    onBoot = "start";
+    onShutdown = "shutdown";
 
-    libvirtd = {
-      enable = true;
-      onBoot = "start";
-      onShutdown = "shutdown";
+    qemu = {
+
+      vhostUserPackages = with pkgs; [
+        virtiofsd
+      ];
     };
   };
+
   services.spice-webdavd.enable = true;
 
   # Install firefox.
@@ -612,6 +622,7 @@ in
     dnsmasq
     # tpm 2.0 for virt-manager
     swtpm
+    virtiofsd
 
     kdePackages.breeze
     bibata-cursors
@@ -622,6 +633,18 @@ in
 
     desktop-file-utils
     gnome-disk-utility
+
+    # nixos
+    rustc
+    cargo
+    rustfmt
+    clippy
+    rustup
+
+    #   zig
+    zig
+    wine
+    remmina
   ];
 
   services.vnstat.enable = true;
@@ -736,7 +759,7 @@ in
   services.openssh = {
     enable = true;
     settings = {
-      PasswordAuthentication = false; # recommandé
+      PasswordAuthentication = true; # recommandé
       PermitRootLogin = "no";
     };
   };
@@ -822,7 +845,7 @@ in
     };
   };
 
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
   networking.firewall.allowPing = false;
 
   networking.firewall.allowedTCPPorts = [
