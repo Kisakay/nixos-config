@@ -539,7 +539,7 @@ in
     claude-code-router
     # custom part
     system-config-printer
-    rembg
+    # rembg
 
     # rust lang
     rustc
@@ -644,7 +644,10 @@ in
     #   zig
     zig
     wine
+
+    
     remmina
+    github-desktop
   ];
 
   services.vnstat.enable = true;

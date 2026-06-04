@@ -21,8 +21,8 @@
     "nixos-local": {
       "flake": false,
       "locked": {
-        "lastModified": 1778658537,
-        "narHash": "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=",
+        "lastModified": 1779980603,
+        "narHash": "sha256-1LABlUaXBIyCLxUN0pSkaEmzCxr50f4iMPrswtTgcS4=",
         "path": "/etc/nixos-local",
         "type": "path"
       },
@@ -33,11 +33,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1779560665,
-        "narHash": "sha256-tpyBcxPpcQb8ukyNF7DoCwfSY3VPsxHoYwj00Cayv5o=",
+        "lastModified": 1780243769,
+        "narHash": "sha256-x5UQuRsH3MqI0U9afaXSNqzTPSeZlRLvFAav2Ux1pNw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "64c08a7ca051951c8eae34e3e3cb1e202fe36786",
+        "rev": "331800de5053fcebacf6813adb5db9c9dca22a0c",
         "type": "github"
       },
       "original": {
@@ -85,11 +85,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1779462823,
-        "narHash": "sha256-yLeT5lvLfso08yJKWH0Kd1lMKbzUOLg6KPXP0ZpmCPU=",
+        "lastModified": 1780333218,
+        "narHash": "sha256-n1GGeWqgUccr354JdFZ4vEnRd8jlfCQHB8gvfm0Elko=",
         "ref": "main",
-        "rev": "220280a0e69382b79174f43b2459d0e8aa8df0a7",
-        "revCount": 165,
+        "rev": "5e0d0b17188a38c59be12b316ed648f937d802d9",
+        "revCount": 167,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
