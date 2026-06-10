@@ -337,7 +337,6 @@ in
     htop
     btop
     wine
-    git
 
     # vscode
     vscodium
@@ -531,7 +530,6 @@ in
 
     easyeffects
     gitFull
-    git-lfs
 
     #Claude
     claude-code
