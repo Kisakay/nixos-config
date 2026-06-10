@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
-choice=$(printf "Zone\nFenêtre active\nÉcran" | rofi -dmenu -p "Screenshot")
+choice=$(printf "Zone\nActive window\nScreen" | rofi -dmenu -p "Screenshot")
 
 case "$choice" in
-  Zone)
-    pkill -x rofi 2>/dev/null
-    sleep 0.2
-    flameshot gui -c
-    ;;
-  Fenêtre\ active)
-    maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
-    ;;
-  Écran)
-    flameshot full -c
-    ;;
+    Zone)
+        pkill -x rofi 2>/dev/null
+        sleep 0.2
+        flameshot gui -c
+        ;;
+    "Active window")
+        pkill -x rofi 2>/dev/null
+        sleep 0.2
+        WIN_ID=$(xdotool getactivewindow)
+        maim -i "$WIN_ID" | xclip -selection clipboard -t image/png
+        ;;
+    Screen)
+        flameshot full -c
+        ;;
 esac

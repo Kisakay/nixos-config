@@ -487,6 +487,8 @@ in
     nasm
     gpp
 
+    gnome-console
+
     # crypto mes couilles
     # exodus
     dig
@@ -611,6 +613,7 @@ in
     i3blocks
     xdotool
     stalonetray
+    maim
 
     # MESSENGER
     session-desktop
@@ -645,10 +648,18 @@ in
     zig
     wine
 
-    
     remmina
     github-desktop
   ];
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
+    environmentVariables = {
+      OLLAMA_VULKAN = "1";
+      OLLAMA_HOST = "0.0.0.0"; # fixes IPv6 ECONNREFUSED issues
+    };
+  };
 
   services.vnstat.enable = true;
   virtualisation.libvirtd.qemu.swtpm.enable = true;

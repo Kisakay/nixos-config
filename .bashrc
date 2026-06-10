@@ -44,3 +44,4 @@ export __GL_SHADER_DISK_CACHE=1
 export DBX_CONTAINER_MANAGER=podman
 export LIBVIRT_DEFAULT_URI=qemu:///system
 export PATH="$HOME/.local/bin:$PATH"
+alias c='oco .'
