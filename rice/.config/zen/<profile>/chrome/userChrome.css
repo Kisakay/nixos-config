@@ -1,0 +1,31 @@
+/* Audio */
+.tab-audio-button,
+.tab-icon-overlay[soundplaying],
+.tab-icon-overlay[muted] {
+    display: none !important;
+}
+
+/* Fermer */
+.tab-close-button {
+    display: none !important;
+}
+
+/* Unload */
+.tab-unload-button,
+.unload-button,
+.tab-reset-button {
+    display: none !important;
+}
+
+.tab-reset-pin-button,
+.tab-close-button,
+.tab-audio-button,
+.tab-unload-button,
+.unload-button,
+.tab-reset-button {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+.tabbrowser-tab[zen-essential="true"] .tab-content {
+    gap: 6px !important;
+}
