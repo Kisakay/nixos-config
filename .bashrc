@@ -45,3 +45,5 @@ export DBX_CONTAINER_MANAGER=podman
 export LIBVIRT_DEFAULT_URI=qemu:///system
 export PATH="$HOME/.local/bin:$PATH"
 alias c='oco .'
+
+alias ncc="ssh -L 3000:127.0.0.1:3000 nc"
