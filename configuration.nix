@@ -546,6 +546,7 @@ in
     cargo
     rustfmt
     clippy
+    rust-analyzer
 
     # rtc
     coturn
@@ -636,12 +637,9 @@ in
     gnome-disk-utility
 
     # nixos
-    rustc
-    cargo
     rustfmt
     clippy
     rustup
-
     #   zig
     zig
     wine
@@ -658,7 +656,7 @@ in
       }
     });
   '';
-  
+
   services.ollama = {
     enable = true;
     package = pkgs.ollama-vulkan;
