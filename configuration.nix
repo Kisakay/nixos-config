@@ -650,6 +650,15 @@ in
     github-desktop
   ];
 
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "org.freedesktop.fwupd.refresh-remote" &&
+          subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+  
   services.ollama = {
     enable = true;
     package = pkgs.ollama-vulkan;
