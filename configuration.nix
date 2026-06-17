@@ -542,11 +542,6 @@ in
     # rembg
 
     # rust lang
-    rustc
-    cargo
-    rustfmt
-    clippy
-    rust-analyzer
 
     # rtc
     coturn
@@ -637,7 +632,6 @@ in
     gnome-disk-utility
 
     # nixos
-    rustfmt
     clippy
     rustup
     #   zig
