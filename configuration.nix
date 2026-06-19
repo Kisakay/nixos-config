@@ -513,7 +513,7 @@ in
     deluge-gtk
     # mullvad-vpn
 
-    discordchatexporter-cli
+    # discordchatexporter-cli
 
     # .NET related packages
     icu
@@ -556,10 +556,7 @@ in
     vnstat
     qtox
 
-    (discord.override {
-      withOpenASAR = true; # can do this here too
-      withVencord = true;
-    })
+    discord
 
     # I3 PART
     rofi
