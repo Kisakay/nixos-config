@@ -87,24 +87,14 @@ in
 
   services.xserver.enable = true;
 
-  # Ly Greeter
-  services.displayManager.ly.enable = true;
 
-  # i3 WM
-  services.displayManager.defaultSession = "none+i3";
-  # ---- I3 PART ----
-  services.xserver.windowManager.i3.enable = true;
+  # ---- COSMIC DE PART ----
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
+  # ---- END OF COSMIC DE PART ----
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
-
-  services.xserver.windowManager.i3.extraPackages = with pkgs; [
-    dmenu
-    i3status
-    i3lock
-  ];
-
-  #   ---- END OF I3 PART ----
 
   # Select internationalisation properties.
 
@@ -200,7 +190,7 @@ in
   users.groups.libvirtd.members = [ myUsername ];
   virtualisation.spiceUSBRedirection.enable = true;
 
-  security.pam.services.ly.enableGnomeKeyring = true;
+  security.pam.services.cosmic-greeter.enableGnomeKeyring = true;
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
@@ -327,7 +317,6 @@ in
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "radeonsi";
     GIT_EXEC_PATH = "${pkgs.gitFull}/libexec/git-core";
-    XDG_CURRENT_DESKTOP = "i3";
     GIT_SSH_COMMAND = "ssh";
   };
 
@@ -551,7 +540,6 @@ in
     # rtc
     coturn
 
-    # rofi
     zed-editor
 
     # DEV
@@ -563,54 +551,8 @@ in
 
     vesktop
 
-    # I3 PART
-    rofi
-    picom
-    dunst
-    feh
-    pavucontrol
-    xclip
-    wmctrl
-    rofi
-    picom
-    dunst
-    feh
-    plank
-    nitrogen
-    mpvpaper
-    xwinwrap
-    mpv
-    alacritty
-    flameshot
     jetbrains-mono
     nerd-fonts.jetbrains-mono
-    xdotool
-    copyq
-    rofimoji
-    pamixer
-    jq
-    xdpyinfo
-    clipman
-    xcape
-    xmodmap
-    playerctl
-    wmctrl
-    #noto-font-emoji # emoji font
-    rofimoji # emoji picker via Rofi
-    emote # emoji GTK selector
-    rofi # application launcher
-    xwininfo
-    glava
-
-    iwgtk
-    twemoji-color-font
-    libnotify
-    i3status
-    i3blocks
-    xdotool
-    stalonetray
-    maim
-
     # MESSENGER
     session-desktop
 
@@ -671,7 +613,7 @@ in
     enable = true;
     xdgOpenUsePortal = false;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
+      xdg-desktop-portal-cosmic
     ];
     config.common.default = "*";
   };
@@ -694,8 +636,8 @@ in
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
     LIBVA_DRIVER_NAME = "radeonsi";
     VDPAU_DRIVER = "radeonsi";
-    # NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron
-    # ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron (utile avec COSMIC)
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
