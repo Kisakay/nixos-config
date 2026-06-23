@@ -65,8 +65,13 @@ in
   networking.networkmanager = {
     enable = true;
     plugins = with pkgs; [ networkmanager-openvpn ];
+    settings = {
+      device = {
+        "wifi.scan-rand-mac-address" = false;
+      };
+    };
   };
-
+  
   services.timesyncd.enable = true;
 
   # Set your time zone.
@@ -556,7 +561,7 @@ in
     vnstat
     qtox
 
-    discord
+    vesktop
 
     # I3 PART
     rofi
@@ -659,6 +664,8 @@ in
 
   services.vnstat.enable = true;
   virtualisation.libvirtd.qemu.swtpm.enable = true;
+
+  networking.networkmanager.wifi.powersave = false;
 
   xdg.portal = {
     enable = true;
