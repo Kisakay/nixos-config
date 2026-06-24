@@ -27,6 +27,22 @@ in
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
+services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
+  "monitor.alsa.rules" = [
+    {
+      matches = [ { "node.name" = "~alsa_output.*Scarlett*"; } ];
+      actions = {
+        update-props = {
+          "audio.format" = "S32_LE";
+          "audio.rate" = 48000;
+          "api.alsa.period-size" = 1024;
+          "session.suspend-timeout-seconds" = 0;
+        };
+      };
+    }
+  ];
+};
+
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=3 video_nr=0,1 card_label="DroidCam","OBS Cam" exclusive_caps=1
@@ -331,6 +347,8 @@ in
     htop
     btop
     wine
+	
+discord
 
     # vscode
     vscodium
@@ -548,8 +566,6 @@ in
 
     vnstat
     qtox
-
-    vesktop
 
     jetbrains-mono
     nerd-fonts.jetbrains-mono
