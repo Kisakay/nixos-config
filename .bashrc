@@ -1,3 +1,5 @@
+set -h
+
 case $- in
 *i*) ;;
 *) return;;

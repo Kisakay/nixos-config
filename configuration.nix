@@ -27,25 +27,25 @@ in
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
-services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
-  "monitor.alsa.rules" = [
-    {
-      matches = [ { "node.name" = "~alsa_output.*Scarlett*"; } ];
-      actions = {
-        update-props = {
-          "audio.format" = "S32_LE";
-          "audio.rate" = 48000;
-          "api.alsa.period-size" = 1024;
-          "session.suspend-timeout-seconds" = 0;
+  services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
+    "monitor.alsa.rules" = [
+      {
+        matches = [ { "node.name" = "~alsa_output.*Scarlett*"; } ];
+        actions = {
+          update-props = {
+            "audio.format" = "S32_LE";
+            "audio.rate" = 48000;
+            "api.alsa.period-size" = 1024;
+            "session.suspend-timeout-seconds" = 0;
+          };
         };
-      };
-    }
-  ];
-};
+      }
+    ];
+  };
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
-    options v4l2loopback devices=3 video_nr=0,1 card_label="DroidCam","OBS Cam" exclusive_caps=1
+    options v4l2loopback devices=1 card_label="OBS Cam" exclusive_caps=1
   '';
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
@@ -87,7 +87,7 @@ services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
       };
     };
   };
-  
+
   services.timesyncd.enable = true;
 
   # Set your time zone.
@@ -102,7 +102,6 @@ services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
   services.fwupd.enable = true;
 
   services.xserver.enable = true;
-
 
   # ---- COSMIC DE PART ----
   services.desktopManager.cosmic.enable = true;
@@ -211,35 +210,6 @@ services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
 
-  # # PELICAN.DEV PANEL
-  # services.pelican.panel = {
-  #   enable = true;
-  #   app = {
-  #     url = "http://127.0.0.1";
-  #     keyFile = "/etc/nixos/app.key";
-  #   };
-  #   database.host = "127.0.0.1";
-  #   database.port = 5432;
-  #   database.name = "pelican";
-  #   database.user = "pelican-panel";
-  #   database.passwordFile = "/etc/nixos/.password";
-  #   mail.mailer = "log";
-  # };
-
-  # services.pelican.wings = {
-  #   enable = true;
-  #   openFirewall = false;
-  #   uuid = "121994bf-f7be-40c6-99da-8b11be74c9b7";
-  #   rootDir = "/var/lib/pelican";
-  #   remote = "http://127.0.0.1";
-  #   tokenIdFile = "/etc/nixos-local/pelican/wings-token-id";
-  #   tokenFile = "/etc/nixos-local/pelican/wings-token";
-  #   api.port = 80;
-  #   api.uploadLimit = 4096;
-  #   api.ssl.enable = false;
-  #   system.sftp.port = 2022;
-  # };
-
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
@@ -347,8 +317,8 @@ services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
     htop
     btop
     wine
-	
-discord
+
+    discord
 
     # vscode
     vscodium
@@ -377,7 +347,7 @@ discord
     comic-mono
     nodejs
     zsh
-    anydesk
+    # anydesk
     fastfetch
     onefetch
     flatpak
@@ -578,7 +548,6 @@ discord
     # virt-manager related
     dnsmasq
     # tpm 2.0 for virt-manager
-    swtpm
     virtiofsd
 
     kdePackages.breeze
@@ -610,15 +579,6 @@ discord
       }
     });
   '';
-
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-vulkan;
-    environmentVariables = {
-      OLLAMA_VULKAN = "1";
-      OLLAMA_HOST = "0.0.0.0"; # fixes IPv6 ECONNREFUSED issues
-    };
-  };
 
   services.vnstat.enable = true;
   virtualisation.libvirtd.qemu.swtpm.enable = true;
@@ -658,9 +618,6 @@ discord
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
     MESA_SHADER_CACHE_DIR = "/home/${myUsername}/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
-
-    XCURSOR_THEME = "Breeze";
-    XCURSOR_SIZE = "24";
   };
 
   # Configuration pour les shells de développement
@@ -679,8 +636,6 @@ discord
 
   # Activer ccache pour accélérer les compilations
   programs.ccache.enable = true;
-
-  # services.mullvad-vpn.enable = true;
 
   # Documentation de développement
   documentation.dev.enable = true;
@@ -745,7 +700,7 @@ discord
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "26.05"; # Did you read the comment?
+  system.stateVersion = "26.11"; # Did you read the comment?
 
   programs = {
     steam = {
@@ -781,9 +736,6 @@ discord
   };
 
   services.logind.settings.Login = {
-    HandleLidSwitchDocked = "ignore";
-    HandleLidSwitchExternalPower = "ignore";
-    HandleLidSwitch = "ignore";
     HandlePowerKey = "ignore";
     HandlePowerKeyLongPress = "ignore";
   };
