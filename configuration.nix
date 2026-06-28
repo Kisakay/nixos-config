@@ -14,7 +14,7 @@ in
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [
       "ip_tables"
       "iptable_nat"
