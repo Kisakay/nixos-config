@@ -207,9 +207,6 @@ in
 
   security.pam.services.cosmic-greeter.enableGnomeKeyring = true;
 
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
-
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
@@ -237,8 +234,6 @@ in
       swtpm.enable = true;
     };
   };
-
-  services.spice-webdavd.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -343,7 +338,6 @@ in
     filezilla
     zip
     unzip
-    curl
     wget
     comic-mono
     nodejs
@@ -368,7 +362,6 @@ in
     python3
     python3Packages.pip
     python3Packages.hid
-    libusb1
     udev
     # Add other dependencies you might need
     python3Packages.setuptools
@@ -376,19 +369,16 @@ in
     networkmanagerapplet
     distrobox
     # session-desktop
-    postgresql
     libreoffice-fresh # or libreoffice-still if you prefer
     hunspell
     hunspellDicts.fr-moderne # Modern French dictionary
     speedtest-cli
-    geogebra
     gimp
     nss
     ntfs3g
     # jetbrains.idea-community
     maven
     sqlite # lib32-sqlite → Nix doesn’t split 32/64-bit; use `pkgsi686Linux.sqlite` if needed
-    openssl # lib32-openssl → similarly, use `pkgsi686Linux.openssl` for 32-bit
     nlohmann_json
     libhandy
     libsodium
@@ -399,9 +389,7 @@ in
     python313Packages.grammalecte
     vulkan-tools
     geogebra
-    cmake
     pkg-config
-    gcc
     nmap
     # spotify
 
@@ -419,17 +407,12 @@ in
     pulseaudio
     pulseaudioFull
 
-    gnumake
-    openssl
-    pkg-config
-
     gcc
     clang
     cmake
     gnumake
     meson
     ninja
-    pkg-config
     autoconf
     automake
     libtool
@@ -461,9 +444,6 @@ in
     valgrind
     strace
     ltrace
-
-    # CAMERA WITH USB OVER MY OPPO RENO 13 PRO
-    libusb1
 
     # pour maddie cte folle
     nasm
@@ -535,9 +515,6 @@ in
     android-studio-tools
     android-studio
 
-    vnstat
-    qtox
-
     jetbrains-mono
     nerd-fonts.jetbrains-mono
     # MESSENGER
@@ -563,9 +540,7 @@ in
     # nixos
     clippy
     rustup
-    #   zig
     zig
-    wine
 
     remmina
     github-desktop
@@ -579,8 +554,6 @@ in
       }
     });
   '';
-
-  services.vnstat.enable = true;
 
   networking.networkmanager.wifi.powersave = false;
 
@@ -743,23 +716,23 @@ in
     # FLATPAK
     flatpak.enable = true;
 
-    # POSTGRESQL
-    postgresql = {
-      enable = true;
-      package = pkgs.postgresql_16;
+    # # POSTGRESQL
+    # postgresql = {
+    #   enable = true;
+    #   package = pkgs.postgresql_16;
 
-      initialScript = pkgs.writeText "init.sql" ''
-        CREATE DATABASE mydb;
-        CREATE USER myuser WITH PASSWORD 'mypassword';
-        GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+    #   initialScript = pkgs.writeText "init.sql" ''
+    #     CREATE DATABASE mydb;
+    #     CREATE USER myuser WITH PASSWORD 'mypassword';
+    #     GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
 
-        \\c mydb
+    #     \\c mydb
 
-        GRANT USAGE, CREATE ON SCHEMA public TO myuser;
-        ALTER DEFAULT PRIVILEGES IN SCHEMA public
-          GRANT ALL ON TABLES TO myuser;
-      '';
-    };
+    #     GRANT USAGE, CREATE ON SCHEMA public TO myuser;
+    #     ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    #       GRANT ALL ON TABLES TO myuser;
+    #   '';
+    # };
   };
 
   i18n = {
