@@ -540,7 +540,6 @@ in
     jetbrains-mono
     nerd-fonts.jetbrains-mono
     # MESSENGER
-    session-desktop
 
     # Thermal Managment
     radeontop
