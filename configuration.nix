@@ -230,10 +230,11 @@ in
     onShutdown = "shutdown";
 
     qemu = {
-
       vhostUserPackages = with pkgs; [
         virtiofsd
       ];
+
+      swtpm.enable = true;
     };
   };
 
@@ -580,7 +581,6 @@ in
   '';
 
   services.vnstat.enable = true;
-  virtualisation.libvirtd.qemu.swtpm.enable = true;
 
   networking.networkmanager.wifi.powersave = false;
 
