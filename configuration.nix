@@ -494,12 +494,6 @@ in
     easyeffects
     gitFull
 
-    #Claude
-    claude-code
-    claude-monitor
-    claude-agent-acp
-    claude-mergetool
-    claude-code-router
     # custom part
     system-config-printer
     # rembg
