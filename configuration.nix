@@ -231,7 +231,7 @@ in
         virtiofsd
       ];
 
-      swtpm.enable = true;
+      # swtpm.enable = true;
     };
   };
 
@@ -306,6 +306,8 @@ in
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     vlc
     audacious
+    audacious-plugins
+    
     droidcam
     android-tools
     v4l-utils
@@ -496,7 +498,7 @@ in
 
     # custom part
     system-config-printer
-    # rembg
+    rembg
 
     # rust lang
 

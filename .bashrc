@@ -44,3 +44,7 @@ export PATH="$HOME/.local/bin:$PATH"
 alias c='oco .'
 
 alias ncc="ssh -L 3000:127.0.0.1:3000 nc"
+
+# ant
+export ANT_INSTALL="$HOME/.ant"
+export PATH="$ANT_INSTALL/bin:$PATH"
