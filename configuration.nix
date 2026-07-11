@@ -344,7 +344,7 @@ in
     comic-mono
     nodejs
     zsh
-    # anydesk
+    anydesk
     fastfetch
     onefetch
     flatpak
