@@ -307,7 +307,7 @@ in
     vlc
     audacious
     audacious-plugins
-    
+
     droidcam
     android-tools
     v4l-utils
@@ -316,7 +316,10 @@ in
     btop
     wine
 
-    discord
+    (discord.override {
+      withOpenASAR = true; # can do this here too
+      withVencord = true;
+    })
 
     # vscode
     vscodium
@@ -498,7 +501,7 @@ in
 
     # custom part
     system-config-printer
-    rembg
+    # rembg
 
     # rust lang
 
@@ -508,8 +511,8 @@ in
     zed-editor
 
     # DEV
-    android-studio-tools
-    android-studio
+    # android-studio-tools
+    # android-studio
 
     jetbrains-mono
     nerd-fonts.jetbrains-mono
@@ -540,6 +543,7 @@ in
 
     remmina
     github-desktop
+    rustdesk
   ];
 
   security.polkit.extraConfig = ''
