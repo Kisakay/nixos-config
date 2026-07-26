@@ -19,11 +19,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784911581,
-        "narHash": "sha256-J7hoVQVZPI6RLD2awGAT/fcM33UpCrRhsChINIK6wMA=",
+        "lastModified": 1785024151,
+        "narHash": "sha256-U+sNDoSbp53R1ZlO2+HYLB8oUo1Ad4reSrHaiM/yUDw=",
         "ref": "main",
-        "rev": "54d4b01604b2554ed4ae3eb1d09937a9e4226cec",
-        "revCount": 348,
+        "rev": "8afc28255b205bb94149f492600ef2d9b10052cb",
+        "revCount": 353,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
@@ -49,11 +49,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784354557,
-        "narHash": "sha256-z2XthIV/68GNghbqmaPVrShPIfMPwpZKTA47REKC5bA=",
+        "lastModified": 1785047627,
+        "narHash": "sha256-W32Jxn9mnGEjDc5c7sC5YfNLzrh3n9Srkg5JbC1YYdY=",
         "owner": "youwen5",
         "repo": "zen-browser-flake",
-        "rev": "239dc504b56eabcfc1dce945e7e22ca99694be89",
+        "rev": "0d2fc291f34fce699b2a559f74189ecfe61e30e3",
         "type": "github"
       },
       "original": {
