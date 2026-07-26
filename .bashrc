@@ -5,8 +5,6 @@ case $- in
 *) return;;
 esac
 
-alias bun="steam-run ~/.bun/bin/bun"
-alias bunx="steam-run ~/.bun/bin/bunx"
 alias fdp=" codium /etc/nixos/ --user-data-dir /home/kisakay/ --no-sandbox #sudo nano /etc/nixos/configuration.nix"
 alias m2f="cd /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#computer"
 alias whatsmyip="curl ifconfig.me; echo"

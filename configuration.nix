@@ -544,6 +544,7 @@ in
     remmina
     github-desktop
     rustdesk
+    jq
   ];
 
   security.polkit.extraConfig = ''
@@ -717,22 +718,22 @@ in
     flatpak.enable = true;
 
     # # POSTGRESQL
-    # postgresql = {
-    #   enable = true;
-    #   package = pkgs.postgresql_16;
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql_16;
 
-    #   initialScript = pkgs.writeText "init.sql" ''
-    #     CREATE DATABASE mydb;
-    #     CREATE USER myuser WITH PASSWORD 'mypassword';
-    #     GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+      initialScript = pkgs.writeText "init.sql" ''
+        CREATE DATABASE mydb;
+        CREATE USER myuser WITH PASSWORD 'mypassword';
+        GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
 
-    #     \\c mydb
+        \\c mydb
 
-    #     GRANT USAGE, CREATE ON SCHEMA public TO myuser;
-    #     ALTER DEFAULT PRIVILEGES IN SCHEMA public
-    #       GRANT ALL ON TABLES TO myuser;
-    #   '';
-    # };
+        GRANT USAGE, CREATE ON SCHEMA public TO myuser;
+        ALTER DEFAULT PRIVILEGES IN SCHEMA public
+          GRANT ALL ON TABLES TO myuser;
+      '';
+    };
   };
 
   i18n = {
