@@ -34,7 +34,7 @@ in
         actions = {
           update-props = {
             "audio.format" = "S32_LE";
-            "audio.rate" = 48000;
+            "audio.rate" = 192000;
             "api.alsa.period-size" = 1024;
             "session.suspend-timeout-seconds" = 0;
           };
