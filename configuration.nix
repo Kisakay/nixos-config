@@ -27,22 +27,6 @@ in
     kernelParams = [ "usbcore.autosuspend=-1" ];
   };
 
-  services.pipewire.wireplumber.extraConfig."99-scarlett-fix" = {
-    "monitor.alsa.rules" = [
-      {
-        matches = [ { "node.name" = "~alsa_output.*Scarlett*"; } ];
-        actions = {
-          update-props = {
-            "audio.format" = "S32_LE";
-            "audio.rate" = 192000;
-            "api.alsa.period-size" = 1024;
-            "session.suspend-timeout-seconds" = 0;
-          };
-        };
-      }
-    ];
-  };
-
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=1 card_label="OBS Cam" exclusive_caps=1
