@@ -529,6 +529,8 @@ in
     github-desktop
     rustdesk
     jq
+
+    sshfs
   ];
 
   security.polkit.extraConfig = ''
