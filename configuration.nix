@@ -81,7 +81,7 @@ in
     experimental-features = nix-command flakes
   '';
 
-  services.fprintd.enable = true;
+  services.fprintd.enable = false;
   #   services.fprintd.tod.enable = true
   services.fwupd.enable = true;
 
