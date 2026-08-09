@@ -87,8 +87,8 @@ in
 
   services.xserver.enable = true;
 
-  services.desktopManager.gnome.enable = true;
-  services.displayManager.gdm.enable = true;
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
@@ -477,6 +477,8 @@ in
     # rembg
 
     # rust lang
+    rustc
+    cargo
 
     # rtc
     coturn
@@ -511,7 +513,7 @@ in
 
     # nixos
     clippy
-    rustup
+    # rustup
     zig
 
     remmina
@@ -597,14 +599,14 @@ in
     linuxPackages.bpftrace
     linuxPackages.perf
 
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.caffeine
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.force-quit
-    gnomeExtensions.appindicator
-    gnomeExtensions.media-controls
-    gnome-extension-manager
-    gnome-tweaks
+    # gnomeExtensions.clipboard-indicator
+    # gnomeExtensions.caffeine
+    # gnomeExtensions.blur-my-shell
+    # gnomeExtensions.force-quit
+    # gnomeExtensions.appindicator
+    # gnomeExtensions.media-controls
+    # gnome-extension-manager
+    # gnome-tweaks
   ];
 
   services.gnome.core-utilities.enable = true;
@@ -625,12 +627,10 @@ in
     xdgOpenUsePortal = false;
 
     extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-gtk
+      xdg-desktop-portal-cosmic
     ];
 
-    config.gnome.default = "gnome";
-    config.common.default = "gtk";
+    config.common.default = "*";
   };
   services.hardware.bolt.enable = true;
 
@@ -650,7 +650,7 @@ in
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
     LIBVA_DRIVER_NAME = "radeonsi";
     VDPAU_DRIVER = "radeonsi";
-    # NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron (utile avec COSMIC)
+    NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron (utile avec COSMIC)
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
