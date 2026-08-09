@@ -14,7 +14,7 @@ in
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages;
     kernelModules = [
       "ip_tables"
       "iptable_nat"
@@ -87,10 +87,8 @@ in
 
   services.xserver.enable = true;
 
-  # ---- COSMIC DE PART ----
-  services.desktopManager.cosmic.enable = true;
-  services.displayManager.cosmic-greeter.enable = true;
-  # ---- END OF COSMIC DE PART ----
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
@@ -170,18 +168,6 @@ in
     ];
   };
 
-  users.users.vesktopbox = {
-    isNormalUser = true;
-    description = "Distrobox hors VPN";
-
-    extraGroups = [
-      "networkmanager"
-      "video"
-      "render"
-      "audio"
-    ];
-  };
-
   programs.dconf.enable = true;
   xdg.mime.enable = true;
 
@@ -189,7 +175,7 @@ in
   users.groups.libvirtd.members = [ myUsername ];
   virtualisation.spiceUSBRedirection.enable = true;
 
-  security.pam.services.cosmic-greeter.enableGnomeKeyring = true;
+  # security.pam.services.cosmic-greeter.enableGnomeKeyring = true;
 
   virtualisation.podman = {
     enable = true;
@@ -261,6 +247,8 @@ in
     fontconfig
     liberation_ttf
     dejavu_fonts
+    libxtst
+
   ];
 
   # List packages installed in system profile. To search, run:
@@ -415,6 +403,7 @@ in
     zlib.dev
     libxml2
     libxml2.dev
+    libxtst
 
     # Bibliothèques réseau
     libssh
@@ -531,6 +520,82 @@ in
     jq
 
     sshfs
+
+    prettier
+
+    mtr
+    traceroute
+    tcpdump
+    wireshark
+    tshark
+    termshark
+
+    doggo
+    dnsutils
+    bind
+
+    curl
+    xh
+    httpie
+
+    gping
+    fping
+
+    iperf3
+    speedtest-cli
+
+    nmap
+    masscan
+
+    iftop
+    bmon
+    nload
+    iptraf-ng
+
+    netcat
+    socat
+
+    openssl
+
+    whois
+
+    bird2
+    exabgp
+
+    nftables
+
+    conntrack-tools
+
+    ethtool
+    iproute2
+    lsof
+
+    bandwhich
+    procs
+
+    bpftrace
+    bcc
+
+    arp-scan
+
+    ngrep # grep sur les paquets
+    dsniff # arpspoof, macof, etc.
+    netsniff-ng # suite ultra performante de sniffing
+    iperf2 # parfois utilisé à la place d'iperf3
+    iftop
+    vnstat # statistiques réseau persistantes
+    darkstat # mini serveur web de stats
+    tcptrack # suivi des connexions TCP
+    bridge-utils # gestion de bridges Linux
+    wireguard-tools
+    ipcalc
+    sipcalc
+
+    strace
+    ltrace
+    perf
+    linuxPackages.bpftrace
+    linuxPackages.perf
   ];
 
   security.polkit.extraConfig = ''
@@ -547,12 +612,15 @@ in
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = false;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-cosmic
-    ];
-    config.common.default = "*";
-  };
 
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+
+    config.gnome.default = "gnome";
+    config.common.default = "gtk";
+  };
   services.hardware.bolt.enable = true;
 
   services.xserver.excludePackages = with pkgs; [
@@ -571,7 +639,7 @@ in
     C_INCLUDE_PATH = "${pkgs.openssl.dev}/include:${pkgs.curl.dev}/include";
     LIBVA_DRIVER_NAME = "radeonsi";
     VDPAU_DRIVER = "radeonsi";
-    NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron (utile avec COSMIC)
+    # NIXOS_OZONE_WL = "1"; # Force Wayland pour les apps Electron (utile avec COSMIC)
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     RUSTICL_ENABLE = "radeonsi";
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
@@ -585,13 +653,13 @@ in
     export LDFLAGS="-L${pkgs.openssl.out}/lib -L${pkgs.curl.out}/lib"
   '';
 
-  programs.zsh = {
-    enable = true;
-    shellInit = ''
-      export CFLAGS="-I${pkgs.openssl.dev}/include -I${pkgs.curl.dev}/include"
-      export LDFLAGS="-L${pkgs.openssl.out}/lib -L${pkgs.curl.out}/lib"
-    '';
-  };
+  # programs.zsh = {
+  #   enable = true;
+  #   shellInit = ''
+  #     export CFLAGS="-I${pkgs.openssl.dev}/include -I${pkgs.curl.dev}/include"
+  #     export LDFLAGS="-L${pkgs.openssl.out}/lib -L${pkgs.curl.out}/lib"
+  #   '';
+  # };
 
   # Activer ccache pour accélérer les compilations
   programs.ccache.enable = true;
@@ -648,7 +716,7 @@ in
   services.openssh = {
     enable = true;
     settings = {
-      PasswordAuthentication = true; # recommandé
+      PasswordAuthentication = false; # recommandé
       PermitRootLogin = "no";
     };
   };
