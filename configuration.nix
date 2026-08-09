@@ -596,7 +596,18 @@ in
     perf
     linuxPackages.bpftrace
     linuxPackages.perf
+
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.caffeine
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.force-quit
+    gnomeExtensions.appindicator
+    gnomeExtensions.media-controls
+    gnome-extension-manager
+    gnome-tweaks
   ];
+
+  services.gnome.core-utilities.enable = true;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
