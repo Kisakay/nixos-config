@@ -513,9 +513,10 @@ in
 
     # nixos
     clippy
-    # rustup
+    rustup
     zig
-
+    gh
+    
     remmina
     github-desktop
     rustdesk
@@ -821,6 +822,7 @@ in
     3000
     3001
     3871
+    4560
     25565
   ];
   networking.firewall.allowedUDPPorts = [
