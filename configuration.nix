@@ -289,10 +289,11 @@ in
     wine
 
     (discord.override {
-      withOpenASAR = true; # can do this here too
-      withVencord = true;
+      # withOpenASAR = true; # can do this here too
+      # withVencord = true;
     })
 
+    gnome-sound-recorder
     # vscode
     vscodium
     steam
@@ -477,8 +478,8 @@ in
     # rembg
 
     # rust lang
-    rustc
-    cargo
+    # rustc
+    # cargo
 
     # rtc
     coturn
@@ -489,8 +490,6 @@ in
     # android-studio-tools
     # android-studio
 
-    jetbrains-mono
-    nerd-fonts.jetbrains-mono
     # MESSENGER
 
     # Thermal Managment
@@ -516,7 +515,7 @@ in
     rustup
     zig
     gh
-    
+
     remmina
     github-desktop
     rustdesk
@@ -610,7 +609,30 @@ in
     # gnome-tweaks
   ];
 
-  services.gnome.core-utilities.enable = true;
+  hardware.fw-fanctrl = {
+    enable = true;
+
+    config = {
+      defaultStrategy = "aggressive";
+
+      strategies.aggressive = {
+        fanSpeedUpdateFrequency = 2;
+        movingAverageInterval = 5;
+
+        speedCurve = [
+          {
+            temp = 0;
+            speed = 80;
+          }
+          {
+            temp = 50;
+            speed = 100;
+          }
+        ];
+      };
+    };
+  };
+  services.gnome.core-apps.enable = true;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
@@ -687,7 +709,7 @@ in
     # I WANT COMIC SANS MS
     corefonts
     # AND JETBRAIN MONOS PLS
-    jetbrains-mono
+    # jetbrains-mono
 
     # thanks claude
     # Polices pour un support Unicode complet
@@ -706,7 +728,7 @@ in
     # Polices spécialisées (optionnel)
     libertine
 
-    nerd-fonts.jetbrains-mono
+    # nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.iosevka
     nerd-fonts.hack
