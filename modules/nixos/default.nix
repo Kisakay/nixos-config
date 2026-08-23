@@ -5,6 +5,7 @@
     ./networking.nix
     ./nix.nix
     ./security.nix
+    ./shell.nix
     ./users.nix
 
     ./desktop

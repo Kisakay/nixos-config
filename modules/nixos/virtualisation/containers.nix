@@ -1,4 +1,6 @@
 {
+  environment.sessionVariables.DBX_CONTAINER_MANAGER = "podman";
+
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;

@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  environment.sessionVariables.LIBVIRT_DEFAULT_URI = "qemu:///system";
+
   virtualisation = {
     libvirtd = {
       enable = true;
