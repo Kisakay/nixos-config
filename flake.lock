@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1787070829,
-        "narHash": "sha256-vXNVDVtvfiQuXthP0NHPFdNvvMTkGpx0UP8oddIWbNk=",
+        "lastModified": 1787360063,
+        "narHash": "sha256-dt4WdcvsA8/RCe+VZZwqU0X+XMM3wBbGCWA0/sFWzGo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0ae2bc1419c3f345984c2629e72e7a631820fa4d",
+        "rev": "2c423e03bbafcff28bfadc6781a4a8257f205cb5",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1787078908,
-        "narHash": "sha256-LL5x3h2pUL+QVfwF/+Ka3HPRf4HrBHs1hWxc82t8pJs=",
+        "lastModified": 1787346331,
+        "narHash": "sha256-JmegZypGnBypuBOlL3ICS4JT+AI2ZMf40NJXp/W8/Wc=",
         "ref": "main",
-        "rev": "29d21ca8157a691b7a9179984a7ce27575aed43f",
-        "revCount": 478,
+        "rev": "06e9a6db904a64bd1176da96a54343abcc4aa61f",
+        "revCount": 480,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
@@ -49,11 +49,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786685380,
-        "narHash": "sha256-3ZuubfWk7CHPF/60w5BVrVkzdO7Oed1MgZ+ugLsgww8=",
+        "lastModified": 1787200418,
+        "narHash": "sha256-4d24Wa/CO8WsSEjKwzFwJXn+oxbI4Bm8xuMR77xJgYI=",
         "owner": "youwen5",
         "repo": "zen-browser-flake",
-        "rev": "e1e4aa6433a352f07059aeb8483ae42deb61f9b2",
+        "rev": "20195bc99e82b02abe82bb81ac366ae81c67dc5a",
         "type": "github"
       },
       "original": {

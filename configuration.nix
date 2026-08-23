@@ -428,7 +428,7 @@ in
     nasm
     gpp
 
-    gnome-console
+    # gnome-console
 
     # crypto mes couilles
     # exodus
@@ -505,7 +505,7 @@ in
     sl
 
     git-credential-manager
-    nautilus
+    # nautilus
 
     desktop-file-utils
     gnome-disk-utility
