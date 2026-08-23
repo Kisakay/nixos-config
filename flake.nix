@@ -28,8 +28,6 @@
       formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
 
       nixosConfigurations.computer = nixpkgs.lib.nixosSystem {
-        inherit system;
-
         specialArgs = {
           inherit inputs;
         };

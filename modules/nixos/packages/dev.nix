@@ -45,7 +45,6 @@
     bpftrace
     linuxPackages.bpftrace
     perf
-    linuxPackages.perf
     bcc
 
     openssl

@@ -33,5 +33,8 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    COSMIC_DATA_CONTROL_ENABLED = 1;
   };
+
+  services.system76-scheduler.enable = true;
 }
