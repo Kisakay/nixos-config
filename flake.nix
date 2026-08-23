@@ -1,4 +1,6 @@
 {
+  description = "kisakay's NixOS configuration";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -15,39 +17,24 @@
 
   outputs =
     {
+      self,
       nixpkgs,
-      qxchat-src,
-      zen-browser,
       ...
-    }:
+    }@inputs:
     let
       system = "x86_64-linux";
     in
     {
-      nixosConfigurations."computer" = nixpkgs.lib.nixosSystem {
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+
+      nixosConfigurations.computer = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [
 
-          # QxChat
-          {
-            imports = [ "${qxchat-src}/nix/module.nix" ];
-            nixpkgs.overlays = [
-              (final: prev: {
-                qxchat = prev.callPackage "${qxchat-src}/nix/qxchat.nix" { };
-              })
-            ];
-            programs.qxchat.enable = true;
-          }
+        specialArgs = {
+          inherit inputs;
+        };
 
-          # Zen Browser
-          {
-            environment.systemPackages = [
-              zen-browser.packages.${system}.default
-            ];
-          }
-
-          ./configuration.nix
-        ];
+        modules = [ ./hosts/computer ];
       };
     };
 }
