@@ -18,10 +18,18 @@
         speedCurve = [
           {
             temp = 0;
-            speed = 80;
+            speed = 30;
+          }
+          {
+            temp = 40;
+            speed = 40;
           }
           {
             temp = 50;
+            speed = 70;
+          }
+          {
+            temp = 60;
             speed = 100;
           }
         ];

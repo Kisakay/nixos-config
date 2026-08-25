@@ -9,5 +9,6 @@
   ++ (with pkgs; [
     chromium
     tor-browser
+    brave
   ]);
 }
