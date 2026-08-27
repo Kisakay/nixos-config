@@ -10,7 +10,7 @@
       obs-pipewire-audio-capture
       obs-backgroundremoval
       droidcam-obs
-      obs-shaderfilter
+      # obs-shaderfilter
       advanced-scene-switcher
     ];
   };
