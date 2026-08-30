@@ -14,6 +14,7 @@ in
     (discord.override {
       withOpenASAR = true;
       withVencord = true;
+      withTTS = false;
     })
   ];
 
