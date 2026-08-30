@@ -27,7 +27,9 @@
       xdg-desktop-portal-cosmic
     ];
 
-    config.common.default = "*";
+    config.common = {
+      default = "cosmic";
+    };
   };
 
   environment.sessionVariables = {

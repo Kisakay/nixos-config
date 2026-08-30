@@ -27,5 +27,7 @@
     kdePackages.filelight
     gnome-disk-utility
     desktop-file-utils
+
+    flameshot
   ];
 }
