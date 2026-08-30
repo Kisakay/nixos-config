@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  System = import ../../../hosts/computer/username.nix;
+in
 {
   hardware.graphics = {
     enable = true;
@@ -16,7 +19,7 @@
     RUSTICL_ENABLE = "radeonsi";
 
     MESA_SHADER_CACHE_MAX_SIZE = "10G";
-    MESA_SHADER_CACHE_DIR = "/home/kisakay/.cache/mesa_shader_cache";
+    MESA_SHADER_CACHE_DIR = "/home/${System.Username}/.cache/mesa_shader_cache";
     __GL_SHADER_DISK_CACHE = "1";
   };
 

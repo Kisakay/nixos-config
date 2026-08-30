@@ -1,7 +1,10 @@
+let
+  System = import ../../hosts/computer/username.nix;
+in
 {
-  users.users.kisakay = {
+  users.users.${System.Username} = {
     isNormalUser = true;
-    description = "Anaïs Saraiva";
+    description = System.Fullname;
     extraGroups = [
       "networkmanager"
       "wheel"

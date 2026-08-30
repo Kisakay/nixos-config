@@ -14,10 +14,12 @@ let
       builtins.readFile ./assets/fastfetch-config.jsonc
     )
   );
+
+  System = import ../../hosts/computer/username.nix;
 in
 {
   programs.bash.interactiveShellInit = ''
-    alias fdp="codium /etc/nixos/ --user-data-dir /home/kisakay --no-sandbox"
+    alias fdp="codium /etc/nixos/ --user-data-dir /home/${System.Username} --no-sandbox"
     alias m2f="cd /etc/nixos/ && sudo nixos-rebuild switch --flake /etc/nixos#computer"
     alias maj="cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake .#computer"
     alias flake_update="sudo nix flake lock --update-input qxchat-src /etc/nixos"
@@ -34,7 +36,7 @@ in
 
     export BUN_INSTALL="$HOME/.bun"
     export PATH="$BUN_INSTALL/bin:$PATH"
-    export PATH="$PATH:/home/kisakay/.spicetify"
+    export PATH="$PATH:/home/${System.Username}/.spicetify"
     export PATH="$HOME/.local/bin:$PATH"
 
     export ANT_INSTALL="$HOME/.ant"

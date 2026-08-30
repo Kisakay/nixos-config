@@ -6,7 +6,7 @@
     telegram-desktop
     signal-desktop
     element-desktop
-    discord
+
     mumble
     github-desktop
 

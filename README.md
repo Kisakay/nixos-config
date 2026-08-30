@@ -2,32 +2,6 @@
 
 Configuration NixOS flake-based pour un **Framework 13** (Ryzen 5 7640U, AMD), desktop COSMIC.
 
-## Structure
-
-```
-.
-├── flake.nix               # Point d'entrée : inputs (nixpkgs, qxchat, zen-browser) + hosts
-├── hosts/
-│   └── computer/           # La machine
-│       ├── default.nix     # Glue : hostname, stateVersion, imports
-│       └── hardware-configuration.nix  # Généré par nixos-generate-config
-└── modules/
-    └── nixos/
-        ├── boot.nix        # systemd-boot, kernel, v4l2loopback (OBS Cam)
-        ├── networking.nix  # NetworkManager, firewall, SSH
-        ├── locale.nix      # Timezone FR, locales, console, clavier
-        ├── users.nix       # kisakay
-        ├── security.nix    # polkit (+ règle fwupd)
-        ├── nix.nix         # flakes, GC auto, allowUnfree
-        ├── desktop/        # COSMIC, audio (PipeWire), polices/theming
-        ├── hardware/       # GPU AMD, Framework (fwupd/fanctrl/fprintd), imprimante
-        ├── virtualisation/ # libvirtd/virt-manager, podman + docker rootless
-        ├── development/    # nix-ld, ccache, lorri, env de compilation (openssl/curl)
-        ├── programs/       # Firefox/Zen/Chromium/Tor, OBS, Steam, QxChat
-        ├── services/       # Flatpak, PostgreSQL, PM2
-        └── packages/       # Paquets classés : base, desktop, dev, media, nettools, office
-```
-
 ## Utilisation
 
 ```bash

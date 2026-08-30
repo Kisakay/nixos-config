@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  System = import ../../../hosts/computer/username.nix;
+in
 {
   systemd.services.pm2 = {
     description = "PM2 process manager";
@@ -8,10 +11,10 @@
 
     serviceConfig = {
       Type = "forking";
-      User = "kisakay";
+      User = System.Username;
       Environment = [
-        "HOME=/home/kisakay"
-        "PM2_HOME=/home/kisakay/.pm2"
+        "HOME=/home/${System.Username}"
+        "PM2_HOME=/home/${System.Username}/.pm2"
       ];
 
       ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.pm2}/bin/pm2 resurrect && sleep 1'";
@@ -20,7 +23,7 @@
       RemainAfterExit = true;
       Restart = "on-failure";
       RestartSec = "10s";
-      WorkingDirectory = "/home/kisakay";
+      WorkingDirectory = "/home/${System.Username}";
     };
   };
 }

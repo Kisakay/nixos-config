@@ -6,5 +6,6 @@
     ./media.nix
     ./nettools.nix
     ./office.nix
+    ./discord.nix
   ];
 }

@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1787736819,
-        "narHash": "sha256-cV5xEJJK3BvhU8rEd4mC9UsmDi5qscv/kzGPhBRC5WA=",
+        "lastModified": 1787900134,
+        "narHash": "sha256-VYXO0XZlgj06dxJZRhrD3WoSsvq/c7+/Akyoa22pefw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9fbb54b33e91ee4ca368e35a78e0613c720600b3",
+        "rev": "83199d0d373dd3ac2b9a1996b1d0263f76ab7a4c",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1787845137,
-        "narHash": "sha256-lboBovg9H5S2sovJeZwM2sXBRrdDODBKiZ0krGzUcac=",
+        "lastModified": 1787907891,
+        "narHash": "sha256-Z3LlrVEXxmIsxPSr468JPCNM7ze4vIEFXEGoFoaQUZM=",
         "ref": "main",
-        "rev": "5862b03e5371e583b1ded57157e5d171e75ca1df",
-        "revCount": 524,
+        "rev": "457550879335410825f05bb86aaa64ce7370b511",
+        "revCount": 538,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
