@@ -1,10 +1,13 @@
-# Ignore build outputs from performing a nix-build or `nix build` command
+# Secrets (clés privées, etc.)
+secrets.nix
+secrets/
+
+# Résultats de build nix
 result
 result-*
 
-# Ignore automatically generated direnv output
+# Sortie direnv
 .direnv
 
+# Clé générée par QxChat
 app.key
-
-/etc/nixos-local

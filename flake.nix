@@ -1,8 +1,6 @@
 {
-  description = "kisakay's NixOS configuration";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     qxchat-src = {
       url = "git+https://github.com/lqxp/app.git?ref=main&submodules=1";
@@ -16,23 +14,16 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }@inputs:
+    { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
+      secrets = import /etc/nixos/secrets.nix;
     in
     {
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
-
-      nixosConfigurations.computer = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-        };
-
-        modules = [ ./hosts/computer ];
+      nixosConfigurations."framework-laptop-12" = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs secrets; };
+        modules = [ ./hosts/framework-laptop-12 ];
       };
     };
 }
