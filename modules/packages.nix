@@ -53,7 +53,7 @@
     gnomeExtensions.add-to-desktop
 
     # BTS SIO
-    libreoffice-fresh
+    libreoffice-stable
     vscodium
     hunspellDicts.fr-moderne # Dictionnaire français moderne
     gimp
