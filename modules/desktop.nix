@@ -1,11 +1,19 @@
-# Environnement graphique et audio : X11, GNOME et PipeWire.
+# Environnement graphique et audio : X11, GNOME, COSMIC et PipeWire.
 { config, pkgs, ... }:
 
 {
-  # X11 + GNOME.
+  # X11 + GDM (choix de la session au login : GNOME ou COSMIC).
   services.xserver.enable = true;
   services.displayManager.gdm.enable = true;
+
+  # Bureaux disponibles.
   services.desktopManager.gnome.enable = true;
+  services.desktopManager.cosmic.enable = true;
+
+  # GNOME : apps de base, keyring et dconf.
+  services.gnome.core-apps.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  programs.dconf.enable = true;
 
   # Clavier.
   services.xserver.xkb = {
