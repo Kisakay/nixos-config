@@ -18,13 +18,4 @@
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
-
-  # Wayland issue
-  home.pointerCursor = {
-     gtk.enable = true;
-     package = pkgs.vanilla-dmz;
-     name = "Vanilla-DMZ";
-  };
-
-
 }
