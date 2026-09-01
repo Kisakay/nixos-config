@@ -4,6 +4,7 @@
 {
   # X11 + GDM (choix de la session au login : GNOME ou COSMIC).
   services.xserver.enable = true;
+  services.xserver.excludePackages = [ pkgs.xterm ];
   services.displayManager.gdm.enable = true;
 
   # Bureaux disponibles.
@@ -14,6 +15,27 @@
   services.gnome.core-apps.enable = true;
   services.gnome.gnome-keyring.enable = true;
   programs.dconf.enable = true;
+
+  # COSMIC : portail Wayland, scheduler System76 et variables de session.
+  services.system76-scheduler.enable = true;
+  programs.seahorse.enable = true;
+
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = false;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-cosmic
+    ];
+    config.common = {
+      default = "cosmic";
+    };
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    COSMIC_DATA_CONTROL_ENABLED = 1;
+  };
 
   # Clavier.
   services.xserver.xkb = {
