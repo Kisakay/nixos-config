@@ -60,6 +60,7 @@
     geogebra
     nmap
     kdePackages.kolourpaint
+    zed-editor
 
     # Bibliothèques et outils
     sqlite
