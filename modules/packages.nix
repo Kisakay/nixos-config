@@ -13,8 +13,13 @@
     btop
     gitFull
     direnv
+
+    # Nix Inteligience
     nixfmt
     nil
+    nixd
+
+    # Edit
     obsidian
 
     # Shell et terminal
@@ -23,6 +28,7 @@
     fastfetch
     onefetch
     ffmpeg
+    file
 
     # Applications
     vlc
