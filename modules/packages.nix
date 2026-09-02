@@ -14,6 +14,8 @@
     gitFull
     direnv
     nixfmt
+    nil
+    obsidian
 
     # Shell et terminal
     zsh
