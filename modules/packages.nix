@@ -29,28 +29,6 @@
     discord
     wine
 
-    # Extensions GNOME
-    gnome-extension-manager
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.caffeine
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.desktop-cube
-    gnomeExtensions.force-quit
-    gnomeExtensions.ip-finder
-    gnomeExtensions.just-perfection
-    gnomeExtensions.runcat
-    gnomeExtensions.appindicator
-    gnomeExtensions.customize-clock-on-lock-screen
-    gnomeExtensions.emoji-copy
-    gnomeExtensions.user-themes
-    gnomeExtensions.vscode-workspaces-gnome
-    gnomeExtensions.media-controls
-    gnomeExtensions.dash-to-panel
-    gnomeExtensions.desktop-clock
-    gnomeExtensions.window-desaturation
-    gnomeExtensions.add-to-desktop
-
     # BTS SIO
     libreoffice-stable
     vscodium

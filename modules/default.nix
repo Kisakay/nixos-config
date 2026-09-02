@@ -15,5 +15,6 @@
     ./vpn.nix
     ./virtualisation.nix
     ./flatpak.nix
+    ./languages.nix
   ];
 }

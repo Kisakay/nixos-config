@@ -1,57 +1,57 @@
-# Environnement graphique et audio : X11, GNOME, COSMIC et PipeWire.
+# Environnement graphique et audio : COSMIC + PipeWire.
 { config, pkgs, ... }:
 
 {
-  # X11 + GDM (choix de la session au login : GNOME ou COSMIC).
-  services.xserver.enable = true;
-  services.xserver.excludePackages = [ pkgs.xterm ];
-  services.displayManager.gdm.enable = true;
-
-  # Bureaux disponibles.
-  services.desktopManager.gnome.enable = true;
+  # Bureau COSMIC uniquement.
   services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
-  # GNOME : apps de base, keyring et dconf.
-  services.gnome.core-apps.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  programs.dconf.enable = true;
-
-  # COSMIC : portail Wayland, scheduler System76 et variables de session.
+  # Ordonnanceur System76 pour COSMIC.
   services.system76-scheduler.enable = true;
+
+  # Gestionnaire de mots de passe / clés.
   programs.seahorse.enable = true;
 
+  # Portails XDG pour COSMIC.
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = false;
+
     extraPortals = with pkgs; [
       xdg-desktop-portal-cosmic
     ];
+
     config.common = {
       default = "cosmic";
     };
   };
 
+  # Variables de session COSMIC / Wayland.
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
-    COSMIC_DATA_CONTROL_ENABLED = 1;
+    COSMIC_DATA_CONTROL_ENABLED = "1";
   };
 
   # Clavier.
+  # COSMIC étant Wayland, cette configuration reste utile
+  # pour les paramètres clavier du système.
   services.xserver.xkb = {
     layout = "us";
     variant = "alt-intl";
   };
   console.useXkbConfig = true;
 
-  # Polices (Nerd Fonts pour les icônes de fastfetch, etc.).
+  # Nerd Font.
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
 
-  # Audio via PipeWire (PulseAudio désactivé).
+  # Audio via PipeWire.
   services.pulseaudio.enable = false;
+
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
