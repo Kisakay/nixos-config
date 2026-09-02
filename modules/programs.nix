@@ -13,8 +13,8 @@ let
   );
 
   shellAliases = {
-    maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#framework-laptop-12";
-    fdp = "codium /etc/nixos/ --user-data-dir /home/kisa/ --no-sandbox";
+    maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#fw12";
+    fdp = "zeditor /etc/nixos/";
   };
 
   interactiveShellInit = ''

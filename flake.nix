@@ -22,7 +22,7 @@
       secrets = import /etc/nixos/secrets.nix;
     in
     {
-      nixosConfigurations."framework-laptop-12" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."fw12" = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs secrets; };
         modules = [
