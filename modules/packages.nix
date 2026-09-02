@@ -23,7 +23,6 @@
     ffmpeg
 
     # Applications
-    rnote
     vlc
     thunderbird
     krita

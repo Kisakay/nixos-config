@@ -9,12 +9,16 @@
     dnsmasq
   ];
 
-  networking.firewall.trustedInterfaces = [ "virbr0" ];
-
   virtualisation.libvirtd = {
     enable = true;
-    qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+
+    qemu = {
+      package = pkgs.qemu_kvm;
+      vhostUserPackages = [ pkgs.virtiofsd ];
+    };
   };
+
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
