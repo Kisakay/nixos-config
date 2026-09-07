@@ -16,5 +16,15 @@
       User kisakay
       Port 22
       IdentityFile ~/.ssh/id_ed25519
+    Host btsProd
+      HostName lab.sio-brest.fr
+      User root
+      Port 12272
+      IdentityFile ~/.ssh/id_ed25519
+    Host btsTest
+      HostName lab.sio-estran.fr
+      User root
+      Port 12272
+      IdentityFile ~/.ssh/id_ed25519
   '';
 }

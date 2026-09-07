@@ -60,10 +60,6 @@
 
     # Utils
     acpi
-
-    # Build with rust
-    gcc
-    gnumake
-    pkg-config
+    windterm
   ];
 }

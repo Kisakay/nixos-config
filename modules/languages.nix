@@ -18,5 +18,10 @@
     rust-analyzer
     rustc
     cargo
+
+    # Build with rust
+    gcc
+    gnumake
+    pkg-config
   ];
 }
