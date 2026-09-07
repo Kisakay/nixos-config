@@ -14,6 +14,7 @@
     gitFull
     direnv
 
+    steam
     # Nix Inteligience
     nixfmt
     nil
@@ -56,5 +57,13 @@
     p7zip
     xlsx2csv
     github-desktop
+
+    # Utils
+    acpi
+
+    # Build with rust
+    gcc
+    gnumake
+    pkg-config
   ];
 }
