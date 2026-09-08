@@ -1,6 +1,14 @@
 # VPN WireGuard (toujours actif). Les valeurs sensibles viennent de secrets.nix.
-{ config, pkgs, secrets, ... }:
+{
+  config,
+  pkgs,
+  secrets,
+  ...
+}:
 
+let
+  wg1 = builtins.elemAt secrets.wireguard 1;
+in
 {
   # networking.wireguard.interfaces.wg0 = {
   #   ips = [ secrets.wireguard.address ];
@@ -20,6 +28,23 @@
   #   ];
   # };
 
-  # DNS fourni par le VPN.
-  networking.nameservers = [ secrets.wireguard.dns ];
+  networking.wireguard.interfaces.wg1 = {
+    ips = [
+      wg1.address
+    ];
+    mtu = wg1.mtu;
+    privateKeyFile = wg1.privateKeyFile;
+
+    peers = [
+      {
+        publicKey = wg1.publicKey;
+        presharedKey = wg1.presharedKey;
+        endpoint = wg1.endpoint;
+        allowedIPs = wg1.allowedIPs;
+
+        # Maintient le tunnel actif derrière un NAT.
+        persistentKeepalive = wg1.persistentKeepalive;
+      }
+    ];
+  };
 }
