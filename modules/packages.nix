@@ -61,5 +61,10 @@
     # Utils
     acpi
     windterm
+    cisco-packet-tracer_9
+
+    # Logiciel d'édition de texte
+    onlyoffice-desktopeditors
+
   ];
 }
