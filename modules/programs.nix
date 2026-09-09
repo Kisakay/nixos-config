@@ -1,5 +1,10 @@
 # Programmes : Firefox, fastfetch et configuration des shells (Bash, Zsh).
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   fastfetchLogo = pkgs.writeText "trans-nixos-logo.txt" (
@@ -14,7 +19,7 @@ let
 
   shellAliases = {
     maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#fw12";
-    fdp = "zeditor /etc/nixos/";
+    fdp = "cosmic-edit /etc/nixos/";
   };
 
   interactiveShellInit = ''
