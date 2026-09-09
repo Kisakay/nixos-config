@@ -5,11 +5,10 @@
 
   services.flatpak.remotes = [
     {
-      name = "flathub-beta";
+      name = "flathub";
       location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
     }
   ];
-
 
   # services.flatpak.packages = [
   #   "flathub:com.github.flxzt.rnote"
