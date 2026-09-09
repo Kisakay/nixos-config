@@ -62,9 +62,11 @@
     acpi
     windterm
     cisco-packet-tracer_9
-
+    tree
     # Logiciel d'édition de texte
     onlyoffice-desktopeditors
-
+    sushi
+    cosmic-viewer
+    cosmic-ext-calculator
   ];
 }
