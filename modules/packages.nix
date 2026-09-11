@@ -43,7 +43,7 @@
     vscodium
     hunspellDicts.fr-moderne # Dictionnaire français moderne
     gimp
-    geogebra
+
     nmap
     kdePackages.kolourpaint
     zed-editor

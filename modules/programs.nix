@@ -20,6 +20,7 @@ let
   shellAliases = {
     maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#fw12";
     fdp = "cosmic-edit /etc/nixos/";
+    tgl = "zeditor /etc/nixos/";
   };
 
   interactiveShellInit = ''
