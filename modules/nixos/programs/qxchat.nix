@@ -10,5 +10,5 @@
     inputs.tidaLuna.overlays.default
   ];
 
-  programs.qxchat.enable = false;
+  programs.qxchat.enable = true;
 }
