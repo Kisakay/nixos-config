@@ -13,6 +13,8 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tidaLuna.url = "github:Inrixia/TidaLuna";
   };
 
   outputs =

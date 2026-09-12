@@ -2,7 +2,6 @@
 
 {
   environment.systemPackages = with pkgs; [
-    vscodium
     zed-editor
     postman
     dbeaver-bin

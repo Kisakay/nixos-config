@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -29,5 +29,6 @@
     desktop-file-utils
 
     flameshot
+    inputs.tidaLuna.packages.${stdenv.hostPlatform.system}.default
   ];
 }

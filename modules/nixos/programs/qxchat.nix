@@ -7,7 +7,8 @@
     (final: prev: {
       qxchat = prev.callPackage "${inputs.qxchat-src}/nix/qxchat.nix" { };
     })
+    inputs.tidaLuna.overlays.default
   ];
 
-  programs.qxchat.enable = true;
+  programs.qxchat.enable = false;
 }

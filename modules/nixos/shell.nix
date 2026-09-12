@@ -19,7 +19,7 @@ let
 in
 {
   programs.bash.interactiveShellInit = ''
-    alias fdp="codium /etc/nixos/ --user-data-dir /home/${System.Username} --no-sandbox"
+    alias fdp="zeditor /etc/nixos/"
     alias m2f="cd /etc/nixos/ && sudo nixos-rebuild switch --flake /etc/nixos#computer"
     alias maj="cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake .#computer"
     alias flake_update="sudo nix flake lock --update-input qxchat-src /etc/nixos"
