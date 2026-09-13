@@ -34,7 +34,10 @@
           inherit inputs;
         };
 
-        modules = [ ./hosts/computer ];
+        modules = [
+          { nix.settings.pure-eval = false; }
+          ./hosts/computer
+        ];
       };
     };
 }
