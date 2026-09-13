@@ -76,5 +76,6 @@
     sqlitebrowser
     eclipses.eclipse-java
     pm2
+    rust-analyzer
   ];
 }
