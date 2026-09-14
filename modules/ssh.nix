@@ -12,7 +12,7 @@
 
   programs.ssh.extraConfig = ''
     Host fw13
-      HostName 192.168.2.1
+      HostName 10.66.66.2
       User kisakay
       Port 22
       IdentityFile ~/.ssh/id_ed25519
@@ -25,6 +25,11 @@
       HostName lab.sio-estran.fr
       User root
       Port 12272
+      IdentityFile ~/.ssh/id_ed25519
+    Host h
+      HostName 192.168.1.192
+      User kisakay
+      Port 22
       IdentityFile ~/.ssh/id_ed25519
   '';
 }

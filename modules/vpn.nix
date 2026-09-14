@@ -1,49 +1,28 @@
 # VPN WireGuard (toujours actif). Les valeurs sensibles viennent de secrets.nix.
 {
-  config,
-  pkgs,
   secrets,
   ...
 }:
 
 let
-  wg1 = builtins.elemAt secrets.wireguard 1;
+  wg0 = builtins.elemAt secrets.wireguard 0;
+  # wg1 = builtins.elemAt secrets.wireguard 1;
 in
 {
-  # networking.wireguard.interfaces.wg0 = {
-  #   ips = [ secrets.wireguard.address ];
-  #   mtu = secrets.wireguard.mtu;
-  #   privateKeyFile = secrets.wireguard.privateKeyFile;
-
-  #   peers = [
-  #     {
-  #       publicKey = secrets.wireguard.publicKey;
-  #       presharedKey = secrets.wireguard.presharedKey;
-  #       endpoint = secrets.wireguard.endpoint;
-  #       allowedIPs = secrets.wireguard.allowedIPs;
-
-  #       # Maintient le tunnel actif derrière un NAT.
-  #       persistentKeepalive = secrets.wireguard.persistentKeepalive;
-  #     }
-  #   ];
-  # };
-
-  networking.wireguard.interfaces.wg1 = {
-    ips = [
-      wg1.address
-    ];
-    mtu = wg1.mtu;
-    privateKeyFile = wg1.privateKeyFile;
+  networking.wireguard.interfaces.wg0 = {
+    ips = wg0.address;
+    mtu = wg0.mtu;
+    privateKey = wg0.privateKey;
 
     peers = [
       {
-        publicKey = wg1.publicKey;
-        presharedKey = wg1.presharedKey;
-        endpoint = wg1.endpoint;
-        allowedIPs = wg1.allowedIPs;
+        publicKey = wg0.publicKey;
+        presharedKey = wg0.presharedKey;
+        endpoint = wg0.endpoint;
 
-        # Maintient le tunnel actif derrière un NAT.
-        persistentKeepalive = wg1.persistentKeepalive;
+        allowedIPs = wg0.allowedIPs;
+
+        persistentKeepalive = wg0.persistentKeepalive;
       }
     ];
   };
