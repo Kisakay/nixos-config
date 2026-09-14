@@ -28,7 +28,7 @@
       IdentityFile ~/.ssh/id_ed25519
     Host h
       HostName 1ssh.ihorizon.org
-      User kisakay
+      User anais
       Port 22
       IdentityFile ~/.ssh/id_ed25519
   '';
