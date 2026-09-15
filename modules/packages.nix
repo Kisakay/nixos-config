@@ -68,5 +68,10 @@
     sushi
     cosmic-viewer
     cosmic-ext-calculator
+
+    kdePackages.kdeconnect-kde
+
+    prismlauncher
+    php
   ];
 }

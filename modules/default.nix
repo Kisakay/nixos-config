@@ -16,5 +16,6 @@
     ./virtualisation.nix
     ./flatpak.nix
     ./languages.nix
+    ./steam.nix
   ];
 }
