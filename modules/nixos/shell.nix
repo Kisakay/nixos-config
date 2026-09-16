@@ -24,7 +24,7 @@ in
       maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#computer";
       flake_update = "sudo nix flake lock --update-input qxchat-src /etc/nixos";
 
-      vpn = "sudo systemctl start wg-quick-wg1000";
+      vpn = "sudo systemctl start wg-quick-wg100";
       vpn-stop = "sudo systemctl stop wg-quick-wg1000";
       vpn-status = "sudo wg show";
 
