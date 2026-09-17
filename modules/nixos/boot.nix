@@ -13,6 +13,7 @@
       "snd-aloop"
     ];
     kernelParams = [ "usbcore.autosuspend=-1" ];
+    blacklistedKernelModules = [ "sp5100_tco" ];
 
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
     extraModprobeConfig = ''
