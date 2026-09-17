@@ -66,4 +66,10 @@ in
       ];
     };
   };
+
+  networking.networkmanager.unmanaged = [
+    "interface-name:wg0"
+    "interface-name:wg1"
+    "interface-name:wg2"
+  ];
 }
