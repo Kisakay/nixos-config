@@ -1,0 +1,12 @@
+ubuntu@ihorizon:~$ cat fw12.conf
+[Interface]
+Address = 10.7.0.3/24, fddd:2c4:2c4:2c4::3/64
+DNS = 208.67.222.222, 208.67.220.220
+PrivateKey = CGktGFF7f0ZJpTEBpAsFEOVpv2g0VJgTu6lA9IXbOHU=
+
+[Peer]
+PublicKey = KgT/Z3ycndyGR8ZmYD9xREmrpqQVOvpeD7/cRfV+1ik=
+PresharedKey = qIPT97dtF96g6EA535bek5EnsVvIucxTB0sIbR+Mxz4=
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = 158.69.54.222:51820
+PersistentKeepalive = 25

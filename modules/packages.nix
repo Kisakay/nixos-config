@@ -73,5 +73,7 @@
 
     prismlauncher
     php
+    gnome-disk-utility
+    tidal-hifi
   ];
 }
