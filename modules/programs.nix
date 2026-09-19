@@ -55,4 +55,9 @@ in
     "xdg/fastfetch/config.jsonc".source = fastfetchConfig;
     "xdg/fastfetch/trans-nixos-logo.txt".source = fastfetchLogo;
   };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }

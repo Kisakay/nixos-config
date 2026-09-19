@@ -39,10 +39,12 @@
     wine
 
     # BTS SIO
-    libreoffice-stable
+    libreoffice-qt-stable
     vscodium
     hunspellDicts.fr-moderne # Dictionnaire français moderne
     gimp
+    xournalpp
+    libinput
 
     nmap
     kdePackages.kolourpaint
@@ -75,5 +77,7 @@
     php
     gnome-disk-utility
     tidal-hifi
+    flameshot
+    signal-desktop
   ];
 }
