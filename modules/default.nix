@@ -18,5 +18,6 @@
     ./languages.nix
     ./steam.nix
     ./virtualbox.nix
+    ./autostart.nix
   ];
 }

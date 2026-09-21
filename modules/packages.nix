@@ -13,6 +13,7 @@
     btop
     gitFull
     direnv
+    remmina
 
     steam
     # Nix Inteligience
@@ -47,6 +48,7 @@
     libinput
 
     nmap
+
     kdePackages.kolourpaint
     zed-editor
 
