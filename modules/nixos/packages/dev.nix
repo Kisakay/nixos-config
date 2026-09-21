@@ -77,5 +77,7 @@
     eclipses.eclipse-java
     pm2
     rust-analyzer
+
+    claude-code
   ];
 }
