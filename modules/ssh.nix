@@ -12,7 +12,7 @@
 
   programs.ssh.extraConfig = ''
     Host fw13
-      HostName 10.66.66.2
+      HostName 10.66.66.4
       User kisakay
       Port 22
       IdentityFile ~/.ssh/id_ed25519
