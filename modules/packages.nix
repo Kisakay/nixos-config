@@ -74,6 +74,7 @@
     cosmic-ext-calculator
 
     kdePackages.kdeconnect-kde
+    kdePackages.filelight
 
     prismlauncher
     php
