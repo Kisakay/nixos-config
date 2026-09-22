@@ -2,7 +2,7 @@
   description = "kisakay's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     qxchat-src = {
       url = "git+https://github.com/lqxp/app.git?ref=main&submodules=1";

@@ -7,7 +7,9 @@
       efi.canTouchEfiVariables = true;
     };
 
-    kernelPackages = pkgs.linuxPackages;
+    # LTS 6.12 sur 26.05 (pas d'alias linuxPackages_lts sur cette branche).
+    # Supporté jusqu'à fin 2027, idéal Framework 13 AMD 7040.
+    kernelPackages = pkgs.linuxPackages_6_12;
     # v4l2loopback / snd-aloop ne sont PAS chargés au boot :
     # ils créaient des transactions sound.target destructives à chaque
     # extinction ("Transaction for sound.target/start is destructive").

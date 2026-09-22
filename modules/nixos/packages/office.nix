@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    libreoffice-stable
+    libreoffice-still
     onlyoffice-desktopeditors
     geogebra
 

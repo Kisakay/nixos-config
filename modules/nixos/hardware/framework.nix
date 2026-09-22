@@ -9,8 +9,7 @@
   services.hardware.bolt.enable = true;
 
   # Framework 13 AMD : on utilise power-profiles-daemon (recommandé avec
-  # amd-pstate-epp), PAS system76-power qui est auto-activé par COSMIC mais
-  # conçu pour les laptops System76. Logs actuels :
+  # amd-pstate-epp), PAS system76-power. Logs constatés précédemment :
   # "Failed to set automatic graphics power: does not have switchable graphics",
   # "fan daemon: platform hwmon not found" -> conflit avec fw-fanctrl.
   hardware.system76.power-daemon.enable = lib.mkForce false;
