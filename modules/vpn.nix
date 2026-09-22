@@ -5,31 +5,12 @@
 }:
 
 let
-  wg0 = builtins.elemAt secrets.wireguard 0;
-  wg1 = builtins.elemAt secrets.wireguard 1;
-  wg2 = builtins.elemAt secrets.wireguard 2;
+  wg1 = builtins.elemAt secrets.wireguard 0;
+  wg2 = builtins.elemAt secrets.wireguard 1;
 
 in
 {
   networking.wg-quick.interfaces = {
-    wg0 = {
-      address = wg0.address;
-      mtu = wg0.mtu;
-      privateKey = wg0.privateKey;
-
-      peers = [
-        {
-          publicKey = wg0.publicKey;
-          presharedKey = wg0.presharedKey;
-          endpoint = wg0.endpoint;
-
-          allowedIPs = wg0.allowedIPs;
-
-          persistentKeepalive = wg0.persistentKeepalive;
-        }
-      ];
-    };
-
     wg1 = {
       address = wg1.address;
       mtu = wg1.mtu;
@@ -68,7 +49,6 @@ in
   };
 
   networking.networkmanager.unmanaged = [
-    "interface-name:wg0"
     "interface-name:wg1"
     "interface-name:wg2"
   ];

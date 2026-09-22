@@ -9,4 +9,8 @@
 
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
+
+  networking.firewall.allowedTCPPorts = [
+    3000
+  ];
 }
