@@ -7,6 +7,7 @@
     dbeaver-bin
     direnv
     nixfmt
+    nixd
     distrobox
     prettier
     entr

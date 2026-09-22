@@ -1,9 +1,20 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
+  hardware.enableRedistributableFirmware = true;
+  hardware.cpu.amd.updateMicrocode = true;
+
   services.fwupd.enable = true;
 
   services.hardware.bolt.enable = true;
+
+  # Framework 13 AMD : on utilise power-profiles-daemon (recommandé avec
+  # amd-pstate-epp), PAS system76-power qui est auto-activé par COSMIC mais
+  # conçu pour les laptops System76. Logs actuels :
+  # "Failed to set automatic graphics power: does not have switchable graphics",
+  # "fan daemon: platform hwmon not found" -> conflit avec fw-fanctrl.
+  hardware.system76.power-daemon.enable = lib.mkForce false;
+  services.power-profiles-daemon.enable = true;
 
   hardware.fw-fanctrl = {
     enable = true;
@@ -47,10 +58,10 @@
 
   services.fprintd.enable = false;
 
-  services.logind.settings.Login = {
-    HandlePowerKey = "ignore";
-    HandlePowerKeyLongPress = "ignore";
-  };
+  # Retiré : HandlePowerKey=ignore / HandlePowerKeyLongPress=ignore
+  # empêchaient le bouton power de déclencher un poweroff propre et
+  # forçaient à couper en dur. On restaure les défauts logind
+  # (poweroff sur appui court).
 
   environment.systemPackages = with pkgs; [
     lm_sensors

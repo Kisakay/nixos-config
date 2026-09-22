@@ -9,11 +9,6 @@
 
     desktopManager.cosmic.enable = true;
     displayManager.cosmic-greeter.enable = true;
-
-    gnome = {
-      core-apps.enable = true;
-      gnome-keyring.enable = true;
-    };
   };
 
   programs.seahorse.enable = true;
@@ -38,5 +33,7 @@
     COSMIC_DATA_CONTROL_ENABLED = 1;
   };
 
+  environment.systemPackages = with pkgs; [
+  ];
   services.system76-scheduler.enable = true;
 }
