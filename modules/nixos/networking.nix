@@ -17,28 +17,40 @@
     pkgs.util-linux
   ];
 
-  systemd.services.disable-wifi = {
-    description = "Disable Wi-Fi via rfkill";
+  # NOTE : aucun `rfkill block wifi` au boot (ça coupait le wifi à chaque
+  # démarrage et le sortait de KDE/NetworkManager). Le wifi reste géré par
+  # NetworkManager ; le bluetooth est désactivé via hardware.bluetooth.
+
+  # CalDigit TS4 : la NIC Intel (8086:5502, driver igc) est derrière un
+  # tunnel PCIe Thunderbolt. Au boot, le kernel la touche AVANT la fin de
+  # l'autorisation bolt ("D3cold to D0 failed, PCIe link lost, detached").
+  # On la maintient sous tension et on refait un rescan PCI après bolt.
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0x5502", ATTR{power/control}="on"
+  '';
+
+  systemd.services.thunderbolt-pci-rescan = {
+    description = "Rescan PCI après autorisation Thunderbolt (CalDigit TS4)";
     wantedBy = [ "multi-user.target" ];
-    after = [ "NetworkManager.service" ];
+    after = [
+      "bolt.service"
+      "NetworkManager.service"
+    ];
 
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill block wifi";
       RemainAfterExit = true;
     };
-  };
 
-  systemd.services.disable-bluetooth = {
-    description = "Disable Bluetooth via rfkill";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "bluetooth.service" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill block bluetooth";
-      RemainAfterExit = true;
-    };
+    script = ''
+      ${pkgs.coreutils}/bin/sleep 8
+      ${pkgs.util-linux}/bin/rfkill unblock wifi || true
+      if ! ${pkgs.coreutils}/bin/ls /sys/class/net/ | ${pkgs.gnugrep}/bin/grep -qE '^(enp|eth|eno|wlp)'; then
+        echo 1 > /sys/bus/pci/rescan
+        ${pkgs.coreutils}/bin/sleep 3
+      fi
+      ${pkgs.networkmanager}/bin/nmcli radio wifi on || true
+    '';
   };
 
   networking.firewall = {

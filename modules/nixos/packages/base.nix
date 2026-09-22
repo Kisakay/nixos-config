@@ -41,6 +41,7 @@
     squashfsTools
 
     usbutils
+    pciutils
     ntfs3g
     smartmontools
 
