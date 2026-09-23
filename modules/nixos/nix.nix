@@ -1,3 +1,5 @@
+{pkgs}:
+
 {
   nix = {
     settings.experimental-features = [
@@ -8,11 +10,15 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
 
     optimise.automatic = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    nixd
+  ];
 
   nixpkgs.config.allowUnfree = true;
 }

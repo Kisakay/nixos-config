@@ -7,7 +7,7 @@
       efi.canTouchEfiVariables = true;
     };
 
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
     # v4l2loopback / snd-aloop ne sont PAS chargés au boot :
     # ils créaient des transactions sound.target destructives à chaque
     # extinction ("Transaction for sound.target/start is destructive").
