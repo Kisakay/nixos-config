@@ -12,7 +12,7 @@
 
     anydesk
     remmina
-    # rustdesk
+    rustdesk
     freerdp
 
     filezilla

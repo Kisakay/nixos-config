@@ -43,7 +43,7 @@
     strace
     ltrace
     bpftrace
-    linuxPackages_6_12.bpftrace
+    linuxPackages.bpftrace
     perf
     bcc
 

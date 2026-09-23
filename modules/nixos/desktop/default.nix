@@ -1,7 +1,7 @@
 {
   imports = [
     ./audio.nix
-    ./plasma.nix
+    ./cosmic.nix
     ./fonts.nix
   ];
 }

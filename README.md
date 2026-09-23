@@ -1,6 +1,6 @@
 # nixos-config
 
-Configuration NixOS flake-based pour un **Framework 13** (Ryzen 5 7640U, AMD), desktop KDE Plasma (stable 26.05, kernel LTS).
+Configuration NixOS flake-based pour un **Framework 13** (Ryzen 5 7640U, AMD), desktop COSMIC.
 
 ## Utilisation
 
