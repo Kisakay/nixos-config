@@ -19,5 +19,7 @@
     ./steam.nix
     ./virtualbox.nix
     ./autostart.nix
+    ./temporary-windows.nix
+    ./docker.nix
   ];
 }
