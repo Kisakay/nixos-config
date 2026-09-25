@@ -2,17 +2,17 @@
 
 {
 
-  programs.steam = {
-    enable = true;
-  };
+  # programs.steam = {
+  #   enable = true;
+  # };
 
-  programs.gamemode.enable = true;
+  # programs.gamemode.enable = true;
 
-  programs.gamescope = {
-    enable = true;
-    enableWsi = true;
-    capSysNice = false;
-  };
+  # programs.gamescope = {
+  #   enable = true;
+  #   enableWsi = true;
+  #   capSysNice = false;
+  # };
 
   environment.systemPackages = with pkgs; [
     steam-run
