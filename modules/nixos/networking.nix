@@ -5,6 +5,10 @@
     enable = true;
     plugins = [ pkgs.networkmanager-openvpn ];
 
+    # wg0 est géré par systemd-networkd/wireguard-tools (natif NixOS),
+    # PAS par NetworkManager : sinon NM peut le down au bout d'un moment.
+    unmanaged = [ "interface-name:wg0" ];
+
     wifi = {
       powersave = false;
       scanRandMacAddress = false;

@@ -58,6 +58,31 @@
 
   services.fprintd.enable = false;
 
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+    HandleSuspendKey = "ignore";
+    HandleSuspendKeyLongPress = "ignore";
+    HandleHibernateKey = "ignore";
+    HandleHibernateKeyLongPress = "ignore";
+    # on ne bloque QUE le sleep, pas l'extinction volontaire.
+    HandlePowerKey = "poweroff";
+    IdleAction = "ignore";
+    IdleActionSec = "0";
+  };
+
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+    AllowSuspendThenHibernate = "no";
+  };
+
+  # UPower ne doit jamais déclencher HybridSleep ni tenir compte du capot.
+  services.upower.ignoreLid = true;
+  services.upower.criticalPowerAction = "PowerOff";
+
   # Retiré : HandlePowerKey=ignore / HandlePowerKeyLongPress=ignore
   # empêchaient le bouton power de déclencher un poweroff propre et
   # forçaient à couper en dur. On restaure les défauts logind
