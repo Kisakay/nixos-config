@@ -80,5 +80,6 @@
     rust-analyzer
 
     claude-code
+    nil
   ];
 }
