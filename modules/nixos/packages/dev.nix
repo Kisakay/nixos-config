@@ -24,6 +24,9 @@
     zig
     jdk21
     maven
+    gftp
+
+    wireshark
 
     gcc
     clang

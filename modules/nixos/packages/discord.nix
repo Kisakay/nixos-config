@@ -16,6 +16,12 @@ in
       withVencord = true;
       withTTS = false;
     })
+
+    (discord-canary.override {
+      withOpenASAR = true;
+      withVencord = true;
+      withTTS = false;
+    })
   ];
 
   system.activationScripts.discordSettings.text = ''
