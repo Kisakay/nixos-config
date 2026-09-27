@@ -52,6 +52,16 @@
     ${pkgs.acl}/bin/setfacl -R -m u:tidal:rwX,g:tidal:rwX /home/kisakay/Music/TidalDownloadedSongs || true
   '';
 
+  # Sans ça, l'auth password de tidal échoue toujours :
+  # - unixAuth=false par défaut car PasswordAuthentication=false global
+  #   (le module sshd ne met pam_unix que si password global activé,
+  #   et notre Match User ne suffit pas côté PAM) -> on force.
+  # - allowNullPassword (nullok) requis pour le mot de passe vide.
+  security.pam.services.sshd = {
+    unixAuth = lib.mkForce true;
+    allowNullPassword = true;
+  };
+
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.openssh = {
