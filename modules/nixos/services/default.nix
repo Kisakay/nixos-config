@@ -5,5 +5,6 @@
     ./postgresql.nix
     ./ollama.nix
     ./wireguard.nix
+    ./sftp.nix
   ];
 }
