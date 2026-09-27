@@ -19,9 +19,10 @@
     home = "/srv/sftp/tidal";
     createHome = false;
     shell = "${pkgs.shadow}/bin/nologin";
-    # "" = login sans mot de passe (combiné à PermitEmptyPasswords yes ci-dessous).
-    # Pour mettre un mot de passe ensuite : `sudo passwd tidal` (avec mutableUsers).
-    hashedPassword = "";
+    # Mot de passe en clair : "tidal" (hash sha-512 via `openssl passwd -6`).
+    # Requis car certains clients (driver SSHFS Windows) refusent le mdp vide.
+    # Faible par design, LAN uniquement : ne JAMAIS exposer le 22 sur internet.
+    hashedPassword = "$6$8atse4TuhiYsSjJ/$LapfIRnoYCRkwzze2VSJ5DwT3ZypdXpsqcrDdu0PzshuymuYJ.1K6/oOSwLDD6NVtSdF5WSkeHVU8tMri7mya/";
   };
 
   # kisakay garde rwx sur les fichiers créés via SFTP (groupe commun + umask 002).
