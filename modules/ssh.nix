@@ -27,7 +27,12 @@
       Port 12272
       IdentityFile ~/.ssh/id_ed25519
     Host h
-      HostName 1ssh.ihorizon.org
+      HostName 192.168.1.192
+      User anais
+      Port 22
+      IdentityFile ~/.ssh/id_ed25519
+    Host h2
+      HostName 192.168.1.193
       User anais
       Port 22
       IdentityFile ~/.ssh/id_ed25519
