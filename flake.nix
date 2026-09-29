@@ -15,6 +15,8 @@
     };
 
     tidaLuna.url = "github:Inrixia/TidaLuna";
+
+      erosanix.url = "github:emmanuelrosa/erosanix";
   };
 
   outputs =

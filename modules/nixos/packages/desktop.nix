@@ -30,5 +30,7 @@
 
     flameshot
     inputs.tidaLuna.packages.${stdenv.hostPlatform.system}.default
+    inputs.erosanix.packages.${pkgs.system}.foobar2000
+
   ];
 }

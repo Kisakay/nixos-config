@@ -1,12 +1,63 @@
 {
   "nodes": {
+    "erosanix": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1790604985,
+        "narHash": "sha256-NIaE3bTbRx6TtPOzpdCzH1B2hEc6JWOBUIszyQa35sM=",
+        "owner": "emmanuelrosa",
+        "repo": "erosanix",
+        "rev": "06e3ef7a1a1f3f9ed0804ffa5e6b7b3bea11ceaa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emmanuelrosa",
+        "repo": "erosanix",
+        "type": "github"
+      }
+    },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777728799,
+        "narHash": "sha256-z7jjYQqhkFKab92VQ3duB7QVO7f7Y62qTFrJYXO/lyo=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "4b2287113c2f9a2331c04899b2e2e5ab92dea9c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1790463110,
-        "narHash": "sha256-hKlVl12B1dF0Q5vd9dY3lIJM5mFGWYSlXwSLAqHZ1+s=",
+        "lastModified": 1789563672,
+        "narHash": "sha256-05W7P4/pqgpliOA/HyZM6IkKd6ojI8L5X/x9tgthckI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa",
+        "rev": "88142f2dc8f2727eec89047694ec8000f92ce542",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1790578696,
+        "narHash": "sha256-ZoxIApko70jCdbH3l20HWXOBaT2HZd87orzd2yJ9dVE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
         "type": "github"
       },
       "original": {
@@ -16,7 +67,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1778580735,
         "narHash": "sha256-t+8AVV8ExvOmslz2sLIgw/hJBKlyl65rJvxjvvjHgpE=",
@@ -35,11 +86,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1790201281,
-        "narHash": "sha256-nN44S2u4pEpsWFFt5AIiV5Kjz0hjLjU8hqJj/ZL1ie4=",
+        "lastModified": 1790669822,
+        "narHash": "sha256-x7F8UXlfw8RIm/J92E0RVp3vTlEDl0oVH/jIud02AUU=",
         "ref": "main",
-        "rev": "f90ab82cdafdf5e28d285ee51c0afd49ac5c4004",
-        "revCount": 564,
+        "rev": "e7a3422f5e5f13eb43a8bc434ca620b1bf22c165",
+        "revCount": 587,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
@@ -53,7 +104,8 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs",
+        "erosanix": "erosanix",
+        "nixpkgs": "nixpkgs_2",
         "qxchat-src": "qxchat-src",
         "tidaLuna": "tidaLuna",
         "zen-browser": "zen-browser"
@@ -61,14 +113,14 @@
     },
     "tidaLuna": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1788301116,
-        "narHash": "sha256-VZv75eW2w7+v2Bin9A7GdFt5z/6b09WvRrXcIPUWoRg=",
+        "lastModified": 1790594230,
+        "narHash": "sha256-auZKOshUyOH59NnAp/4spD58okyufb6reYgoEVeW3JI=",
         "owner": "Inrixia",
         "repo": "TidaLuna",
-        "rev": "d8cd6bc29b5edc30dd8ec28861b88d3519560126",
+        "rev": "e1971122cf5db90c1e0b2bc98402ddcc9aa97e23",
         "type": "github"
       },
       "original": {
