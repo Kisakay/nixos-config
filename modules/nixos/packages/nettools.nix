@@ -37,7 +37,13 @@
     bandwhich
     vnstat
     darkstat
-    tcptrack
+    # tcptrack 1.4.3 (2017) ne compile plus avec GCC 15 : -Werror + unused-but-set-variable
+    # (TCContainer.cc:180). On retire -Werror en attendant un fix upstream.
+    (tcptrack.overrideAttrs (oldAttrs: {
+      postPatch = (oldAttrs.postPatch or "") + ''
+        grep -rl -- "-Werror" . 2>/dev/null | xargs -r sed -i 's/-Werror//g' || true
+      '';
+    }))
 
     netcat
     socat
