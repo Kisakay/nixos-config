@@ -7,7 +7,7 @@
     signal-desktop
     element-desktop
 
-    mumble
+    # mumble
     github-desktop
 
     anydesk

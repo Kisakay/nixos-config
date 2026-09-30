@@ -86,11 +86,11 @@
     "qxchat-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1790688140,
-        "narHash": "sha256-h581+pSiYJVC4SxB/ICJRxGRsviAqimN1/pM/tN0nnM=",
+        "lastModified": 1790771192,
+        "narHash": "sha256-ZR+g8wYgjd2m/kNyWXCVIn2q22VtsVvH1hNLOrUm4+M=",
         "ref": "main",
-        "rev": "8115535f9a872309df25d95daf1d70754fedf1b5",
-        "revCount": 597,
+        "rev": "4834fe2083dc4b118d98bc02bf4aebafbc1a1dbd",
+        "revCount": 598,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/lqxp/app.git"
