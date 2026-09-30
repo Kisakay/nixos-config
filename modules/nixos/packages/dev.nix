@@ -44,7 +44,7 @@
     gdb
     valgrind
     strace
-    ltrace
+    # ltrace vire : testsuite cassee sur nixos-unstable (15 unexpected failures)
     bpftrace
     linuxPackages.bpftrace
     perf
