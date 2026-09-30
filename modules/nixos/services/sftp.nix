@@ -25,14 +25,17 @@
     hashedPassword = "$6$8atse4TuhiYsSjJ/$LapfIRnoYCRkwzze2VSJ5DwT3ZypdXpsqcrDdu0PzshuymuYJ.1K6/oOSwLDD6NVtSdF5WSkeHVU8tMri7mya/";
   };
 
-  # kisakay garde rwx sur les fichiers créés via SFTP (groupe commun + umask 002).
-  users.users.kisakay.extraGroups = [ "tidal" ];
+  # Pas de gestion fine : 0777 pour tout le monde, c'est juste un subfolder.
+  system.activationScripts.sftp-music-perms = lib.stringAfter [ "users" "groups" ] ''
+    mkdir -p /home/kisakay/Music/TidalDownloadedSongs /srv/sftp/tidal/songs
+    chmod 0777 /home/kisakay/Music/TidalDownloadedSongs
+  '';
 
-  # Chroot : doit être owned root:root 0755, sinon sshd refuse.
+  # Chroot : doit être owned root:root 0777, sinon sshd refuse.
   systemd.tmpfiles.rules = [
-    "d /srv/sftp 0755 root root -"
-    "d /srv/sftp/tidal 0755 root root -"
-    "d /srv/sftp/tidal/songs 0755 root root -"
+    "d /srv/sftp 0777 root root -"
+    "d /srv/sftp/tidal 0777 root root -"
+    "d /srv/sftp/tidal/songs 0777 root root -"
   ];
 
   # Le vrai stockage reste /home/kisakay/Music/TidalDownloadedSongs,
@@ -42,16 +45,6 @@
     fsType = "none";
     options = [ "bind" ];
   };
-
-  # Droits rwx pour kisakay + tidal sur le dossier réel (ACL + setgid).
-  system.activationScripts.sftp-music-perms = lib.stringAfter [ "users" "groups" ] ''
-    mkdir -p /home/kisakay/Music/TidalDownloadedSongs /srv/sftp/tidal/songs
-    chgrp tidal /home/kisakay/Music/TidalDownloadedSongs || true
-    chmod 2775 /home/kisakay/Music/TidalDownloadedSongs
-    ${pkgs.acl}/bin/setfacl -m u:tidal:rwx,g:tidal:rwx /home/kisakay/Music/TidalDownloadedSongs || true
-    ${pkgs.acl}/bin/setfacl -d -m u::rwx,g::rwx,g:tidal:rwx,o::r-x,u:tidal:rwx /home/kisakay/Music/TidalDownloadedSongs || true
-    ${pkgs.acl}/bin/setfacl -R -m u:tidal:rwX,g:tidal:rwX /home/kisakay/Music/TidalDownloadedSongs || true
-  '';
 
   # Sans ça, l'auth password de tidal échoue toujours :
   # - unixAuth=false par défaut car PasswordAuthentication=false global
@@ -76,7 +69,7 @@
     extraConfig = ''
       Match User tidal
         ChrootDirectory /srv/sftp/tidal
-        ForceCommand internal-sftp -d /songs -u 002
+        ForceCommand internal-sftp -d /songs -u 000
         AllowTCPForwarding no
         AllowAgentForwarding no
         X11Forwarding no
