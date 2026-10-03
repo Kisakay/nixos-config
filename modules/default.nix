@@ -21,5 +21,6 @@
     ./autostart.nix
     ./temporary-windows.nix
     ./docker.nix
+    ./printing.nix
   ];
 }

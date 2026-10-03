@@ -33,7 +33,7 @@
       IdentityFile ~/.ssh/id_ed25519
     Host h2
       HostName 192.168.1.193
-      User anais
+      User kisakay
       Port 22
       IdentityFile ~/.ssh/id_ed25519
   '';
