@@ -43,6 +43,11 @@
   programs.ccache.enable = true;
   services.lorri.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   documentation = {
     dev.enable = true;
     man.enable = true;
