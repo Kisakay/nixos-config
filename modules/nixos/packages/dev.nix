@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     zed-editor
     postman
-    dbeaver-bin
+    # dbeaver-bin
     direnv
     nixfmt
     nixd

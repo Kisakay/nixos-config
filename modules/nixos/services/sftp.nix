@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # SFTP anonyme (user `tidal`, mot de passe vide) sur 0.0.0.0:22
@@ -26,16 +31,23 @@
   };
 
   # Pas de gestion fine : 0777 pour tout le monde, c'est juste un subfolder.
+  # NOTE: le chroot lui-même (/srv/sftp, /srv/sftp/tidal) doit rester
+  # root:root 0755 NON-writable, sinon sshd coupe la connexion
+  # ("bad ownership or modes for chroot directory").
+  # Seul /songs (le vrai stockage) est 0777.
   system.activationScripts.sftp-music-perms = lib.stringAfter [ "users" "groups" ] ''
     mkdir -p /home/kisakay/Music/TidalDownloadedSongs /srv/sftp/tidal/songs
+    chown root:root /srv/sftp /srv/sftp/tidal
+    chmod 0755 /srv/sftp /srv/sftp/tidal
     chmod 0777 /home/kisakay/Music/TidalDownloadedSongs
   '';
 
-  # Chroot : doit être owned root:root 0777, sinon sshd refuse.
+  # Chroot : doit être owned root:root 0755 (NON writable), sinon sshd refuse
+  # la session (reset peer après auth OK). Seul le sous-dossier songs est writable.
   systemd.tmpfiles.rules = [
-    "d /srv/sftp 0777 root root -"
-    "d /srv/sftp/tidal 0777 root root -"
-    "d /srv/sftp/tidal/songs 0777 root root -"
+    "d /srv/sftp 0755 root root -"
+    "d /srv/sftp/tidal 0755 root root -"
+    "d /srv/sftp/tidal/songs 0755 root root -"
   ];
 
   # Le vrai stockage reste /home/kisakay/Music/TidalDownloadedSongs,

@@ -75,7 +75,7 @@
   };
 
   networking.firewall = {
-    enable = true;
+    enable = false;
     allowPing = true;
 
     allowedTCPPorts = [
@@ -89,11 +89,13 @@
       8000
       25565
       11434
+      51105
     ];
     allowedUDPPorts = [
       53
       51820
-    ];
+      51105
+	];
 
     trustedInterfaces = [
       "virbr0"
