@@ -14,11 +14,6 @@
       "interface-name:enp4s0"
       "interface-name:br0"
     ];
-
-    wifi = {
-      powersave = false;
-      scanRandMacAddress = false;
-    };
   };
 
   # Bridge natif pour les VMs libvirt (enp4s0 esclave, IP statique sur br0).
@@ -44,35 +39,13 @@
     domain = "lan";
   };
 
+  # B550M AORUS ELITE : pas de Wi-Fi ni Bluetooth embarqués,
+  # pas de rfkill à forcer (no-op sur tour).
   hardware.bluetooth.enable = false;
 
   environment.systemPackages = [
     pkgs.util-linux
   ];
-
-  systemd.services.disable-wifi = {
-    description = "Disable Wi-Fi via rfkill";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "NetworkManager.service" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill block wifi";
-      RemainAfterExit = true;
-    };
-  };
-
-  systemd.services.disable-bluetooth = {
-    description = "Disable Bluetooth via rfkill";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "bluetooth.service" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill block bluetooth";
-      RemainAfterExit = true;
-    };
-  };
 
   networking.firewall = {
     enable = false;

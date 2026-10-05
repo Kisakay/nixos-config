@@ -1,7 +1,7 @@
 {
   imports = [
     ./amd-gpu.nix
-    ./framework.nix
+    ./desktop-tower.nix
     ./printing.nix
   ];
 }

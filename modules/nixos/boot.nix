@@ -14,14 +14,8 @@
     # Ils restent disponibles à la demande via `modprobe` (OBS).
     kernelModules = [ ];
     kernelParams = [
-      "usbcore.autosuspend=-1"
-      # Fix extinction bloquée sur Framework 13 AMD 7040 + dock
-      # Thunderbolt/CalDigit : le bridge PCI échoue à assigner ses fenêtres
-      # IO et empêche le poweroff (hang après "Reached target System Power Off").
-      "pcie_aspm=off"
-      # Samsung 990 PRO + AMD : évite le hang NVMe/ACPI au poweroff.
-      "nvme.noacpi=1"
-      # pstate actif explicite (déjà actif, mais on le fige).
+      # Ryzen 5700X (Vermeer) : pstate actif explicite, driver amd-pstate-epp
+      # déjà actif (vérifié via scaling_driver).
       "amd_pstate=active"
     ];
     blacklistedKernelModules = [ "sp5100_tco" ];

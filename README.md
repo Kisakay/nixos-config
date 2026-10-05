@@ -1,6 +1,6 @@
 # nixos-config
 
-Configuration NixOS flake-based pour un **Framework 13** (Ryzen 5 7640U, AMD), desktop COSMIC.
+Configuration NixOS flake-based pour une **tour desktop** (Ryzen 7 5700X, RX 7600 XT, B550), desktop COSMIC.
 
 ## Utilisation
 
