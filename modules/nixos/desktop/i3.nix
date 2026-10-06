@@ -10,9 +10,13 @@
 # - Portail : voir desktop/cosmic.nix (cosmic sous COSMIC, gtk sous i3).
 # - NIXOS_OZONE_WL (force Wayland, défini globalement pour COSMIC) est unset
 #   dans la session i3 pour rester en X11 natif.
+# - cosmic-greeter lance les sessions X11 via `startx` (codé en dur en amont) :
+#   sans xinit, la session meurt instantanément et on retombe sur le greeter.
 { pkgs, ... }:
 
 {
+  services.xserver.displayManager.startx.enable = true;
+
   services.xserver.windowManager.i3 = {
     enable = true;
 
@@ -232,6 +236,7 @@
     arandr
     xorg.xrandr
     xorg.xsetroot
+    xorg.xauth # startx s'en sert pour le cookie X (.Xauthority)
     flameshot
     maim
     xclip
