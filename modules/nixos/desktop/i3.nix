@@ -234,9 +234,9 @@
     libnotify
     networkmanagerapplet
     arandr
-    xorg.xrandr
-    xorg.xsetroot
-    xorg.xauth # startx s'en sert pour le cookie X (.Xauthority)
+    xrandr
+    xsetroot
+    xauth # startx s'en sert pour le cookie X (.Xauthority)
     flameshot
     maim
     xclip
@@ -247,8 +247,8 @@
     copyq
     rofimoji
     xsettingsd
-    mate.mate-polkit
-    xfce.thunar
+    mate-polkit
+    thunar
     i3lock-color
   ];
 
