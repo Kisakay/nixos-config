@@ -22,6 +22,7 @@
     nerd-fonts.fira-code
     nerd-fonts.iosevka
     nerd-fonts.hack
+    nerd-fonts.jetbrains-mono # police de la barre i3 (rice/i3/config)
     nerd-fonts.symbols-only
 
     bibata-cursors

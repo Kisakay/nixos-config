@@ -20,10 +20,15 @@
 
     extraPortals = with pkgs; [
       xdg-desktop-portal-cosmic
+      # Isolation COSMIC (Wayland) / i3 (X11) : chaque session utilise son
+      # portail, le sélecteur de fichiers ne casse plus sous i3.
+      xdg-desktop-portal-gtk
     ];
 
-    config.common = {
-      default = "cosmic";
+    config = {
+      cosmic.default = "cosmic";
+      i3.default = "gtk";
+      common.default = "*";
     };
   };
 
