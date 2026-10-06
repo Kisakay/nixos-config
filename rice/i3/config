@@ -14,7 +14,8 @@ bindsym $mod+d exec sh -c 'command -v rofi >/dev/null && rofi -show drun'
 # ──────────────
 # Window control
 # ──────────────
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
+# bindsym $mod+Shift+q kill # désactivé : remplacé par $mod+q ci-dessus
 
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down

@@ -26,6 +26,7 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "alt-intl";
+    model = "pc105"; # 105 touches : inclut Super/Win, pc104 la laisse morte
   };
 
   console = {

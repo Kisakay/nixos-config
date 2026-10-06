@@ -150,7 +150,8 @@
       exec --no-startup-id i3-msg 'workspace 1'
 
       # ── Système ──
-      bindsym $mod+Shift+q kill
+      bindsym $mod+q kill
+      # bindsym $mod+Shift+q kill # désactivé : remplacé par $mod+q ci-dessus
       bindsym $mod+Shift+c reload
       bindsym $mod+Shift+r restart
       bindsym $mod+Control+l exec sh -c 'command -v i3lock >/dev/null && i3lock -c 1e1e2e || loginctl lock-session'
