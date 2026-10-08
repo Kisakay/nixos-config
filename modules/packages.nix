@@ -15,10 +15,12 @@
     direnv
     remmina
 
+    obs-studio
     steam
     # Nix Inteligience
     nixfmt
     nil
+    sshfs
     nixd
 
     # Edit
@@ -37,6 +39,8 @@
     thunderbird
     krita
     discord
+    # dorion
+    chromium
     wine
 
     # BTS SIO
