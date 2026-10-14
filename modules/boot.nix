@@ -2,13 +2,36 @@
 { config, pkgs, ... }:
 
 {
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    # Bootloader systemd-boot
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      timeout = 0;
+    };
 
-  # Noyau le plus récent.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+    # Noyau le plus récent
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  # Partition swap chiffrée (voir aussi swapDevices dans hardware-configuration.nix).
-  boot.initrd.luks.devices."luks-1c9181b1-f574-4464-84f5-383abd1f2c51".device =
-    "/dev/disk/by-uuid/1c9181b1-f574-4464-84f5-383abd1f2c51";
+    initrd.luks.devices."luks-1c9181b1-f574-4464-84f5-383abd1f2c51".device =
+      "/dev/disk/by-uuid/1c9181b1-f574-4464-84f5-383abd1f2c51";
+
+    # Plymouth
+    plymouth = {
+      enable = true;
+      theme = "spinner";
+      logo = ../assets/logo.png;
+    };
+
+    # Démarrage silencieux
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+
+    kernelParams = [
+      "quiet"
+      "splash"
+      "udev.log_level=3"
+      "rd.systemd.show_status=auto"
+    ];
+  };
 }
