@@ -34,11 +34,18 @@
     ffmpeg
     file
 
+    telegram-desktop
+
     # Applications
     vlc
     thunderbird
     krita
-    discord
+
+    (discord.override {
+      withOpenASAR = true;
+      withVencord = true; # can do this here too
+    })
+
     # dorion
     chromium
     wine

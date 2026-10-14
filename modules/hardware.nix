@@ -34,4 +34,6 @@
     enable = true;
     drivers = [ pkgs.cups-brother-mfcl2750dw ];
   };
+
+  services.fwupd.enable = true;
 }
