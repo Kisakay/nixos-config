@@ -76,7 +76,7 @@
     # Utils
     acpi
     windterm
-    cisco-packet-tracer_9
+    # cisco-packet-tracer_9 # désactivé : requiert un .deb manuel (nix-store --add-fixed) et casse le build après flake update
     tree
     # Logiciel d'édition de texte
     onlyoffice-desktopeditors
@@ -90,7 +90,16 @@
     prismlauncher
     php
     gnome-disk-utility
-    tidal-hifi
+    # tidal-hifi : force XWayland (fenêtre blanche en Wayland natif sur COSMIC).
+    (symlinkJoin {
+      name = "tidal-hifi-wrapped";
+      paths = [ tidal-hifi ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/tidal-hifi \
+          --add-flags "--ozone-platform=x11"
+      '';
+    })
     flameshot
     signal-desktop
   ];
