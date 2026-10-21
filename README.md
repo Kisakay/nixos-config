@@ -19,4 +19,4 @@ nix fmt
 
 - Le firewall est **activé** avec une allowlist explicite (TCP : 22, 80, 443, 3000, 3001, 3871, 4560, 8000, 25565 — UDP : 53, 51820). Ajouter les ports nécessaires dans `modules/nixos/networking.nix`.
 - Le GC nix tourne chaque semaine et supprime les générations de plus de 30 jours (`modules/nixos/nix.nix`).
-- Les paquets sont dédupliqués et regroupés par thème ; chaque module porte sa logique (ex. OBS + v4l2loopback côté boot).
+- Les paquets sont dédupliqués et regroupés par thème ; chaque module porte sa logique (ex. OBS côté programmes, noyau côté boot).

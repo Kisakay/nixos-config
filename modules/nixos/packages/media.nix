@@ -10,7 +10,7 @@
     ffmpeg
     melt
     gimp
-    audacity
+    # audacity
     easyeffects
 
     pulseaudioFull

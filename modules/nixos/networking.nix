@@ -68,7 +68,7 @@
       53
       51820
       51105
-	];
+    ];
 
     trustedInterfaces = [
       "virbr0"

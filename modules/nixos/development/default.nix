@@ -40,7 +40,6 @@
     ];
   };
 
-  programs.ccache.enable = true;
   services.lorri.enable = true;
 
   programs.direnv = {

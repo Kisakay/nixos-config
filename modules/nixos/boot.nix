@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   boot = {
@@ -11,7 +11,6 @@
     # v4l2loopback / snd-aloop ne sont PAS chargés au boot :
     # ils créaient des transactions sound.target destructives à chaque
     # extinction ("Transaction for sound.target/start is destructive").
-    # Ils restent disponibles à la demande via `modprobe` (OBS).
     kernelModules = [ ];
     kernelParams = [
       # Ryzen 5700X (Vermeer) : pstate actif explicite, driver amd-pstate-epp
@@ -20,10 +19,7 @@
     ];
     blacklistedKernelModules = [ "sp5100_tco" ];
 
-    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
-    extraModprobeConfig = ''
-      options v4l2loopback devices=1 card_label="OBS Cam" exclusive_caps=1
-    '';
+    extraModulePackages = [ ];
 
     kernel.sysctl."net.ipv4.ip_forward" = 1;
   };
