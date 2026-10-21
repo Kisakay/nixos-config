@@ -11,7 +11,7 @@
   };
 
   programs.ssh.extraConfig = ''
-    Host fw13
+    Host pc
       HostName 192.168.27.70
       User kisakay
       Port 22
@@ -34,6 +34,11 @@
     Host h2
       HostName 192.168.1.193
       User kisakay
+      Port 22
+      IdentityFile ~/.ssh/id_ed25519
+    Host nc
+      HostName nc.ihorizon.org
+      User root
       Port 22
       IdentityFile ~/.ssh/id_ed25519
   '';

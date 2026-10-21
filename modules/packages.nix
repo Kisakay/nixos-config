@@ -25,7 +25,7 @@
 
     # Edit
     obsidian
-
+    anydesk
     # Shell et terminal
     zsh
     windterm
@@ -41,10 +41,7 @@
     thunderbird
     krita
 
-    (discord.override {
-      withOpenASAR = true;
-      withVencord = true; # can do this here too
-    })
+    # Discord est fourni par le mod Nightcord (voir flake-packages.nix)
 
     # dorion
     chromium

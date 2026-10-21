@@ -1,6 +1,6 @@
 {
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "kisa" ];
+  # virtualisation.virtualbox.host.enable = true;
+  # users.extraGroups.vboxusers.members = [ "kisa" ];
 
   # virtualisation.virtualbox.host.enableExtensionPack = true;
 

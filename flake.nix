@@ -8,11 +8,16 @@
     };
 
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    nightcord = {
+      url = "git+https://source.nightcord.st/nightcord/nightcord.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +33,7 @@
         modules = [
           ./hosts/framework-laptop-12
           nix-flatpak.nixosModules.nix-flatpak
+          inputs.nightcord.nixosModules.default
         ];
       };
     };
