@@ -20,7 +20,6 @@
     plymouth = {
       enable = true;
       theme = "spinner";
-      logo = ../assets/logo.png;
     };
 
     # Démarrage silencieux
