@@ -41,7 +41,8 @@
     thunderbird
     krita
 
-    discord
+    # Discord est fourni par le mod Nightcord (voir flake-packages.nix)
+
     # dorion
     chromium
     wine

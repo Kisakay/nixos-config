@@ -14,6 +14,10 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+    nightcord = {
+      url = "git+https://source.nightcord.st/nightcord/nightcord.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -29,6 +33,7 @@
         modules = [
           ./hosts/framework-laptop-12
           nix-flatpak.nixosModules.nix-flatpak
+          inputs.nightcord.nixosModules.default
         ];
       };
     };
