@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792982835,
-        "narHash": "sha256-ZwKuguJDN1sAO2yGkTnDJ72s6FS/HY1UB6t5GdxibYk=",
+        "lastModified": 1793053492,
+        "narHash": "sha256-vK6qxeZfk7MEJIPeKBgynJwn6cbn6F4ZH6hwBzzl0Bw=",
         "ref": "refs/heads/master",
-        "rev": "45bc5608451bc60be6d512fd5d5a92e2b9fdcf62",
-        "revCount": 819,
+        "rev": "73a7762e209ed45d66fe9b71a012d693fb4bbbe1",
+        "revCount": 822,
         "type": "git",
         "url": "https://source.nightcord.st/nightcord/nightcord.git"
       },

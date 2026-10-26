@@ -3,9 +3,14 @@
 let
   acheron = pkgs.stdenv.mkDerivation {
     pname = "acheron";
-    version = "unstable";
+    version = "unstable-2026-10-09";
 
-    src = /home/kisa/Applications/acheron;
+    src = pkgs.fetchgit {
+      url = "https://github.com/ouwou/acheron.git";
+      rev = "e5337a5f3b2ca2978dbf48bbbe124e3a62926591";
+      hash = "sha256-7YJA8ZriAC/olfCeWw7B9YqEk40+Gbq4GtBMUBEhYSY=";
+      fetchSubmodules = true;
+    };
 
     nativeBuildInputs = with pkgs; [
       cmake
@@ -26,8 +31,6 @@ let
       opus
       libsecret
       nlohmann_json
-
-      # Audio : dynamic loading for miniaudio
       libpulseaudio
       alsa-lib
       libjack2
@@ -46,14 +49,6 @@ let
       "-DCURL_LIBRARY=${pkgs.curl-impersonate}/lib/libcurl-impersonate.so"
     ];
 
-    installPhase = ''
-      runHook preInstall
-      cmake --install . --prefix "$out"
-      install -Dm644 ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt \
-        "$out/bin/certs/cacert.pem"
-      runHook postInstall
-    '';
-
     qtWrapperArgs = [
       "--prefix"
       "LD_LIBRARY_PATH"
@@ -64,6 +59,22 @@ let
         pkgs.libjack2
       ])
     ];
+
+    installPhase = ''
+      runHook preInstall
+      cmake --install . --prefix "$out"
+      install -Dm644 ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt \
+        "$out/bin/certs/cacert.pem"
+      runHook postInstall
+    '';
+
+    meta = {
+      description = "Native Qt Discord client with voice support";
+      homepage = "https://github.com/ouwou/acheron";
+      license = lib.licenses.gpl3Only;
+      platforms = lib.platforms.linux;
+      mainProgram = "acheron";
+    };
   };
 in
 {
