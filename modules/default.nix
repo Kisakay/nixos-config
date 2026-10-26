@@ -22,5 +22,8 @@
     ./temporary-windows.nix
     ./docker.nix
     ./printing.nix
+    ./sounds.nix
+    ./acheron.nix
+    ./obs-studio.nix
   ];
 }

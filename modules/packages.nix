@@ -15,7 +15,6 @@
     direnv
     remmina
 
-    obs-studio
     steam
     # Nix Inteligience
     nixfmt
@@ -97,7 +96,6 @@
           --add-flags "--ozone-platform=x11"
       '';
     })
-    flameshot
     signal-desktop
   ];
 }
