@@ -41,5 +41,10 @@
       User root
       Port 22
       IdentityFile ~/.ssh/id_ed25519
+    Host h3
+      HostName 51.255.166.135
+      User debian
+      Port 22
+      IdentityFile ~/.ssh/id_ed25519
   '';
 }
