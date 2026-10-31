@@ -97,5 +97,9 @@
       '';
     })
     signal-desktop
+
+    claude-code
+    claude-code-acp
+    claude-code-router
   ];
 }
