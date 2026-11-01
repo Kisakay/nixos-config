@@ -17,9 +17,92 @@ let
     )
   );
 
+  # Gestion CPU Intel P-State : lock / unlock / status
+  cpuFreqScript = pkgs.writeShellScriptBin "cpu-freq" ''
+    set -euo pipefail
+
+    INTEL_PSTATE="/sys/devices/system/cpu/intel_pstate"
+    POLICY_DIR="/sys/devices/system/cpu/cpufreq"
+
+    if [[ $EUID -ne 0 ]]; then
+      echo "Erreur : lance cette commande avec sudo."
+      exit 1
+    fi
+
+    if [[ ! -d "$INTEL_PSTATE" || ! -d "$POLICY_DIR" ]]; then
+      echo "Erreur : Intel P-State ou CPUFreq indisponible."
+      exit 1
+    fi
+
+    case "''${1:-}" in
+      lock)
+        echo "Locking CPU frequencies..."
+
+        echo 0 > "$INTEL_PSTATE/no_turbo"
+        echo 100 > "$INTEL_PSTATE/max_perf_pct"
+        echo 100 > "$INTEL_PSTATE/min_perf_pct"
+
+        for p in "$POLICY_DIR"/policy*; do
+          [[ -d "$p" ]] || continue
+
+          max=$(cat "$p/cpuinfo_max_freq")
+
+          echo performance > "$p/scaling_governor"
+          echo "$max" > "$p/scaling_max_freq"
+          echo "$max" > "$p/scaling_min_freq"
+
+          echo "$(basename "$p"): locked at $((max / 1000)) MHz"
+        done
+
+        echo "CPU locked at maximum performance."
+        ;;
+
+      unlock)
+        echo "Unlocking CPU frequencies..."
+
+        echo 0 > "$INTEL_PSTATE/min_perf_pct"
+
+        for p in "$POLICY_DIR"/policy*; do
+          [[ -d "$p" ]] || continue
+
+          min=$(cat "$p/cpuinfo_min_freq")
+          max=$(cat "$p/cpuinfo_max_freq")
+
+          echo "$max" > "$p/scaling_max_freq"
+          echo "$min" > "$p/scaling_min_freq"
+          echo powersave > "$p/scaling_governor"
+
+          echo "$(basename "$p"): dynamic ($((min / 1000))-$((max / 1000)) MHz)"
+        done
+
+        echo "CPU unlocked. Dynamic frequency scaling restored."
+        ;;
+
+      status)
+        echo "Intel P-State: $(cat "$INTEL_PSTATE/status")"
+        echo "Turbo: $([[ $(cat "$INTEL_PSTATE/no_turbo") == 0 ]] && echo ON || echo OFF)"
+        echo "Min performance: $(cat "$INTEL_PSTATE/min_perf_pct")%"
+        echo "Max performance: $(cat "$INTEL_PSTATE/max_perf_pct")%"
+
+        for p in "$POLICY_DIR"/policy*; do
+          [[ -d "$p" ]] || continue
+          echo "$(basename "$p"): $(cat "$p/scaling_min_freq") - $(cat "$p/scaling_max_freq") kHz ($(cat "$p/scaling_governor"))"
+        done
+        ;;
+
+      *)
+        echo "Usage: cpu-freq {lock|unlock|status}"
+        exit 1
+        ;;
+    esac
+  '';
+
   shellAliases = {
     maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#fw12";
     fdp = "zeditor /etc/nixos/";
+    cpulock = "sudo cpu-freq lock";
+    cpuunlock = "sudo cpu-freq unlock";
+    cpustatus = "sudo cpu-freq status";
     ls = "ls --color=auto -F";
     ll = "ls --color=auto -lhF";
     la = "ls --color=auto -lAhF";
@@ -63,6 +146,10 @@ let
 in
 {
   programs.firefox.enable = true;
+
+  environment.systemPackages = [
+    cpuFreqScript
+  ];
 
   programs.bash = {
     enable = true;
