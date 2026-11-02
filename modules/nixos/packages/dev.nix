@@ -83,6 +83,9 @@
     rust-analyzer
 
     claude-code
+    claude-code-acp
+    claude-code-router
+    claude-mergetool
     nil
   ];
 }
