@@ -3,7 +3,6 @@
 {
   environment.systemPackages = with pkgs; [
     libreoffice-stable
-    onlyoffice-desktopeditors
     geogebra
 
     hunspell
