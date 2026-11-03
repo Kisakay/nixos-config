@@ -15,6 +15,11 @@
     };
 
     tidaLuna.url = "github:Inrixia/TidaLuna";
+
+    nightcord = {
+      url = "git+https://source.nightcord.st/nightcord/nightcord.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

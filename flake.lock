@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -19,6 +37,27 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "type": "github"
+      }
+    },
+    "nightcord": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793367830,
+        "narHash": "sha256-+n6XfAmcZ9HDjX0dmnTvciG+WHKG4+JEDYrmXPKfXFU=",
+        "ref": "refs/heads/master",
+        "rev": "c0d11efa00b1983173e3a0868380ed7451dabc16",
+        "revCount": 846,
+        "type": "git",
+        "url": "https://source.nightcord.st/nightcord/nightcord.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://source.nightcord.st/nightcord/nightcord.git"
       }
     },
     "nixpkgs": {
@@ -74,10 +113,26 @@
     },
     "root": {
       "inputs": {
+        "nightcord": "nightcord",
         "nixpkgs": "nixpkgs",
         "qxchat-src": "qxchat-src",
         "tidaLuna": "tidaLuna",
         "zen-browser": "zen-browser"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
       }
     },
     "tidaLuna": {
@@ -85,11 +140,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1793244362,
-        "narHash": "sha256-lP411x7IUKj0j2ocGn1jiQCYAr6i6HvNtc8Vn9a/W20=",
+        "lastModified": 1793656767,
+        "narHash": "sha256-2J78eHvn3R6Th+st4m+e0j3d5oLIg6rXWf4NLU4WZo8=",
         "owner": "Inrixia",
         "repo": "TidaLuna",
-        "rev": "56f8ec6c1fe983b9434c4b732dfeb4577102559b",
+        "rev": "ba1afdd0be960a856568f7998447173fb3d2ab80",
         "type": "github"
       },
       "original": {
