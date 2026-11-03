@@ -75,7 +75,7 @@
     # cisco-packet-tracer_9 # désactivé : requiert un .deb manuel (nix-store --add-fixed) et casse le build après flake update
     tree
     # Logiciel d'édition de texte
-    onlyoffice-desktopeditors
+    # onlyoffice-desktopeditors
     sushi
     cosmic-viewer
     cosmic-ext-calculator
@@ -99,7 +99,7 @@
     signal-desktop
 
     claude-code
-    claude-code-acp
+    claude-agent-acp
     claude-code-router
   ];
 }

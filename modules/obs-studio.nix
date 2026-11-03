@@ -2,9 +2,10 @@
 
 {
   # OBS ÇA PUE LA MERDE
+
   # programs.obs-studio = {
   #   enable = true;
-
+  #   enableVirtualCamera = true;
   #   # Intel UHD Graphics : pas de CUDA nécessaire.
   #   package = pkgs.obs-studio;
 

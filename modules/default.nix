@@ -25,5 +25,6 @@
     ./sounds.nix
     ./acheron.nix
     ./obs-studio.nix
+    ./touchscreen.nix
   ];
 }

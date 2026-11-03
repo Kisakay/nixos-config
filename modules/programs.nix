@@ -120,6 +120,57 @@ let
     else
       fastfetch 2>/dev/null || true
     fi
+
+    # Aide-mémoire des commandes custom (icônes JetBrains Nerd Font, couleurs du drapeau trans)
+    _cheat_blue=$'\e[38;2;91;206;250m'
+    _cheat_pink=$'\e[38;2;245;169;184m'
+    _cheat_white=$'\e[38;2;235;235;235m'
+    _cheat_dim=$'\e[38;2;130;130;150m'
+    _cheat_bold=$'\e[1m'
+    _cheat_reset=$'\e[0m'
+
+    _cheat_row() {
+      # $1 = icône, $2 = commande, $3 = description
+      printf '  %s│%s  %s%b%s  %s%-18s%s %s%s%s\n' \
+        "$_cheat_dim" "$_cheat_reset" \
+        "$_cheat_pink" "$1" "$_cheat_reset" \
+        "$_cheat_bold$_cheat_blue" "$2" "$_cheat_reset" \
+        "$_cheat_white" "$3" "$_cheat_reset"
+    }
+
+    _cheat_section() {
+      printf '  %s│%s\n  %s├─%s %s%s%s\n' \
+        "$_cheat_dim" "$_cheat_reset" \
+        "$_cheat_dim" "$_cheat_reset" \
+        "$_cheat_bold$_cheat_pink" "$1" "$_cheat_reset"
+    }
+
+    printf '\n  %s╭─%s %b  %sCustom commands%s\n' \
+      "$_cheat_dim" "$_cheat_reset" "$_cheat_blue$_cheat_reset" \
+      "$_cheat_bold$_cheat_white" "$_cheat_reset"
+
+    _cheat_section "System"
+    _cheat_row '' "maj"               "update flake inputs & rebuild the system"
+    _cheat_row '' "fdp"               "open /etc/nixos in Zed"
+
+    _cheat_section "CPU"
+    _cheat_row '' "cpulock"           "pin CPU at max frequency"
+    _cheat_row '' "cpuunlock"         "restore dynamic frequency scaling"
+    _cheat_row '' "cpustatus"         "show P-State, turbo & frequencies"
+
+    _cheat_section "Touchscreen"
+    _cheat_row '' "sudo touch-toggle" "toggle finger touch (stylus stays on)"
+
+    printf '  %s│%s\n' "$_cheat_dim" "$_cheat_reset"
+    # Petit blåhaj (nf-md-shark) + drapeau trans (emoji 🏳️‍⚧️, Noto Color Emoji)
+    printf '  %s╰─%s %s%s%s  %strans %srights %sare %shuman %srights%s  %s%s%s\n' \
+      "$_cheat_dim" "$_cheat_reset" \
+      "$_cheat_blue" $'\U000F18BA' "$_cheat_reset" \
+      "$_cheat_bold$_cheat_blue" "$_cheat_pink" "$_cheat_white" "$_cheat_pink" "$_cheat_blue" "$_cheat_reset" \
+      "" $'\U0001F3F3️‍⚧️' ""
+
+    unset -f _cheat_row _cheat_section
+    unset _cheat_blue _cheat_pink _cheat_white _cheat_dim _cheat_bold _cheat_reset
   '';
 
   zshInteractiveExtra = ''
