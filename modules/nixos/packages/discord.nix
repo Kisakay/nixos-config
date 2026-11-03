@@ -24,14 +24,12 @@ let
 
   discord-nightcord = discordBase.override {
     unwrappedDiscord = discordBase.unwrappedDiscord.overrideAttrs (old: {
-      postInstall =
-        (old.postInstall or "")
-        + ''
-          mv $out/opt/Discord/resources/app.asar $out/opt/Discord/resources/_app.asar
-          mkdir $out/opt/Discord/resources/app.asar
-          echo '{"name":"discord","main":"index.js"}' > $out/opt/Discord/resources/app.asar/package.json
-          echo 'require("${nightcordCore}/share/nightcord/patcher.js")' > $out/opt/Discord/resources/app.asar/index.js
-        '';
+      postInstall = (old.postInstall or "") + ''
+        mv $out/opt/Discord/resources/app.asar $out/opt/Discord/resources/_app.asar
+        mkdir $out/opt/Discord/resources/app.asar
+        echo '{"name":"discord","main":"index.js"}' > $out/opt/Discord/resources/app.asar/package.json
+        echo 'require("${nightcordCore}/share/nightcord/patcher.js")' > $out/opt/Discord/resources/app.asar/index.js
+      '';
     });
   };
 in
