@@ -26,5 +26,6 @@
     ./acheron.nix
     ./obs-studio.nix
     ./touchscreen.nix
+    ./tor.nix
   ];
 }
