@@ -1,6 +1,8 @@
 { pkgs, inputs, ... }:
 
 {
+  programs.gpu-screen-recorder.enable = true;
+
   environment.systemPackages = with pkgs; [
     thunderbird
     telegram-desktop
@@ -10,7 +12,7 @@
     # mumble
     github-desktop
 
-    anydesk
+    # anydesk
     remmina
     # rustdesk
     freerdp
@@ -28,7 +30,7 @@
     gnome-disk-utility
     desktop-file-utils
 
-    flameshot
+    gpu-screen-recorder-gtk
     inputs.tidaLuna.packages.${stdenv.hostPlatform.system}.default
   ];
 }
