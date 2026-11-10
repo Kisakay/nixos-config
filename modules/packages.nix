@@ -24,7 +24,6 @@
 
     # Edit
     obsidian
-    anydesk
     # Shell et terminal
     zsh
     windterm
@@ -86,16 +85,7 @@
     prismlauncher
     php
     gnome-disk-utility
-    # tidal-hifi : force XWayland (fenêtre blanche en Wayland natif sur COSMIC).
-    (symlinkJoin {
-      name = "tidal-hifi-wrapped";
-      paths = [ tidal-hifi ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/tidal-hifi \
-          --add-flags "--ozone-platform=x11"
-      '';
-    })
+
     signal-desktop
 
     claude-code

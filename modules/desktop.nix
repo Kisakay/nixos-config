@@ -26,22 +26,6 @@
     };
   };
 
-  # Fix partage d'écran : le portail COSMIC envoie create_frame avant d'avoir
-  # détruit la frame précédente -> cosmic-comp le déconnecte (protocol error
-  # ext_image_copy_capture_session_v1) et le flux PipeWire meurt au bout de ~2 s.
-  # Patch upstream pas encore mergé : https://github.com/pop-os/cosmic-protocols/pull/95
-  # À retirer quand xdg-desktop-portal-cosmic embarquera le fix.
-  nixpkgs.overlays = [
-    (final: prev: {
-      xdg-desktop-portal-cosmic = prev.xdg-desktop-portal-cosmic.overrideAttrs (old: {
-        postPatch = (old.postPatch or "") + ''
-          patch -p1 -d "$(echo "$cargoDepsCopy"/source-git-*/cosmic-client-toolkit-*)" \
-            < ${./patches/cosmic-screencopy-destroy-frame-first.patch}
-        '';
-      });
-    })
-  ];
-
   # Variables de session COSMIC / Wayland.
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -63,5 +47,41 @@
     nerd-fonts.jetbrains-mono
   ];
 
-  programs.nix-ld.enable = true;
+  # Binaires précompilés (JDK téléchargé par les launchers Minecraft, etc.).
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # AWT du JDK (ImageIO, utilisé par Xaero's World Map).
+      libx11
+      libxext
+      libxi
+      libxrender
+      libxtst
+
+      # Fenêtrage et rendu.
+      libxcb
+      libxcursor
+      libxrandr
+      libxxf86vm
+      libxkbcommon
+      wayland
+      libGL
+      vulkan-loader
+
+      # Audio.
+      alsa-lib
+      libpulseaudio
+      openal
+
+      # Divers.
+      flite # Narrateur de Minecraft.
+      fontconfig
+      freetype
+      udev
+      zlib
+    ];
+  };
+
+  # lspci, utilisé par Sodium pour identifier la carte graphique.
+  environment.systemPackages = [ pkgs.pciutils ];
 }
