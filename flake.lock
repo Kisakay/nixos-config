@@ -117,6 +117,7 @@
         "nixpkgs": "nixpkgs",
         "qxchat-src": "qxchat-src",
         "tidaLuna": "tidaLuna",
+        "veemeeter": "veemeeter",
         "zen-browser": "zen-browser"
       }
     },
@@ -150,6 +151,26 @@
       "original": {
         "owner": "Inrixia",
         "repo": "TidaLuna",
+        "type": "github"
+      }
+    },
+    "veemeeter": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794426509,
+        "narHash": "sha256-hGV2VGyLRv4dNZQn52H+Njn36WS8hg8sSNK4a6FteRM=",
+        "owner": "Kisakay",
+        "repo": "VeeMeeter",
+        "rev": "b5c4eb98efad37681b08d09cefb35a1e197b649d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kisakay",
+        "repo": "VeeMeeter",
         "type": "github"
       }
     },

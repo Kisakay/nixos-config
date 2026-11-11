@@ -20,6 +20,11 @@
       url = "git+https://source.nightcord.st/nightcord/nightcord.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    veemeeter = {
+      url = "github:Kisakay/VeeMeeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

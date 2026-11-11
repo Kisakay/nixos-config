@@ -41,10 +41,6 @@ in
     package = discord-nightcord;
   };
 
-  environment.systemPackages = with pkgs; [
-    discord-canary
-  ];
-
   system.activationScripts.discordSettings.text = ''
     install -d -o ${System.Username} -g users /home/${System.Username}/.config/discord
 
