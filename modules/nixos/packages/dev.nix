@@ -87,5 +87,8 @@
     claude-code-router
     claude-mergetool
     nil
+
+    # dev packages
+    dbeaver-bin
   ];
 }

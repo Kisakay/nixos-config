@@ -15,6 +15,7 @@
 
     pulseaudioFull
     pavucontrol
+    pulsemeeter
     qpwgraph
     gnome-sound-recorder
 
