@@ -2,6 +2,7 @@
   imports = [
     ./boot.nix
     ./clear-autostart.nix
+    ./session-autostart.nix
     ./locale.nix
     ./networking.nix
     ./nix.nix

@@ -1,7 +1,11 @@
 { pkgs, inputs, ... }:
 
 {
-  programs.gpu-screen-recorder.enable = true;
+  # Overlay plein écran façon ShadowPlay (Alt+Z), au lieu de l'ancienne UI GTK
+  programs.gpu-screen-recorder = {
+    enable = true;
+    ui.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     thunderbird
@@ -30,7 +34,6 @@
     gnome-disk-utility
     desktop-file-utils
 
-    gpu-screen-recorder-gtk
     inputs.tidaLuna.packages.${stdenv.hostPlatform.system}.default
   ];
 }
