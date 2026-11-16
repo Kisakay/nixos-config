@@ -57,9 +57,34 @@ let
         echo "CPU locked at maximum performance."
         ;;
 
+      eco)
+        echo "Switching CPU to maximum power saving..."
+
+        echo 1 > "$INTEL_PSTATE/no_turbo"
+        echo 0 > "$INTEL_PSTATE/min_perf_pct"
+
+        for p in "$POLICY_DIR"/policy*; do
+          [[ -d "$p" ]] || continue
+
+          min=$(cat "$p/cpuinfo_min_freq")
+          max=$(cat "$p/cpuinfo_max_freq")
+
+          echo powersave > "$p/scaling_governor"
+          echo "$max" > "$p/scaling_max_freq"
+          echo "$min" > "$p/scaling_min_freq"
+          [[ -w "$p/energy_performance_preference" ]] && echo power > "$p/energy_performance_preference"
+
+          echo "$(basename "$p"): eco (min $((min / 1000)) MHz, turbo off, EPP power)"
+        done
+
+        echo "CPU in power-saving mode."
+        ;;
+
       unlock)
         echo "Unlocking CPU frequencies..."
 
+        echo 0 > "$INTEL_PSTATE/no_turbo"
+        echo 100 > "$INTEL_PSTATE/max_perf_pct"
         echo 0 > "$INTEL_PSTATE/min_perf_pct"
 
         for p in "$POLICY_DIR"/policy*; do
@@ -71,6 +96,7 @@ let
           echo "$max" > "$p/scaling_max_freq"
           echo "$min" > "$p/scaling_min_freq"
           echo powersave > "$p/scaling_governor"
+          [[ -w "$p/energy_performance_preference" ]] && echo balance_performance > "$p/energy_performance_preference"
 
           echo "$(basename "$p"): dynamic ($((min / 1000))-$((max / 1000)) MHz)"
         done
@@ -86,12 +112,12 @@ let
 
         for p in "$POLICY_DIR"/policy*; do
           [[ -d "$p" ]] || continue
-          echo "$(basename "$p"): $(cat "$p/scaling_min_freq") - $(cat "$p/scaling_max_freq") kHz ($(cat "$p/scaling_governor"))"
+          echo "$(basename "$p"): $(cat "$p/scaling_min_freq") - $(cat "$p/scaling_max_freq") kHz ($(cat "$p/scaling_governor"), EPP $(cat "$p/energy_performance_preference" 2>/dev/null || echo n/a))"
         done
         ;;
 
       *)
-        echo "Usage: cpu-freq {lock|unlock|status}"
+        echo "Usage: cpu-freq {lock|eco|unlock|status}"
         exit 1
         ;;
     esac
@@ -101,6 +127,7 @@ let
     maj = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --impure --flake .#fw12";
     fdp = "zeditor /etc/nixos/";
     cpulock = "sudo cpu-freq lock";
+    cpueco = "sudo cpu-freq eco";
     cpuunlock = "sudo cpu-freq unlock";
     cpustatus = "sudo cpu-freq status";
     ls = "ls --color=auto -F";
@@ -155,6 +182,7 @@ let
 
     _cheat_section "CPU"
     _cheat_row '' "cpulock"           "pin CPU at max frequency"
+    _cheat_row '' "cpueco"            "max power saving (turbo off, EPP power)"
     _cheat_row '' "cpuunlock"         "restore dynamic frequency scaling"
     _cheat_row '' "cpustatus"         "show P-State, turbo & frequencies"
 

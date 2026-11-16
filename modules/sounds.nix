@@ -11,8 +11,10 @@
     pulse.enable = true;
   };
 
+  # VeeMeeter (https://veemeter.v.bzh), remplace pulsemeeter.
+  programs.veemeeter.enable = true;
+
   environment.systemPackages = with pkgs; [
-    pulsemeeter
     qpwgraph
     pavucontrol
     easyeffects

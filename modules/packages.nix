@@ -42,7 +42,6 @@
     # Discord est fourni par le mod Nightcord (voir flake-packages.nix)
 
     # dorion
-    chromium
     wine
 
     # BTS SIO
@@ -66,7 +65,6 @@
     unrar
     p7zip
     xlsx2csv
-    github-desktop
 
     # Utils
     acpi

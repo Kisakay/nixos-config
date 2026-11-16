@@ -1,4 +1,4 @@
-# Modules issus des inputs du flake : QxChat, Zen Browser et Nightcord.
+# Modules issus des inputs du flake : QxChat, Zen Browser, Nightcord et GitHub ReDesktop.
 { inputs, pkgs, ... }:
 
 let
@@ -91,4 +91,7 @@ in
     enable = true;
     package = discord-nightcord;
   };
+
+  # GitHub ReDesktop (https://regit.v.bzh), remplace github-desktop.
+  programs.github-redesktop.enable = true;
 }

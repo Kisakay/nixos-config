@@ -18,6 +18,16 @@
       url = "git+https://source.nightcord.st/nightcord/nightcord.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    github-redesktop = {
+      url = "github:Kisakay/GithubReDesktop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    veemeeter = {
+      url = "github:Kisakay/VeeMeeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -34,6 +44,8 @@
           ./hosts/framework-laptop-12
           nix-flatpak.nixosModules.nix-flatpak
           inputs.nightcord.nixosModules.default
+          inputs.github-redesktop.nixosModules.default
+          inputs.veemeeter.nixosModules.default
         ];
       };
     };

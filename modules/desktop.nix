@@ -82,6 +82,13 @@
     ];
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+  nix.settings.auto-optimise-store = true;
+
   # lspci, utilisé par Sodium pour identifier la carte graphique.
   environment.systemPackages = [ pkgs.pciutils ];
 }

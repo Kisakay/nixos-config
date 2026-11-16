@@ -27,5 +27,6 @@
     ./obs-studio.nix
     ./touchscreen.nix
     ./tor.nix
+    ./wordcraft.nix
   ];
 }

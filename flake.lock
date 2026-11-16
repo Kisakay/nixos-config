@@ -18,6 +18,26 @@
         "type": "github"
       }
     },
+    "github-redesktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794760667,
+        "narHash": "sha256-HZKQtxMcwz06fXrHZ/qwtfj/GebTorJXVjEgF6uJ2s8=",
+        "owner": "Kisakay",
+        "repo": "GithubReDesktop",
+        "rev": "03395fadad5f24b7897f552aa6cbb05e1f0df5fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kisakay",
+        "repo": "GithubReDesktop",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -47,11 +67,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794254527,
-        "narHash": "sha256-OvFUR3MCY5Rpmas1laqZuGep3CVJ2p9WgS0GUbx5Ba8=",
+        "lastModified": 1794393305,
+        "narHash": "sha256-6VfCvfg0nqIq2vsr8VWgy/yiA3LAakOly9UthsMkIMQ=",
         "ref": "refs/heads/master",
-        "rev": "df57b67cbc51ac41ba0b06dc1f4643f5d695d3e2",
-        "revCount": 885,
+        "rev": "7becc44e4def150a03800403db1ef0ef1e543c77",
+        "revCount": 893,
         "type": "git",
         "url": "https://source.nightcord.st/nightcord/nightcord.git"
       },
@@ -78,11 +98,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1794042290,
-        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
+        "lastModified": 1794537146,
+        "narHash": "sha256-Wpz/7x/YWnDIBu7yj6ixe8j6fIMsidd9Y+o1PqPF3iM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+        "rev": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
         "type": "github"
       },
       "original": {
@@ -113,10 +133,12 @@
     },
     "root": {
       "inputs": {
+        "github-redesktop": "github-redesktop",
         "nightcord": "nightcord",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "qxchat-src": "qxchat-src",
+        "veemeeter": "veemeeter",
         "zen-browser": "zen-browser"
       }
     },
@@ -135,6 +157,26 @@
         "type": "github"
       }
     },
+    "veemeeter": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794762060,
+        "narHash": "sha256-c8oTpbEC/w7NP6ipvyouyc/c/pSP6guEzYWXmkcYSig=",
+        "owner": "Kisakay",
+        "repo": "VeeMeeter",
+        "rev": "db9b733517d75782c10a2fe338fc01e92b616982",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kisakay",
+        "repo": "VeeMeeter",
+        "type": "github"
+      }
+    },
     "zen-browser": {
       "inputs": {
         "home-manager": "home-manager",
@@ -143,11 +185,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794215717,
-        "narHash": "sha256-es8MSf8k9iRKAW0ny1Dfqo09imWwx0w561wbuz4u5Xk=",
+        "lastModified": 1794805570,
+        "narHash": "sha256-sG0P1rHWgbPQIeR+peNmapCWQKf0nauyDl500JhX9Qo=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "3c9c2843c3ca92de0c82f98e1c4641d95e7163f2",
+        "rev": "cb44a9fc1faa18c55dde38a8338f6d46fa2bc6de",
         "type": "github"
       },
       "original": {
