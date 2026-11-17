@@ -28,6 +28,11 @@
       url = "github:Kisakay/VeeMeeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    cosmic-advanced-player = {
+      url = "github:Kisakay/CosmicAdvancedPlayer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -46,6 +51,7 @@
           inputs.nightcord.nixosModules.default
           inputs.github-redesktop.nixosModules.default
           inputs.veemeeter.nixosModules.default
+          inputs.cosmic-advanced-player.nixosModules.default
         ];
       };
     };

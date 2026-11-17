@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "cosmic-advanced-player": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794873690,
+        "narHash": "sha256-dqbSQygiEwMGi9B7510IzBR6YEhem3cZju0q2oHSUqM=",
+        "owner": "Kisakay",
+        "repo": "CosmicAdvancedPlayer",
+        "rev": "138f8fb63f3faab4a4fc610b507d85478389f9a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kisakay",
+        "repo": "CosmicAdvancedPlayer",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -46,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793193205,
-        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
+        "lastModified": 1794715309,
+        "narHash": "sha256-awkBBs5ctFKgEYjpNGpi3t/VqF589n5EWfdinRb2gNI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
+        "rev": "a1293da7dd8e497e08d26173f97e2976b36a31ea",
         "type": "github"
       },
       "original": {
@@ -133,6 +153,7 @@
     },
     "root": {
       "inputs": {
+        "cosmic-advanced-player": "cosmic-advanced-player",
         "github-redesktop": "github-redesktop",
         "nightcord": "nightcord",
         "nix-flatpak": "nix-flatpak",
@@ -185,11 +206,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794805570,
-        "narHash": "sha256-sG0P1rHWgbPQIeR+peNmapCWQKf0nauyDl500JhX9Qo=",
+        "lastModified": 1794898407,
+        "narHash": "sha256-u3qknsQ63fQ0GDO65fLsZHFt7G5c2SWZcjajkV+BwjM=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "cb44a9fc1faa18c55dde38a8338f6d46fa2bc6de",
+        "rev": "54310da1c2e1d4bcd413c6914a0d274afbd4f30b",
         "type": "github"
       },
       "original": {

@@ -142,6 +142,22 @@ let
   interactiveShellInit = ''
     export PATH="$HOME/.bun/bin:$PATH"
 
+    # Transfert de fichiers avec le host "pc" (alias SSH)
+    # pcsend <fichier_local> [dest depuis ~ du host]
+    pcsend() {
+      if [ -z "$1" ]; then
+        echo "usage: pcsend <fichier_local> [dest depuis ~ du host]"; return 1
+      fi
+      rsync -avh --progress -- "$1" "pc:''${2:-}"
+    }
+    # pcget <chemin depuis ~ du host> [dest_locale]
+    pcget() {
+      if [ -z "$1" ]; then
+        echo "usage: pcget <chemin depuis ~ du host> [dest_locale]"; return 1
+      fi
+      rsync -avh --progress -- "pc:$1" "''${2:-.}"
+    }
+
     if [ -d .git ] || git rev-parse --git-dir >/dev/null 2>&1; then
       onefetch 2>/dev/null || fastfetch
     else
@@ -185,6 +201,10 @@ let
     _cheat_row '' "cpueco"            "max power saving (turbo off, EPP power)"
     _cheat_row '' "cpuunlock"         "restore dynamic frequency scaling"
     _cheat_row '' "cpustatus"         "show P-State, turbo & frequencies"
+
+    _cheat_section "Transfer (host pc)"
+    _cheat_row $'\uf093' "pcsend <f> [dst]"  "send file to pc (dst from host ~)"
+    _cheat_row $'\uf019' "pcget <src> [dst]" "fetch from pc (src from host ~)"
 
     _cheat_section "Touchscreen"
     _cheat_row '' "sudo touch-toggle" "toggle finger touch (stylus stays on)"
