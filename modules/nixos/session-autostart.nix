@@ -15,6 +15,8 @@ let
     gsr-ui = "${bin "gsr-ui"} launch-daemon";
     signal = "${bin "signal-desktop"} --start-in-tray";
     telegram = "${bin "Telegram"} -startintray";
+    # Galerie photo : démarre réduite dans la zone de notification.
+    photoclair = "${bin "photoclair"} --minimized";
   };
 
   mkService = name: cmd: {
