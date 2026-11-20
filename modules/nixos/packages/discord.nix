@@ -50,4 +50,11 @@ in
         /home/${System.Username}/.config/discord/settings.json
     fi
   '';
+
+  environment.systemPackages = with pkgs; [
+    (discord-ptb.override {
+      withOpenASAR = true;
+      #withVencord = true; # complementary
+    })
+  ];
 }

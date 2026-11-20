@@ -25,6 +25,16 @@
       url = "github:Kisakay/VeeMeeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    github-redesktop = {
+      url = "github:Kisakay/GithubReDesktop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    cosmic-advanced-player = {
+      url = "github:Kisakay/CosmicAdvancedPlayer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

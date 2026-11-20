@@ -9,5 +9,5 @@
     })
   ];
 
-  programs.qxchat.enable = true;
+  programs.qxchat.enable = false;
 }

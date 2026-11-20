@@ -3,8 +3,6 @@
 {
   environment.systemPackages = with pkgs; [
     vlc
-    audacious
-    audacious-plugins
 
     yt-dlp
     ffmpeg

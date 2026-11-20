@@ -1,0 +1,28 @@
+--- a/src/shell/layout/tiling/mod.rs
++++ b/src/shell/layout/tiling/mod.rs
+@@ -3643,15 +3643,21 @@
+ 
+                 let target_zone = group_zone.unwrap_or_else(|| match &data {
+                     Data::Placeholder { .. } => TargetZone::InitialPlaceholder(res_id),
+-                    Data::Group { .. } | Data::Mapped { .. } => {
++                    Data::Group { .. } | Data::Mapped { .. } => 'zone: {
+                         let id = if data.is_group() {
+-                            tree.get(&res_id)
++                            // A group may transiently hold only placeholders (e.g. a window
++                            // unmapped or still launching while being dragged). Fall back to
++                            // the group interior instead of panicking the compositor.
++                            match tree
++                                .get(&res_id)
+                                 .unwrap()
+                                 .children()
+                                 .iter()
+                                 .find(|child_id| tree.get(child_id).unwrap().data().is_mapped(None))
+-                                .expect("Placeholder group without real window?")
+-                                .clone()
++                            {
++                                Some(child_id) => child_id.clone(),
++                                None => break 'zone TargetZone::GroupInterior(res_id.clone(), 0),
++                            }
+                         } else {
+                             res_id
+                         };

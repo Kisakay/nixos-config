@@ -24,6 +24,18 @@
             < ${./patches/cosmic-screencopy-destroy-frame-first.patch}
         '';
       });
+
+      # Fix crash de session : cosmic-comp panique ("Placeholder group without
+      # real window?", tiling/mod.rs) quand on bouge la souris pendant un drag
+      # en tiling sur un groupe qui ne contient plus que des placeholders
+      # -> compositeur mort, retour au greeter. Toujours présent sur master.
+      # https://github.com/pop-os/cosmic-comp/issues/2188
+      # https://github.com/pop-os/cosmic-comp/issues/1475
+      cosmic-comp = prev.cosmic-comp.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          ./patches/cosmic-comp-tiling-placeholder-group-no-panic.patch
+        ];
+      });
     })
   ];
 

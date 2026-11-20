@@ -12,9 +12,9 @@
     telegram-desktop
     signal-desktop
     element-desktop
+    session-desktop
 
     # mumble
-    github-desktop
 
     # anydesk
     remmina
