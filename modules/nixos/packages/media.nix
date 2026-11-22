@@ -9,7 +9,6 @@
     melt
     gimp
     # audacity
-    easyeffects
 
     pulseaudioFull
     pavucontrol

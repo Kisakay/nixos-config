@@ -7,6 +7,7 @@
     ./obs.nix
     ./photoclair.nix
     ./qxchat.nix
+    ./easyeffects.nix
     ./steam.nix
     ./veemeeter.nix
   ];
