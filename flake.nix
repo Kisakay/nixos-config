@@ -14,7 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    tidaLuna.url = "github:Inrixia/TidaLuna";
+    # TEMP pin (2026-11-22): efdfea5 locks @inrixia/helpers@3.22.0, rejected by pnpm minimumReleaseAge. Unpin in a few days.
+    tidaLuna.url = "github:Inrixia/TidaLuna/e1a2358b7cfe27e50130c1ef6e566068b18ab4f5";
 
     nightcord = {
       url = "git+https://source.nightcord.st/nightcord/nightcord.git";
