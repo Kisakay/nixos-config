@@ -90,5 +90,8 @@
 
     # dev packages
     dbeaver-bin
+
+    # REA related
+    ghidra
   ];
 }
