@@ -14,11 +14,6 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
-    nightcord = {
-      url = "git+https://source.nightcord.st/nightcord/nightcord.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     github-redesktop = {
       url = "github:Kisakay/GithubReDesktop";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +43,6 @@
         modules = [
           ./hosts/framework-laptop-12
           nix-flatpak.nixosModules.nix-flatpak
-          inputs.nightcord.nixosModules.default
           inputs.github-redesktop.nixosModules.default
           inputs.veemeeter.nixosModules.default
           inputs.cosmic-advanced-player.nixosModules.default

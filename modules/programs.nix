@@ -130,6 +130,10 @@ let
     cpueco = "sudo cpu-freq eco";
     cpuunlock = "sudo cpu-freq unlock";
     cpustatus = "sudo cpu-freq status";
+    tabkbd = "sudo tablet-kbd";
+    tabkbdon = "sudo tablet-kbd on";
+    tabkbdoff = "sudo tablet-kbd off";
+    tabkbdstatus = "tablet-kbd status";
     ls = "ls --color=auto -F";
     ll = "ls --color=auto -lhF";
     la = "ls --color=auto -lAhF";
@@ -208,6 +212,12 @@ let
 
     _cheat_section "Touchscreen"
     _cheat_row '' "sudo touch-toggle" "toggle finger touch (stylus stays on)"
+
+    _cheat_section "Tablet mode"
+    _cheat_row $'' "tabkbd"            "toggle keyboard when folded"
+    _cheat_row $'' "tabkbdon"          "keep keyboard on when folded (before folding!)"
+    _cheat_row $'' "tabkbdoff"         "normal tablet mode (keyboard off when folded)"
+    _cheat_row $'' "tabkbdstatus"      "show tablet keyboard state"
 
     printf '  %s│%s\n' "$_cheat_dim" "$_cheat_reset"
     # Petit blåhaj (nf-md-shark) + drapeau trans (emoji 🏳️‍⚧️, Noto Color Emoji)

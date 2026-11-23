@@ -26,6 +26,7 @@
     ./acheron.nix
     ./obs-studio.nix
     ./touchscreen.nix
+    ./tablet-keyboard.nix
     ./tor.nix
     ./wordcraft.nix
   ];

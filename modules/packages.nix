@@ -22,8 +22,6 @@
     sshfs
     nixd
 
-    # Edit
-    obsidian
     # Shell et terminal
     zsh
     windterm
@@ -39,7 +37,7 @@
     thunderbird
     krita
 
-    # Discord est fourni par le mod Nightcord (voir flake-packages.nix)
+    discord
 
     # dorion
     wine
@@ -87,7 +85,6 @@
     signal-desktop
 
     claude-code
-    claude-agent-acp
     claude-code-router
   ];
 }
