@@ -12,3 +12,4 @@ result-*
 # Clé générée par QxChat
 app.key
 /etc/nixos-local
+secrets.nix
