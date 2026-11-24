@@ -29,5 +29,6 @@
     ./tablet-keyboard.nix
     ./tor.nix
     ./wordcraft.nix
+    ./sharepoint.nix
   ];
 }

@@ -26,6 +26,11 @@
       User root
       Port 12272
       IdentityFile ~/.ssh/id_ed25519
+    Host btsTp
+      HostName lab.sio-estran.fr
+      Port 12302
+      User SARAIVA
+      IdentityFile ~/.ssh/id_ed25519
     Host h
       HostName 192.168.1.192
       User anais
